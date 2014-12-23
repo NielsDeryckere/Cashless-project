@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="Terminal_Customer.View.TerminalCustomer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:Terminal_Customer.ViewModel"
+             xmlns:v="clr-namespace:Terminal_Customer.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="768" d:DesignWidth="1024">
+    <UserControl.DataContext>
+        <vm:LoginScreenCustomerVM/>
+    </UserControl.DataContext>
+    <Grid>
+        <GroupBox Width="400" Height="250" Name="grpLogin" Header="{Binding Name}"  >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+
+                </Grid.ColumnDefinitions>
+                <TextBlock Name="txbScan" Text="Scan your card" FontSize="26" Grid.Row="0" Margin="10" TextAlignment="Center" Grid.ColumnSpan="2"/>
+                <TextBlock Name="txbBarcode" Text="Scanner not working? Type your barcode in the textbox" Grid.Row="1" TextAlignment="Center" Margin="10" Grid.ColumnSpan="2" />
+                <TextBox Name="txtBarcode" Grid.Row="2" Margin="20,10" />
+                <Button Name="btnOK" Grid.Row="2" Grid.Column="1" Content="Log in" Margin="20, 10" Command="{Binding DataContext.ChangePageCommand,
+ RelativeSource={RelativeSource  AncestorType={x:Type Window}}}"  CommandParameter="{Binding DataContext.Pages[2],RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                <Button Name="btnRegister" Content="New user? Register here" Grid.Row="3" Grid.ColumnSpan="2"  Margin="20, 10" Command="{Binding DataContext.ChangePageCommand,
+ RelativeSource={RelativeSource  AncestorType={x:Type Window}}}"  CommandParameter="{Binding DataContext.Pages[1],RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+
+
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+
+
+    
+</UserControl>
+

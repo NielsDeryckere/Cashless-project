@@ -1,0 +1,5 @@
+C:\Users\niels\Google Drive\Semester 3\Business applications\Labo\Week_7\nmct.ba.cashlessproject.ui\modelsProject\bin\Debug\modelsProject.dll
+C:\Users\niels\Google Drive\Semester 3\Business applications\Labo\Week_7\nmct.ba.cashlessproject.ui\modelsProject\bin\Debug\modelsProject.pdb
+C:\Users\niels\Google Drive\Semester 3\Business applications\Labo\Week_7\nmct.ba.cashlessproject.ui\modelsProject\obj\Debug\modelsProject.dll
+C:\Users\niels\Google Drive\Semester 3\Business applications\Labo\Week_7\nmct.ba.cashlessproject.ui\modelsProject\obj\Debug\modelsProject.pdb
+C:\Users\niels\Google Drive\Semester 3\Business applications\Labo\Week_7\nmct.ba.cashlessproject.ui\modelsProject\obj\Debug\models.csprojResolveAssemblyReference.cache

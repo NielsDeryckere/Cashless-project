@@ -1,0 +1,27 @@
+﻿<Window x:Class="Terminal_Customer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Terminal_Customer.ViewModel"
+        xmlns:v="clr-namespace:Terminal_Customer.View"
+        Title="MainWindow" Height="768" Width="1024">
+    <Window.DataContext>
+        <vm:ApplicationVM/>
+    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:LoginScreenCustomerVM}">
+            <v:TerminalCustomer/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PageTwoVM}">
+            <v:PageTwo/>
+            
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PageThreeVM}">
+            <v:PageThree/>
+
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <ContentControl Grid.Row="1" Content="{Binding CurrentPage}"/>
+       
+    </Grid>
+</Window>

@@ -1,0 +1,456 @@
+﻿<UserControl x:Class="Desktop_Management.View.PageTwo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:Desktop_Management.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="768" d:DesignWidth="1024">
+    <UserControl.DataContext>
+        <vm:PageTwoVM/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="145*"/>
+            <ColumnDefinition Width="871*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl HorizontalAlignment="Left" Height="662" Margin="10,10,0,0" VerticalAlignment="Top" Width="996" Grid.ColumnSpan="2">
+            <TabItem Header="Account">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="28*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock HorizontalAlignment="Left"  FontSize="30" Margin="10,10,0,0" TextWrapping="Wrap" Text="Basic info" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="60" Width="748"/>
+                    <Label Content="First name" Margin="5" Grid.Row="1" RenderTransformOrigin="0.184,0.154"/>
+                    <Label Content="Name" Margin="5" Grid.Row="2"/>
+                    <TextBlock TextWrapping="Wrap"  Text="TextBlock" Grid.Row="1" Grid.Column="1"  Margin="10,10,500,10"/>
+                    <TextBlock TextWrapping="Wrap"  Text="TextBlock" Grid.Row="2" Grid.Column="1"  Margin="10,9,500,10"/>
+                    <TextBlock TextWrapping="Wrap"  Text="TextBlock" Grid.Row="4" Grid.Column="1" Width="300" Margin="10,26,530,198" Height="30"/>
+
+                    <Label Content="Current password" HorizontalAlignment="Left" Margin="10,30,0,0" Grid.Row="4" VerticalAlignment="Top" Width="126"/>
+                    <Label Content="New password" HorizontalAlignment="Left" Margin="10,93,0,0" Grid.Row="4" VerticalAlignment="Top" Width="126"/>
+                    <TextBlock TextWrapping="Wrap" Background="LightBlue" Text="TextBlock" Grid.Row="4" Grid.Column="1" Width="300" Height="30" Margin="10,93,530,131"/>
+                    <Label Content="Repeat new password" HorizontalAlignment="Left" Margin="10,141,0,0" Grid.Row="4" VerticalAlignment="Top" Grid.Column="0"/>
+                    <TextBlock TextWrapping="Wrap" Background="LightBlue" Text="TextBlock" Grid.Row="4" Grid.Column="1" Width="300" Height="30" Margin="10,137,530,87"/>
+
+
+                    <TextBlock HorizontalAlignment="Left" FontSize="30"  Background="LightBlue" Margin="10,73,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Change password" VerticalAlignment="Top" Height="44" Width="748" Grid.ColumnSpan="2"/>
+                    <Button Content="Change" Grid.Column="1" HorizontalAlignment="Left" Margin="10,181,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75"/>
+                    <Button Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="102,181,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75"/>
+
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Products">
+                <Grid Margin="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="1" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}">
+                        
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding= "{Binding Path=Id}" Header="Id" Width="50"/>
+                                <GridViewColumn Header="Productname" DisplayMemberBinding= "{Binding Path=ProductName}"  Width="100"/>
+                                <GridViewColumn Header="Price" DisplayMemberBinding= "{Binding Path=Price}"  Width="100"/>
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <GroupBox  Name="Search" Grid.Row="0" Grid.Column="1" Margin="5" Header="Search">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+                            <TextBox Name="txtSearch" Text="Geef je zoekterm in" Margin="5" Grid.Row="0" Grid.Column="0" />
+                            <Button Name="btnSearch"   Content="Search" Margin="20, 5" Grid.Row="2" Grid.Column="1" />
+                            <Label Name="lblNarrowSearch" Content="Narrow search to: " Grid.Row="1" Grid.Column="0" Margin="5" />
+                            <ComboBox Name="cboNarrowSearch" Grid.Row="1" Grid.Column="1" Margin="20,5"/>
+
+
+
+                        </Grid>
+
+                    </GroupBox>
+                    <GroupBox Name="grpbView" Header="View" Grid.Row="1" Grid.Column="1" Margin="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Button Name="btnNew" Content="New" Grid.Column="0" Grid.Row="0" Margin="10"/>
+                           
+                            <Button Name="btnDelete" Content="Delete" Grid.Column="1" Grid.Row="0" Margin="10"/>
+                            <Label Name="lblId" Content="Product id:" Grid.Column="0" Grid.Row="1" Margin="20" />
+                            <TextBox Name="txtId" Grid.Column="1" Text="{Binding SelectedProduct.Id}" Grid.Row="1" Margin="20" />
+
+                            <Label Name="lblProductName" Content="Product name:" Grid.Column="0" Grid.Row="2" Margin="20" />
+                            <TextBox Name="txtProductName"  Text="{Binding SelectedProduct.ProductName}" Grid.Column="1" Grid.Row="2" Margin="20" />
+
+                            <Label Name="lblPrice" Content="Price:" Grid.Column="0" Grid.Row="3" Margin="20" />
+                            <TextBox Name="txtPrice" Grid.Column="1" Text="{Binding SelectedProduct.Price}" Grid.Row="3" Margin="20" />
+
+                            <Button Name="btnSave" Grid.Column="1" Grid.Row="4" Content="Save" Margin="10" />
+                            <Button Name="btnCancel" Grid.Column="2" Grid.Row="4" Content="Cancel" Margin="10" />
+
+
+                        </Grid>
+                    </GroupBox>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Employees">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="1">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Id" Width="50"/>
+                                <GridViewColumn Header="Name" Width="100"/>
+                                <GridViewColumn Header="First Name" Width="100"/>
+                                <GridViewColumn Header="Adress" Width="100"/>
+                                <GridViewColumn Header="Balance" Width="100"/>
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <GroupBox  Name="grpbSearchEmployee" Grid.Row="0" Grid.Column="1" Margin="5" Header="Search">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+                            <TextBox Name="txtSearchEmployee" Margin="5" Grid.Row="0" Grid.Column="0" />
+                            <Button Name="btnSearchEmployee"   Content="Search" Margin="20, 5" Grid.Row="2" Grid.Column="1" />
+                            <Label Name="lblNarrowSearchEmployee" Content="Narrow search to: " Grid.Row="1" Grid.Column="0" Margin="5" />
+                            <ComboBox Name="cboNarrowSearchEmployee" Grid.Row="1" Grid.Column="1" Margin="20,5"/>
+
+
+
+                        </Grid>
+
+                    </GroupBox>
+                    <GroupBox Name="grpbViewEmployee" Header="View" Grid.Row="1" Grid.Column="1" Margin="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Button Name="btnNewEmployee" Content="New" Grid.Column="0" Grid.Row="0" Margin="10"/>
+                            <Button Name="btnChangeEmployee" Content="Change" Grid.Column="1" Grid.Row="0" Margin="10"/>
+                            <Button Name="btnDeleteEmployee" Content="Delete" Grid.Column="2" Grid.Row="0" Margin="10"/>
+                            <Label Name="lblIdEmployee" Content="Id:" Grid.Column="0" Grid.Row="1" Margin="10" />
+                            <TextBox Name="txtIdEmployee" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="10" />
+
+                            <Label Name="lblNameEmployee" Content="Name" Grid.Column="0"  Grid.Row="2" Margin="10" />
+                            <TextBox Name="txtNameEmployee" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="10" />
+
+                            <Label Name="lblPhoneEmployee" Content="Phone" Grid.Column="0" Grid.Row="4" Margin="10" />
+                            <TextBox Name="txtPhoneEmployee" Grid.Column="1" Grid.Row="4" Margin="10" Grid.ColumnSpan="2"/>
+
+                            <Label Name="lblAddressEmployee" Content="Address" Grid.Column="0" Grid.Row="3" Margin="10" />
+                            <TextBox Name="txtAddressEmployee" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" />
+
+                            <Label Name="lblEmailEmployee" Content="Email" Grid.Column="0" Grid.Row="5" Margin="10" />
+                            <TextBox Name="txtEmailEmployee" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Margin="10" />
+
+                            <Button Name="btnSaveEmployee" Grid.Column="1" Grid.Row="6" Content="Save" Margin="10" />
+                            <Button Name="btnCancelEmployee" Grid.Column="2" Grid.Row="6" Content="Cancel" Margin="10" />
+
+
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Registers">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView Margin="5" Grid.RowSpan="2" >
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Id" Width="50"/>
+                                <GridViewColumn Header="Registername" Width="100"/>
+                                <GridViewColumn Header="Device" Width="100"/>
+
+
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <GroupBox  Name="grpbFilterDetails" Grid.Row="0" Grid.Column="1" Margin="5" Header="Filter details">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+                            <DatePicker Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="10,10,30,10" />
+                            <Label Name="lblFrom" Grid.Row="1" Content="From" Margin="20,10"/>
+                            <ComboBox Name="cboFrom" Grid.Row="1" Grid.Column="1" Margin="10"></ComboBox>
+
+                            <Label Name="lblUntill" Grid.Row="2" Grid.Column="0" Content="Untill" Margin="20,10"/>
+                            <ComboBox Name="cboUntill" Grid.Row="2" Grid.Column="1" Margin="10"></ComboBox>
+                            <Button Name="btnApply" Content="Apply" Grid.Column="0" Grid.Row="3" Margin="5" Grid.ColumnSpan="2" />
+
+
+
+
+
+
+                        </Grid>
+
+                    </GroupBox>
+                    <GroupBox Name="grpbViewRegister" Header="View" Grid.Row="1" Grid.Column="1" Margin="5">
+                        <Grid>
+                            <ListView Margin="5" Grid.RowSpan="2" >
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Id Employee" Width="100"/>
+                                        <GridViewColumn Header="From" Width="100"/>
+                                        <GridViewColumn Header="Untill" Width="100"/>
+
+
+
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+
+
+
+
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Customers">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="1">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Id" Width="50"/>
+                                <GridViewColumn Header="Name" Width="100"/>
+                                <GridViewColumn Header="First Name" Width="100"/>
+                                <GridViewColumn Header="Adress" Width="100"/>
+                                <GridViewColumn Header="Balance" Width="100"/>
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <GroupBox  Name="grpbSearchCustomer" Grid.Row="0" Grid.Column="1" Margin="5" Header="Search">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+                            <TextBox Name="txtSearchCustomer" Margin="5" Grid.Row="0" Grid.Column="0" />
+                            <Button Name="btnSearchCustomer"   Content="Search" Margin="20, 5" Grid.Row="2" Grid.Column="1" />
+                            <Label Name="lblNarrowSearchCustomer" Content="Narrow search to: " Grid.Row="1" Grid.Column="0" Margin="5" />
+                            <ComboBox Name="cboNarrowSearchCustomer" Grid.Row="1" Grid.Column="1" Margin="20,5"/>
+
+
+
+                        </Grid>
+
+                    </GroupBox>
+                    <GroupBox Name="grpbViewCostumer" Header="View" Grid.Row="1" Grid.Column="1" Margin="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="3*"></RowDefinition>
+
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+
+                            </Grid.RowDefinitions>
+                            <Button Name="btnNewCostumer" Content="New" Grid.Column="0" Grid.Row="0" Margin="10"/>
+                            <Button Name="btnChangeCustomer" Content="Change" Grid.Column="1" Grid.Row="0" Margin="10"/>
+                            <Button Name="btnDeleteCustomer" Content="Delete" Grid.Column="2" Grid.Row="0" Margin="10"/>
+                            <Image Name="imgCustomer" Grid.Row="1" Grid.Column="0" Margin="5" />
+                            <Button Name="btnChangePic" Content="Change picture" Grid.Row="1" Grid.Column="1" Margin="5, 100,5,5" />
+                            <Label Name="lblIdCustomer" Content="Id:" Grid.Column="0" Grid.Row="2" Margin="10" />
+                            <TextBox Name="txtIdCustomer" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="10" />
+
+                            <Label Name="lblNameCustomer" Content="Name" Grid.Column="0"  Grid.Row="3" Margin="10" />
+                            <TextBox Name="txtNameCustomer" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" />
+
+
+                            <Label Name="lblAddressCustomer" Content="Address" Grid.Column="0" Grid.Row="4" Margin="10" />
+                            <TextBox Name="txtAddressCustomer" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="10" />
+
+                            <Label Name="lblBalanceCustomer" Content="Balance" Grid.Column="0" Grid.Row="5" Margin="10" />
+                            <TextBox Name="txtBalanceCustomer" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Margin="10" />
+
+                            <Button Name="btnSaveCustomer" Grid.Column="1" Grid.Row="6" Content="Save" Margin="10" />
+                            <Button Name="btnCancelCustomer" Grid.Column="2" Grid.Row="6" Content="Cancel" Margin="10" />
+
+
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Statistics">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="1">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Id" Width="50"/>
+                                <GridViewColumn Header="Timestamp" Width="75"/>
+                                <GridViewColumn Header="Register" Width="75"/>
+                                <GridViewColumn Header="Productname" Width="75"/>
+                                <GridViewColumn Header="Amount" Width="75"/>
+                                <GridViewColumn Header="Total price" Width="75"/>
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <GroupBox  Name="grpbFilterStatistics" Grid.Row="0" Grid.Column="1" Margin="5" Header="Filter">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+
+
+                            </Grid.ColumnDefinitions>
+                            <Label Name="lblFromStat" Grid.Row="0" Content="From" Margin="10"/>
+                            <DatePicker Grid.Column="1" Grid.Row="0" Margin="10" />
+
+                            <Label Name="lblUntillStat" Grid.Row="0" Grid.Column="2" Content="Untill" Margin="10"/>
+                            <DatePicker Grid.Column="3" Grid.Row="0" Margin="10" />
+
+                            <Label Name="lblRegister" Content="Register" Grid.Row="1" Margin="10"/>
+                            <ComboBox Name="cboRegister" Grid.Row="1" Grid.Column="1" Margin="10" />
+
+                            <Label Name="lblProduct" Content="Product" Grid.Row="2" Margin="10"/>
+                            <ComboBox Name="cboProduct" Grid.Row="2" Grid.Column="1" Margin="10" />
+                            <Button Name="btnApplyStat" Content="Apply" Grid.Column="0" Grid.Row="3" Margin="5" Grid.ColumnSpan="2" />
+
+
+                        </Grid>
+
+                    </GroupBox>
+
+                </Grid>
+            </TabItem>
+
+
+        </TabControl>
+        <Label Content="Logged in as: " HorizontalAlignment="Left" Margin="537,-1,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="626,5,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="150" Height="20" Grid.Column="1"/>
+        <Button Content="Sign out" HorizontalAlignment="Left" Margin="776,5,0,0" VerticalAlignment="Top" Width="85"  Grid.Column="1"/>
+
+
+    </Grid>
+</UserControl>
