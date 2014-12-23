@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nmct.ba.api", "WEB API 2NMCT1\nmct.ba.api.csproj", "{72043C65-C246-464A-865E-253EBE22BDB5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB API 2NMCT1", "WEB API 2NMCT1\WEB API 2NMCT1.csproj", "{72043C65-C246-464A-865E-253EBE22BDB5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminal_Customer", "Terminal_Customer\Terminal_Customer.csproj", "{56C5C84F-7E52-40C5-973C-4041C074A8D0}"
 EndProject

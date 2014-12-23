@@ -3,3 +3,7 @@ C:\Users\niels\Google Drive\Semester 3\Business applications\Labo\Week_7\nmct.ba
 C:\Users\niels\Google Drive\Semester 3\Business applications\Labo\Week_7\nmct.ba.cashlessproject.ui\modelsProject\obj\Debug\modelsProject.dll
 C:\Users\niels\Google Drive\Semester 3\Business applications\Labo\Week_7\nmct.ba.cashlessproject.ui\modelsProject\obj\Debug\modelsProject.pdb
 C:\Users\niels\Google Drive\Semester 3\Business applications\Labo\Week_7\nmct.ba.cashlessproject.ui\modelsProject\obj\Debug\models.csprojResolveAssemblyReference.cache
+C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\modelsProject\bin\Debug\modelsProject.dll
+C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\modelsProject\bin\Debug\modelsProject.pdb
+C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\modelsProject\obj\Debug\modelsProject.dll
+C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\modelsProject\obj\Debug\modelsProject.pdb

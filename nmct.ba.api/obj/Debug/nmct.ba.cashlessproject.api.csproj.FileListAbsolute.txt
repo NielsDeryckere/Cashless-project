@@ -1,3 +1,0 @@
-C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\nmct.ba.api\obj\Debug\nmct.ba.cashlessproject.api.csprojResolveAssemblyReference.cache
-C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\nmct.ba.api\obj\Debug\nmct.ba.api.Properties.Resources.resources
-C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\nmct.ba.api\obj\Debug\nmct.ba.cashlessproject.api.csproj.GenerateResource.Cache

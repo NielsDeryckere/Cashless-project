@@ -8,9 +8,9 @@
         <vm:ApplicationVM/>
     </Window.DataContext>
     <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:PageOneVM}">
+        <DataTemplate DataType="{x:Type vm:LoginVM}">
             
-            <v:PageOne/>
+            <v:Login/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:PageTwoVM}">
             <v:PageTwo/>

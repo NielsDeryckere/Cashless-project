@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Web;
@@ -9,7 +10,15 @@ namespace WEB_API_2NMCT1.Helper
 {
     public class Database
     {
-        private static DbConnection GetConnection(string ConnectionString)
+
+        public static ConnectionStringSettings CreateConnectionString(string provider, string server, string database, string username, string password)
+        {
+            ConnectionStringSettings settings = new ConnectionStringSettings();
+            settings.ProviderName = provider;
+            settings.ConnectionString = "Data Source=" + server + ";Initial Catalog=" + database + ";User ID=" + username + ";Password=" + password;
+            return settings;
+        }
+        public static DbConnection GetConnection(string ConnectionString)
         {
             ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[ConnectionString];
             DbConnection connection = DbProviderFactories.GetFactory(settings.ProviderName).CreateConnection();
@@ -23,6 +32,15 @@ namespace WEB_API_2NMCT1.Helper
 
         }
 
+        public static DbConnection GetConnection(ConnectionStringSettings Settings)
+        {
+            DbConnection con = DbProviderFactories.GetFactory(Settings.ProviderName).CreateConnection();
+            con.ConnectionString = Settings.ConnectionString;
+            con.Open();
+
+            return con;
+        }
+
         public static void ReleaseConnection(DbConnection con)
         {
             if (con != null)
@@ -33,6 +51,43 @@ namespace WEB_API_2NMCT1.Helper
 
 
 
+        }
+
+        private static DbCommand BuildCommand(DbConnection con, string sql, params DbParameter[] parameters)
+        {
+            DbCommand command = con.CreateCommand();
+            command.CommandType = CommandType.Text;
+            command.CommandText = sql;
+
+            if (parameters != null)
+            {
+                command.Parameters.AddRange(parameters);
+            }
+
+            return command;
+        }
+
+        public static DbDataReader GetData(DbConnection con, string sql, params DbParameter[] parameters)
+        {
+            DbCommand command = null;
+            DbDataReader reader = null;
+
+            try
+            {
+                command = BuildCommand(con, sql, parameters);
+                reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+
+                return reader;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                if (reader != null)
+                    reader.Close();
+                if (command != null)
+                    ReleaseConnection(command.Connection);
+                throw;
+            }
         }
 
         private static DbCommand BuildCommand(string constring, string sql, params DbParameter[] parameters)
@@ -251,6 +306,8 @@ namespace WEB_API_2NMCT1.Helper
                 throw;
             }
         }
+
+
 
         public static DbParameter addParameter(string constring, string name, object value)
         {

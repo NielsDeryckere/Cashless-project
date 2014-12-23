@@ -14,12 +14,11 @@ namespace Desktop_Management.ViewModel
         public static TokenResponse token = null;
         public ApplicationVM()
         {
-            Pages.Add(new PageTwoVM());
-            Pages.Add(new PageOneVM());
+          
 
             // Add other pages
 
-            CurrentPage = Pages[0];
+            CurrentPage = new LoginVM();
         }
 
         private object currentPage;

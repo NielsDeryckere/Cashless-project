@@ -33,16 +33,5 @@ namespace WEB_API_2NMCT1.Properties {
                 return ((string)(this["ClientDB"]));
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=MCT-NIELS\\DATAMANAGEMENT;Initial Catalog=Cashless_project_AdminDb;Int" +
-            "egrated Security=True")]
-        public string AdminDB {
-            get {
-                return ((string)(this["AdminDB"]));
-            }
-        }
     }
 }
