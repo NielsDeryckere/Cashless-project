@@ -139,15 +139,17 @@ namespace WEB_API_2NMCT1.Helper
 
         }
 
-        public static int ModifyData(string constring, string sql, params DbParameter[] parameters)
+        public static int ModifyData(DbConnection con, string sql, params DbParameter[] parameters)
         {
 
             DbCommand command = null;
 
             try
             {
-                command = BuildCommand(constring, sql, parameters);
-                return command.ExecuteNonQuery();
+                command = BuildCommand(con, sql, parameters);
+                int affected = command.ExecuteNonQuery();
+                command.Connection.Close();
+                return affected;
 
             }
             catch (Exception ex)
@@ -159,7 +161,7 @@ namespace WEB_API_2NMCT1.Helper
                 {
                     ReleaseConnection(command.Connection);
 
-
+                    return 0;
                 }
                 throw;
             }
@@ -273,14 +275,14 @@ namespace WEB_API_2NMCT1.Helper
             }
         }
 
-        public static int InsertData(string constring, string sql, params DbParameter[] parameters)
+        public static int InsertData(DbConnection con, string sql, params DbParameter[] parameters)
         {
 
             DbCommand command = null;
 
             try
             {
-                command = BuildCommand(constring, sql, parameters);
+                command = BuildCommand(con, sql, parameters);
                 command.ExecuteNonQuery();
 
                 command.Parameters.Clear();

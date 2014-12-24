@@ -30,6 +30,8 @@ namespace WEB_API_2NMCT1.App_Start
             id.AddClaim(new Claim("dbname", o.DbName));
             id.AddClaim(new Claim("dblogin", o.DbLogin));
             id.AddClaim(new Claim("dbpass", o.DbPassword));
+            id.AddClaim(new Claim("login", o.Login));
+            id.AddClaim(new Claim("pass", o.Password));
 
             context.Validated(id);
             return Task.FromResult(0);
