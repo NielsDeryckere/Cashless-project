@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aspose.BarCode">
+      <HintPath>..\packages\Aspose.BarCode.6.6.0\lib\net4.5\Aspose.BarCode.dll</HintPath>
+    </Reference>
     <Reference Include="beid35libCS">
       <HintPath>..\..\..\..\..\..\..\Documents\Belgium Identity Card SDK\beidlib\dotNet\bin\beid35libCS.dll</HintPath>
     </Reference>
@@ -55,6 +58,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Extensions">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Extensions.dll</HintPath>
@@ -86,6 +90,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converter\StringToImageConverter.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
     <Compile Include="View\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>

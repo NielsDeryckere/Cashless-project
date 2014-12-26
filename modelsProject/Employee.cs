@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace models
 {
-    public class Employee
+    public class Employee: IDataErrorInfo
 
     {
         private int _id;
@@ -40,14 +41,31 @@ namespace models
             set { _email = value; }
         }
 
-        private int _phone;
+        private string _phone;
 
-        public int Phone
+        public string Phone
         {
             get { return _phone; }
             set { _phone = value; }
         }
-        
-        
+
+        private string _barcode;
+
+        public string Barcode
+        {
+            get { return _barcode; }
+            set { _barcode = value; }
+        }
+
+
+        public string Error
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public string this[string columnName]
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

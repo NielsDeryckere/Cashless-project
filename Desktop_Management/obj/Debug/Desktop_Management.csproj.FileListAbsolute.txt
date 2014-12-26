@@ -127,3 +127,4 @@ C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cas
 C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Desktop_Management\obj\Debug\Desktop_Management.g.resources
 C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Desktop_Management\obj\Debug\Desktop_Management.Properties.Resources.resources
 C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Desktop_Management\obj\Debug\Desktop_Management.csproj.GenerateResource.Cache
+C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Desktop_Management\bin\Debug\Aspose.BarCode.dll
