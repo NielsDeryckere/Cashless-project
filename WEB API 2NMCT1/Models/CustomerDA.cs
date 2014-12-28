@@ -43,7 +43,7 @@ namespace WEB_API_2NMCT1.Models
                 else
                     c.Picture = new byte[0];
                 c.Balance = Double.Parse(reader["Balance"].ToString());
-                c.Barcode = reader["BarCode"].ToString();
+                c.Barcode = Int64.Parse(reader["BarCode"].ToString());
                 list.Add(c);
             }
 

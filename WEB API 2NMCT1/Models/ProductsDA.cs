@@ -38,6 +38,29 @@ namespace WEB_API_2NMCT1.Models
             return lijst;
         }
 
+        public static List<Product> GetProducts()
+        {
+            string DBNAME=Properties.Settings.Default.DBNAME;
+            string DBLOGIN=Properties.Settings.Default.DBLOGIN;
+            string DBPASS=Properties.Settings.Default.DBPASS;
+
+            List<Product> lijst = new List<Product>();
+            string sql = "SELECT * FROM Product";
+            DbDataReader reader = Database.GetData(Database.GetConnection(Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT",DBNAME,DBLOGIN,DBPASS)), sql);
+            while (reader.Read())
+            {
+
+                lijst.Add(Create(reader));
+            }
+            reader.Close();
+
+
+
+
+            return lijst;
+        }
+
+
         private static Product Create(IDataRecord record )
         {
             return new Product()

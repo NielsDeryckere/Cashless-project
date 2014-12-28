@@ -259,7 +259,7 @@ namespace Desktop_Management.ViewModel
 
         public ICommand SaveCustomerCommand
         {
-            get {  return new RelayCommand(SaveCustomer,SelectedCustomer.IsValid); }
+            get {  return new RelayCommand(SaveCustomer); }
         }
 
         public ICommand DeleteCustomerCommand
@@ -320,7 +320,7 @@ namespace Desktop_Management.ViewModel
             bb.CodeText = barcode;
             bb.SymbologyType = Symbology.Code128;
             bb.Save(c.CustomerName+".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
-            c.Barcode = barcode;
+            c.Barcode = Int64.Parse(barcode);
             SelectedCustomer = c;
         }
 
@@ -471,7 +471,7 @@ namespace Desktop_Management.ViewModel
 
                         c.EmployeeName = card.getID().getFirstName() + " " + card.getID().getSurname();
                         c.Address = card.getID().getStreet() + " " + card.getID().getMunicipality();
-                       c.Barcode = card.getID().getNationalNumber();
+                       c.Barcode =Int64.Parse(card.getID().getNationalNumber());
 
                     }
                 }
@@ -480,7 +480,7 @@ namespace Desktop_Management.ViewModel
             BEID_ReaderSet.releaseSDK();
 
             BarCodeBuilder bb = new BarCodeBuilder();
-            bb.CodeText = c.Barcode;
+            bb.CodeText = c.Barcode.ToString();
             bb.SymbologyType = Symbology.Code128;
             bb.Save(c.EmployeeName + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
            
@@ -516,7 +516,7 @@ namespace Desktop_Management.ViewModel
                     }
                     else
                     {
-                        Console.WriteLine("error");
+                        Console.WriteLine("error: could not save customer");
                     }
                 }
             }
@@ -537,10 +537,11 @@ namespace Desktop_Management.ViewModel
 
         private async void DeleteEmployee()
         {
+            Employee c = SelectedEmployee;
             using (HttpClient client = new HttpClient())
             {
                 client.SetBearerToken(ApplicationVM.token.AccessToken);
-                HttpResponseMessage response = await client.DeleteAsync("http://localhost:41983/api/Employee" + SelectedEmployee.Id);
+                HttpResponseMessage response = await client.DeleteAsync("http://localhost:41983/api/Employee/" + SelectedEmployee.Id);
                 if (!response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("error");

@@ -33,5 +33,32 @@ namespace WEB_API_2NMCT1.Properties {
                 return ((string)(this["ClientDB"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("KVKortrijk")]
+        public string DBNAME {
+            get {
+                return ((string)(this["DBNAME"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("KVKortrijk")]
+        public string DBLOGIN {
+            get {
+                return ((string)(this["DBLOGIN"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("kvk")]
+        public string DBPASS {
+            get {
+                return ((string)(this["DBPASS"]));
+            }
+        }
     }
 }

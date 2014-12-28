@@ -6,7 +6,7 @@ using System.Text;
 
 namespace models
 {
-    public class Employee: IDataErrorInfo
+    public class Employee
 
     {
         private int _id;
@@ -49,23 +49,15 @@ namespace models
             set { _phone = value; }
         }
 
-        private string _barcode;
+        private long _barcode;
 
-        public string Barcode
+        public long Barcode
         {
             get { return _barcode; }
             set { _barcode = value; }
         }
 
 
-        public string Error
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string this[string columnName]
-        {
-            get { throw new NotImplementedException(); }
-        }
+      
     }
 }

@@ -26,20 +26,22 @@
 
         </Grid.RowDefinitions>
 
-        <ListBox Name="lstBestelling" Grid.Row="1" Grid.Column="0" Margin="10" />
+        <ListBox Name="lstBestelling" Grid.Row="1" Grid.Column="0" Margin="10" ItemsSource="{Binding OrderedProducts}" />
         <TextBlock Name="txbTotaal" Grid.Row="2" Grid.Column="0" Margin="10"/>
         
-            <ItemsControl x:Name="ButtonsPanel" Grid.Row="1" Grid.Column="1" Margin="10" ItemsSource="{Binding Products}">
+            <ItemsControl Name="ButtonsPanel" Grid.Row="1" Grid.Column="1" Margin="10" ItemsSource="{Binding Products}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
+                    
                     <DataTemplate>
-                        <Button Content="{Binding ProductName}" Width="60px" Height="60" Margin="2px" />
+                    <Button Content="{Binding ProductName}" Command="{Binding AddProductCommand}"  Width="60px" Height="60" Margin="2px" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
+                
             </ItemsControl>
        
 
@@ -72,9 +74,8 @@
             <TextBlock Grid.Row="0" Grid.Column="1" Text="SALDO" FontSize="40" Margin="5"/>
             <TextBlock Name="txbSaldo" Grid.Row="1" Grid.Column="1"  FontSize="40" Margin="5"/>
             <TextBlock Grid.Row="0" Grid.Column="3" Text="Logged in as:" FontSize="20" Margin="5 25 5 5"/>
-            <TextBlock Name="txbEmployee" Grid.Row="1" Grid.Column="3"  FontSize="20" Margin="5"/>
-            <Button Name="btnLogoff" Grid.Row="2" Grid.Column="3" Content="Logoff" Margin="10" Command="{Binding DataContext.ChangePageCommand,
- RelativeSource={RelativeSource  AncestorType={x:Type Window}}}"  CommandParameter="{Binding DataContext.Pages[0],RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+            <TextBlock Name="txbEmployee" Grid.Row="1" Grid.Column="3"  FontSize="20" Margin="5" Text="{Binding CurrentEmployee.EmployeeName}"/>
+            <Button Name="btnLogoff" Grid.Row="2" Grid.Column="3" Content="Logoff" Margin="10"/>
         </Grid>
         <StackPanel Name="stpCalculator" Grid.Column="0" Grid.Row="3" Margin="5">
 

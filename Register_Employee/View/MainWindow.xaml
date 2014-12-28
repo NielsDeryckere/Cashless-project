@@ -3,13 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Register_Employee.ViewModel"
         xmlns:v="clr-namespace:Register_Employee.View"
-        Title="MainWindow" Height="768" Width="1024">
+        Title="MainWindow" Height="768" Width="1024" ResizeMode="NoResize" >
     <Window.DataContext>
         <vm:ApplicationVM/>
     </Window.DataContext>
     <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:PageOneVM}">
-            <v:PageOne/>
+        <DataTemplate DataType="{x:Type vm:LoginVM}">
+            <v:Login_register/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:PageTwoVM}">
             <v:PageTwo/>

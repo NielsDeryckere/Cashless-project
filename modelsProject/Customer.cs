@@ -58,9 +58,9 @@ namespace models
             set { _balance = value; }
         }
 
-        private string _barCode;
+        private long _barCode;
        
-        public string Barcode
+        public long Barcode
         {
             get { return _barCode; }
             set { _barCode = value; }

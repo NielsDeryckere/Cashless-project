@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,11 @@ namespace Register_Employee.ViewModel
 {
     class ApplicationVM : ObservableObject
     {
+        public  Employee LoggedIn;
         public ApplicationVM()
         {
-            Pages.Add(new PageOneVM());
-            Pages.Add(new PageTwoVM());
-            // Add other pages
 
-            CurrentPage = Pages[0];
+            CurrentPage = new LoginVM();
         }
 
         private object currentPage;
@@ -42,7 +41,7 @@ namespace Register_Employee.ViewModel
             get { return new RelayCommand<IPage>(ChangePage); }
         }
 
-        private void ChangePage(IPage page)
+        public void ChangePage(IPage page)
         {
             CurrentPage = page;
         }

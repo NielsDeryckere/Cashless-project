@@ -45,11 +45,46 @@ namespace WEB_API_2NMCT1.Models
                 //else
                 //    c.Picture = new byte[0];
                
-                c.Barcode = reader["BarCode"].ToString();
+                c.Barcode = Int64.Parse(reader["BarCode"].ToString());
                 list.Add(c);
             }
-
+            reader.Close();
             return list;
+        }
+
+        public static List<Employee> GetEmployees()
+        {
+            string DBNAME = Properties.Settings.Default.DBNAME;
+            string DBLOGIN = Properties.Settings.Default.DBLOGIN;
+            string DBPASS = Properties.Settings.Default.DBPASS;
+
+            List<Employee> lijst = new List<Employee>();
+            string sql = "SELECT * FROM Employee";
+            DbDataReader reader = Database.GetData(Database.GetConnection(Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT", DBNAME, DBLOGIN, DBPASS)), sql);
+            while (reader.Read())
+            {
+                Employee c = new Employee();
+                c.Id = Convert.ToInt32(reader["ID"]);
+                c.EmployeeName = reader["EmployeeName"].ToString();
+                c.Address = reader["Address"].ToString();
+                c.Email = reader["Email"].ToString();
+                c.Phone = reader["Phone"].ToString();
+                //if (!DBNull.Value.Equals(reader["Picture"]))
+                //    c.Picture = (byte[])reader["Picture"];
+                //else
+                //    c.Picture = new byte[0];
+
+                c.Barcode = Int64.Parse(reader["BarCode"].ToString());
+                lijst.Add(c);
+
+               
+            }
+            reader.Close();
+
+
+
+
+            return lijst;
         }
 
         public static int InsertEmployee(Employee c, IEnumerable<Claim> claims)
