@@ -9,8 +9,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using Microsoft.Windows.Controls;
-using Microsoft.Windows.Controls.Primitives;
 using Register_Employee.View;
 using Register_Employee.ViewModel;
 using System;

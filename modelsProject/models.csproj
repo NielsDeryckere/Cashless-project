@@ -50,6 +50,7 @@
     <Compile Include="Register.cs" />
     <Compile Include="RegistersOrganisation.cs" />
     <Compile Include="Sales.cs" />
+    <Compile Include="Transfer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Converter\" />

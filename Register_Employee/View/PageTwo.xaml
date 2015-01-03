@@ -9,8 +9,8 @@
              d:DesignHeight="768" d:DesignWidth="1024">
 
     <UserControl.DataContext>
-        
-    <vm:PageTwoVM/>
+
+        <vm:PageTwoVM/>
     </UserControl.DataContext>
     <Grid Background="LightGray">
         <Grid.ColumnDefinitions>
@@ -19,31 +19,31 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
             <RowDefinition Height="3*"/>
+            <RowDefinition Height="3*"/>
+
             <RowDefinition Height="*"/>
-            <RowDefinition Height="2*"/>
 
         </Grid.RowDefinitions>
 
-        <ListBox Name="lstBestelling" Grid.Row="1" Grid.Column="0" Margin="10" ItemsSource="{Binding OrderedProducts}" />
-        <TextBlock Name="txbTotaal" Grid.Row="2" Grid.Column="0" Margin="10"/>
-        
-            <ItemsControl Name="ButtonsPanel" Grid.Row="1" Grid.Column="1" Margin="10" ItemsSource="{Binding Products}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    
-                    <DataTemplate>
-                    <Button Content="{Binding ProductName}" Command="{Binding AddProductCommand}"  Width="60px" Height="60" Margin="2px" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                
-            </ItemsControl>
-       
+        <ListBox Name="lstBestelling" Grid.Row="1" Grid.Column="0" Margin="10" ItemsSource="{Binding OrderedProducts,Mode=TwoWay}"  DisplayMemberPath="ProductName"/>
+        <TextBlock Name="txbTotaal" Grid.Row="2" Grid.Column="0" Text="{Binding TotalPrice}" Background="White" Margin="10"/>
+
+        <ItemsControl Name="ButtonsPanel" Grid.Row="1" Grid.Column="1" Margin="10" ItemsSource="{Binding Products}" IsEnabled="{Binding CustomerScanned}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+
+                <DataTemplate>
+                    <Button Content="{Binding ProductName}" Command="{Binding DataContext.AddProductCommand,RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding Id}"   Width="60px" Height="60" Margin="2px" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+
+        </ItemsControl>
+
 
         <Grid Name="grdFunctions" Grid.Row="4" Grid.Column="1">
             <Grid.ColumnDefinitions>
@@ -52,14 +52,15 @@
                 <ColumnDefinition Width="*"/>
 
             </Grid.ColumnDefinitions>
-            <Button Name="btnReturn" Content="Return" Margin="20" Grid.Column="0" Height="50"/>
-            <Button Name="btnFinalize" Content="Finalize" Margin="20" Grid.Column="2" Height="50"/>
+            <Button Name="btnReturn" Content="Return" Margin="20" Grid.Column="0" Height="50" Command="{Binding RemoveProductCommand}" CommandParameter="{Binding ElementName=lstBestelling,Path=SelectedItem}"/>
+            <Button Name="btnFinalize" Content="Finalize" Margin="20" Grid.Column="2" Height="50" IsEnabled="{Binding CustomerScanned}" Command="{Binding FinalizeSaleCommand}"/>
         </Grid>
 
         <Grid Name="grdCustomerEmployeeInfo" Grid.Row="0" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="1.2*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -68,18 +69,20 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Name="imgCustomer" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Margin="5"/>
-            <TextBlock Name="txbCustomerName" Grid.Row="2" Grid.Column="0" Margin="5" />
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="SALDO" FontSize="40" Margin="5"/>
-            <TextBlock Name="txbSaldo" Grid.Row="1" Grid.Column="1"  FontSize="40" Margin="5"/>
-            <TextBlock Grid.Row="0" Grid.Column="3" Text="Logged in as:" FontSize="20" Margin="5 25 5 5"/>
-            <TextBlock Name="txbEmployee" Grid.Row="1" Grid.Column="3"  FontSize="20" Margin="5" Text="{Binding CurrentEmployee.EmployeeName}"/>
-            <Button Name="btnLogoff" Grid.Row="2" Grid.Column="3" Content="Logoff" Margin="10"/>
+            <Image Name="imgCustomer" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Width="100" Height="100" Margin="10,9,95,63" Source="{Binding ScannedCustomer.Picture}"/>
+            <TextBlock Name="txbCustomerName" Grid.Row="2" Margin="10,40,10,10" Text="{Binding ScannedCustomer.CustomerName}"  />
+            <TextBlock Grid.Row="3" Text="Balance" FontSize="40" Margin="10,10,16,0"  />
+            <TextBlock Name="txbSaldo" Grid.Column="1"  FontSize="40" Margin="10" Grid.Row="3" Text="{Binding ScannedCustomer.Balance}"/>
+            <TextBlock Grid.Row="0" Grid.Column="3" Text="Logged in as:" FontSize="20" Margin="10,20,204,10" Grid.ColumnSpan="2"/>
+            <TextBlock Name="txbEmployee" Grid.Column="4"  FontSize="20" Margin="10" Text="{Binding CurrentEmployee.EmployeeName}"/>
+            <Button Name="btnLogoff" Grid.Row="1" Grid.Column="4" Content="Logoff" Margin="47,9,47,10" Command="{Binding LoggOffCommand}"/>
+            <Label Content="please scan customer" FontSize="18" Margin="10
+                   "/>
+            <TextBox Grid.Column="1" Margin="10" Text="{Binding BarcodeCustomer}"/>
+            <Button Grid.Column="1" Content="Scan customer" Margin="10,0,46,19" Grid.Row="1" Command="{Binding ScanCustomerCommand}"/>
         </Grid>
-        <StackPanel Name="stpCalculator" Grid.Column="0" Grid.Row="3" Margin="5">
 
-
-        </StackPanel>
     </Grid>
 </UserControl>

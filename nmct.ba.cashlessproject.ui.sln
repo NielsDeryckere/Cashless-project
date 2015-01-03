@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop_Management", "Deskt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "models", "modelsProject\models.csproj", "{61DD7AA1-6C3C-4769-82DE-45BBB90D3ACA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServersideApp.api", "ServersideApp.api\ServersideApp.api.csproj", "{3375816A-914D-44FF-B735-B67B7858CE04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{61DD7AA1-6C3C-4769-82DE-45BBB90D3ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61DD7AA1-6C3C-4769-82DE-45BBB90D3ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61DD7AA1-6C3C-4769-82DE-45BBB90D3ACA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3375816A-914D-44FF-B735-B67B7858CE04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3375816A-914D-44FF-B735-B67B7858CE04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3375816A-914D-44FF-B735-B67B7858CE04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3375816A-914D-44FF-B735-B67B7858CE04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

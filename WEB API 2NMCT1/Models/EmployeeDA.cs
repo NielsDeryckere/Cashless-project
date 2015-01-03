@@ -52,6 +52,8 @@ namespace WEB_API_2NMCT1.Models
             return list;
         }
 
+        
+
         public static List<Employee> GetEmployees()
         {
             string DBNAME = Properties.Settings.Default.DBNAME;
@@ -74,7 +76,7 @@ namespace WEB_API_2NMCT1.Models
                 //else
                 //    c.Picture = new byte[0];
 
-                c.Barcode = Int64.Parse(reader["BarCode"].ToString());
+                c.Barcode = Int64.Parse(reader["Barcode"].ToString());
                 lijst.Add(c);
 
                

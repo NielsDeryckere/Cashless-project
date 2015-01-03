@@ -8,10 +8,14 @@ using WEB_API_2NMCT1.Helper;
 using System.Data;
 using System.Configuration;
 using System.Security.Claims;
+using modelsProject;
 namespace WEB_API_2NMCT1.Models
 {
     public class ProductsDA
     {
+        private static string DBNAME = Properties.Settings.Default.DBNAME;
+        private static string DBLOGIN = Properties.Settings.Default.DBLOGIN;
+       private static string DBPASS = Properties.Settings.Default.DBPASS;
         private static ConnectionStringSettings CreateConnectionString(IEnumerable<Claim> claims)
         {
             string dblogin = claims.FirstOrDefault(c => c.Type == "dblogin").Value;
@@ -40,9 +44,7 @@ namespace WEB_API_2NMCT1.Models
 
         public static List<Product> GetProducts()
         {
-            string DBNAME=Properties.Settings.Default.DBNAME;
-            string DBLOGIN=Properties.Settings.Default.DBLOGIN;
-            string DBPASS=Properties.Settings.Default.DBPASS;
+         
 
             List<Product> lijst = new List<Product>();
             string sql = "SELECT * FROM Product";
@@ -99,6 +101,48 @@ namespace WEB_API_2NMCT1.Models
             DbParameter par1 = Database.addParameter("AdminDB", "@ID", id);
             DbConnection con = Database.GetConnection(CreateConnectionString(claims));
             Database.ModifyData(con, sql, par1);
+        }
+
+        public static int UpdateAccounts(Transfer t)
+        {
+            int rowsaffected = 0;
+            DbTransaction trans = null;
+           
+            ConnectionStringSettings con = Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT", DBNAME, DBLOGIN, DBPASS);
+            try
+            {
+                trans = Database.BeginTransaction(con);
+                
+                string sql = "UPDATE Customer SET Balance=Balance-@Amount WHERE ID=@ID";
+                DbParameter par1 = Database.addParameter(con, "@Amount", t.Receiver.TotalPrice);
+                DbParameter par2 = Database.addParameter(con, "@ID", t.Sender.Id);
+                rowsaffected += Database.ModifyData(trans, sql, par1, par2);
+
+               
+                string sql2 = "INSERT INTO Sale VALUES(@Timestamp,@CustomerID,@RegisterID,@ProductID,@Amount,@TotalPrice)";
+                DbParameter par3 = Database.addParameter(con, "@Amount", t.Receiver.Amount);
+                DbParameter par4 = Database.addParameter(con, "@Timestamp", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                DbParameter par5 = Database.addParameter(con, "@CustomerID", t.Sender.Id);
+                DbParameter par6 = Database.addParameter(con, "@RegisterID", t.Receiver.RegisterId);
+                DbParameter par7 = Database.addParameter(con, "@ProductID", t.Receiver.ProductId);
+                DbParameter par8 = Database.addParameter(con, "@TotalPrice", t.Receiver.TotalPrice);
+                rowsaffected += Database.InsertData(trans, sql2, par3, par4,par5,par6,par7,par8);
+                trans.Commit();
+}
+               
+            
+            catch (Exception ex)
+            {
+                if (trans != null)
+                    trans.Rollback();
+            }
+            finally
+            {
+                if (trans != null)
+                    Database.ReleaseConnection(trans.Connection);
+            }
+
+            return rowsaffected;
         }
     }
 }

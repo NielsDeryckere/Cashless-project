@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
@@ -12,6 +13,10 @@ namespace WEB_API_2NMCT1.Models
 {
     public class CustomerDA
     {
+
+        private static string DBNAME = Properties.Settings.Default.DBNAME;
+        private static string DBLOGIN = Properties.Settings.Default.DBLOGIN;
+        private static string DBPASS = Properties.Settings.Default.DBPASS;
         private static ConnectionStringSettings CreateConnectionString(IEnumerable<Claim> claims)
         {
             string dblogin = claims.FirstOrDefault(c => c.Type == "dblogin").Value;
@@ -46,9 +51,61 @@ namespace WEB_API_2NMCT1.Models
                 c.Barcode = Int64.Parse(reader["BarCode"].ToString());
                 list.Add(c);
             }
-
+            reader.Close();
             return list;
         }
+
+        public static List<Customer> GetCustomers()
+        {
+            //ConfigurationManager.ConnectionStrings.Add(CreateConnectionString(claims));
+
+            List<Customer> list = new List<Customer>();
+            string sql = "SELECT * FROM Customer";
+
+
+            DbDataReader reader = Database.GetData(Database.GetConnection(Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT",DBNAME,DBLOGIN,DBPASS)), sql);
+
+            //ConnectionStringSettingsCollection ConnectionStrings = ConfigurationManager.ConnectionStrings;
+            while (reader.Read())
+            {
+                Customer c = new Customer();
+                c.Id = Convert.ToInt32(reader["ID"]);
+                c.CustomerName = reader["CustomerName"].ToString();
+                c.Address = reader["Address"].ToString();
+                if (!DBNull.Value.Equals(reader["Picture"]))
+                    c.Picture = (byte[])reader["Picture"];
+                else
+                    c.Picture = new byte[0];
+                c.Balance = Double.Parse(reader["Balance"].ToString());
+                c.Barcode = Int64.Parse(reader["BarCode"].ToString());
+                list.Add(c);
+            }
+            reader.Close();
+            return list;
+        }
+
+        //public static Customer GetCustomer(int id)
+        //{
+           
+        //    Customer c = new Customer();
+        //    string sql = "SELECT * FROM Customer WHERE Barcode=@Barcode";
+            
+        //    DbParameter par1 = Database.addParameter("AdminDB", "@Barcode", barcode );
+        //    DbDataReader reader=Database.GetData(Database.GetConnection(Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT",DBNAME,DBLOGIN,DBPASS)), sql,par1);
+        //    reader.Read();
+           
+
+        //       c.Id = (int)reader["ID"];
+        //        c.CustomerName = (string)reader["CustomerName"];
+        //        c.Address = (string)reader["Address"];
+        //        c.Balance = (double)reader["Balance"];
+        //        c.Picture = (byte[])reader["Picture"];
+        //        c.Barcode = (long)reader["Barcode"];
+
+            
+        //    reader.Close();
+        //    return c;
+        //}
 
         public static int InsertCustomer(Customer c, IEnumerable<Claim> claims)
         {
@@ -80,5 +137,7 @@ namespace WEB_API_2NMCT1.Models
             DbConnection con = Database.GetConnection(CreateConnectionString(claims));
             Database.ModifyData(con, sql, par1);
         }
+
+      
     }
 }

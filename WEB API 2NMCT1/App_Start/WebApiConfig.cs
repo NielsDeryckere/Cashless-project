@@ -25,6 +25,8 @@ namespace WEB_API_2NMCT1
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            
         }
     }
 }

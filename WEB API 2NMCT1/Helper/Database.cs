@@ -243,34 +243,22 @@ namespace WEB_API_2NMCT1.Helper
 
         public static int InsertData(DbTransaction trans, string sql, params DbParameter[] parameters)
         {
-
             DbCommand command = null;
-
             try
             {
                 command = BuildCommand(trans, sql, parameters);
-
+                command.Transaction = trans;
+                command.ExecuteNonQuery();
 
                 command.Parameters.Clear();
-                command.CommandText = "select @@IDENTITY";
+                command.CommandText = "SELECT @@IDENTITY";
 
-                int id = Convert.ToInt32(command.ExecuteScalar());
-                command.Connection.Close();
-
-                return id;
-
+                int identity = Convert.ToInt32(command.ExecuteScalar());
+                return identity;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-
-
-                if (command != null)
-                {
-                    ReleaseConnection(command.Connection);
-
-
-                }
                 throw;
             }
         }
@@ -321,8 +309,36 @@ namespace WEB_API_2NMCT1.Helper
 
 
         }
+        public static DbParameter addParameter(ConnectionStringSettings constring, string name, object value)
+        {
+            DbParameter par = DbProviderFactories.GetFactory(constring.ProviderName).CreateParameter();
+            par.ParameterName = name;
+            par.Value = value;
+            return par;
+
+        
+        }
 
         public static DbTransaction BeginTransaction(string constring)
+        {
+            DbConnection con = null;
+
+            try
+            {
+                con = GetConnection(constring);
+                return con.BeginTransaction();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                ReleaseConnection(con);
+                throw;
+            }
+
+
+        }
+
+        public static DbTransaction BeginTransaction(ConnectionStringSettings constring)
         {
             DbConnection con = null;
 
