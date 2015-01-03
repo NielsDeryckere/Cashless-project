@@ -91,6 +91,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converter\StringToImageConverter.cs" />
+    <Compile Include="PassHelper\PasswordHelper.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
     <Compile Include="View\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>

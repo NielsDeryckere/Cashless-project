@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:Desktop_Management.ViewModel"
              xmlns:v="clr-namespace:Desktop_Management.View"
+             xmlns:w="clr-namespace:Desktop_Management.PassHelper"
              mc:Ignorable="d" 
              d:DesignHeight="768" d:DesignWidth="1024">
     <UserControl.DataContext>
@@ -30,10 +31,15 @@
                 <Label Content="Password" Margin="20" Grid.Row="1"/>
                 <TextBox Grid.Column="1" Margin="20" TextWrapping="Wrap" Text="{Binding Username}"/>
                 <Button Grid.Column="1" Width="100px" Grid.Row="3" Margin="20,20,192,20" Content="Login" Command="{Binding LoginCommand}"  />
-                <TextBox Grid.Column="1" Margin="20" Grid.Row="1" Text="{Binding Password}"/>
+                <StackPanel Grid.Column="1" Grid.Row="1" Height="30">
+                    <PasswordBox w:PasswordHelper.Attach="True" 
+                		w:PasswordHelper.Password="{Binding Password,Mode=TwoWay}" 
+                		Width="270" Height="30" Margin="21,0"/>
+
+                </StackPanel>
                 <TextBlock Foreground="Red" Text="{Binding Error}" Grid.Row="2" Grid.Column="1"/>
-                
-                
+
+
             </Grid>
         </GroupBox>
 

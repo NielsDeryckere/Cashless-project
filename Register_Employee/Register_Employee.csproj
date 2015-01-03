@@ -87,7 +87,7 @@
     <Compile Include="View\PageTwo.xaml.cs">
       <DependentUpon>PageTwo.xaml</DependentUpon>
     </Compile>
-    <Page Include="StyleOrange.xaml">
+    <Page Include="StyleDark.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
