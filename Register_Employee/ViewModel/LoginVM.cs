@@ -107,6 +107,7 @@ namespace Register_Employee.ViewModel
                 {
                     ApplicationVM appvm = App.Current.MainWindow.DataContext as ApplicationVM;
                     appvm.LoggedIn = LoggedInEmployee;
+                    appvm.From = DateTime.Now;
                     appvm.ChangePage(new PageTwoVM());
                 }
                 else { Error="You are not registered in the system";  }

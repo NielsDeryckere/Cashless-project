@@ -165,7 +165,7 @@ namespace Register_Employee.ViewModel
                         Transfer t = new Transfer();
                         Sales s = new Sales();
                         s.Amount = 1;
-                        s.CustomerId = ScannedCustomer.Id;
+                        s.CustomerId = ScannedCustomer.Barcode;
                         s.ProductId = p.Id;
                         s.RegisterId = 1;
                         s.Timestamp = DateTime.Now;
@@ -267,9 +267,28 @@ namespace Register_Employee.ViewModel
         public ICommand LoggOffCommand
         { get { return new RelayCommand(LogOff); } }
 
-        private void LogOff()
+        private async void LogOff()
         {
             ApplicationVM appvm = App.Current.MainWindow.DataContext as ApplicationVM;
+            using (HttpClient client = new HttpClient())
+            {
+                object[] data = { 1, CurrentEmployee.Barcode,appvm.From,DateTime.Now };
+                string input = JsonConvert.SerializeObject(data);
+             
+                HttpResponseMessage response = await client.PostAsync("http://localhost:41983/api/EmployeeRegister", new StringContent(input, Encoding.UTF8, "application/json"));
+                if (response.IsSuccessStatusCode)
+                {
+                    string output = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(Int32.Parse(output));
+                 
+                }
+                else
+                {
+                    Console.WriteLine("error: could not save employeeregister");
+                }
+            }
+
+            
             appvm.ChangePage(new LoginVM());
 
         }

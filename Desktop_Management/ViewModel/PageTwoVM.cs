@@ -34,6 +34,15 @@ namespace Desktop_Management.ViewModel
             set { _accountName = value; OnPropertyChanged("AccountName"); }
         }
 
+        private string _managementpass;
+
+        public string ManagementPassword
+        {
+            get { return _managementpass; }
+            set { _managementpass = value; }
+        }
+        
+
         private string _companyName;
 
         public string CompanyName
@@ -49,6 +58,15 @@ namespace Desktop_Management.ViewModel
             get { return _test; }
             set { _test = value; OnPropertyChanged("Test"); }
         }
+
+        private string _error;
+
+        public string Error
+        {
+            get { return _error; }
+            set { _error = value; OnPropertyChanged("Error"); }
+        }
+        
         
         private Organisation _accountInfo;
 
@@ -83,6 +101,63 @@ namespace Desktop_Management.ViewModel
             get { return _accountInfo; }
             set { _accountInfo = value; }
         }
+
+        private string _mypassword;
+
+        public string MyPassword
+        {
+            get { return _mypassword; }
+            set { _mypassword = value; OnPropertyChanged("MyPassword"); }
+        }
+        private string _newpassword;
+
+        public string NewPassword
+        {
+            get { return _newpassword; }
+            set { _newpassword = value; OnPropertyChanged("NewPassword"); }
+        }
+        private string _repeatpassword;
+
+        public string RepeatPassword
+        {
+            get { return _repeatpassword; }
+            set { _repeatpassword = value; OnPropertyChanged("RepeatPassword"); }
+        }
+
+        private string _newPassError;
+
+        public string NewPassError
+        {
+            get { return _newPassError; }
+            set { _newPassError = value; OnPropertyChanged("NewPassError"); }
+        }
+
+        private ObservableCollection<Sales> _sales;
+
+        public ObservableCollection<Sales> SalesList
+        {
+            get { return _sales; }
+            set { _sales = value; OnPropertyChanged("SalesList"); }
+        }
+
+        private ObservableCollection<RegistersOrganisation> _registers;
+
+        public ObservableCollection<RegistersOrganisation> Registers
+        {
+            get { return _registers; }
+            set { _registers = value; OnPropertyChanged("Registers"); }
+        }
+
+        private bool _teste;
+
+        public bool TestE
+        {
+            get { return _teste; }
+            set { _teste = value; OnPropertyChanged("TestE"); }
+        }
+        
+        
+        
         public PageTwoVM()
         {
             if (ApplicationVM.token != null)
@@ -91,8 +166,55 @@ namespace Desktop_Management.ViewModel
             GetAccountInfo();
             GetCustomers();
             GetEmployees();
+            GetSales();
+            
             test();
+            testE();
             }
+        }
+        #region GETS
+
+        private async void GetRegisters()
+        {
+            
+            Registers= new ObservableCollection<RegistersOrganisation>();
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                    {
+                        client.SetBearerToken(ApplicationVM.token.AccessToken);
+                        HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/Register/"+AccountInfo.ID);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string json = await response.Content.ReadAsStringAsync();
+                            Registers = JsonConvert.DeserializeObject<ObservableCollection<RegistersOrganisation>>(json);
+
+                        }
+                     }
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            } 
+            
+        }
+
+        private async void GetSales()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.SetBearerToken(ApplicationVM.token.AccessToken);
+                HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/Statistics");
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                   SalesList = JsonConvert.DeserializeObject<ObservableCollection<Sales>>(json);
+                  
+                }
+            }
+           
         }
 
         private async void GetAccountInfo()
@@ -107,9 +229,12 @@ namespace Desktop_Management.ViewModel
                     AccountInfo = JsonConvert.DeserializeObject<Organisation>(json);
                     AccountName = AccountInfo.Login;
                     CompanyName = AccountInfo.OrganisationName;
+                    ManagementPassword =AccountInfo.Password;
+                    GetRegisters();
                 }
             }
         }
+        #endregion
 
         public void test()
         {
@@ -117,6 +242,13 @@ namespace Desktop_Management.ViewModel
             { Test=true;}
 
             else {Test=false; }
+        }
+        public void testE()
+        {
+            if (SelectedEmployee != null)
+            { TestE = true; }
+
+            else { TestE = false; }
         }
 
 
@@ -129,10 +261,68 @@ namespace Desktop_Management.ViewModel
 
         private void SignOut()
         {
+            
               ApplicationVM appvm = App.Current.MainWindow.DataContext as ApplicationVM;
             appvm.ChangePage( new LoginVM());
         }
 
+        public ICommand ChangePasswordCommand
+        {
+            get { return new RelayCommand(ChangePassword); } 
+        }
+
+        private async void ChangePassword()
+        {
+            if (CheckFilledInPasswords())
+            {
+
+                if (MyPassword == ManagementPassword)
+                {
+                    if (NewPassword == RepeatPassword)
+                    {
+                        object[] data = { AccountInfo, NewPassword };
+                        string input = JsonConvert.SerializeObject(data);
+                        using (HttpClient client = new HttpClient())
+                        {
+                            client.SetBearerToken(ApplicationVM.token.AccessToken);
+                            HttpResponseMessage response = await client.PutAsync("http://localhost:41983/api/AccountInfo", new StringContent(input, Encoding.UTF8, "application/json"));
+                            if (!response.IsSuccessStatusCode)
+                            {
+                                Console.WriteLine("error could not change password");
+                            }
+
+                        }
+
+
+                    }
+
+                    else
+                    {
+                        NewPassError = "The new password and the repeated new password are not the same";
+
+                    }
+
+
+                }
+                else
+                {
+                    Error = "You're current password is not correct";
+                }
+
+
+
+            }
+            else { Console.WriteLine("The passwords cannot be empty!"); }
+        }
+
+        private bool CheckFilledInPasswords()
+        {
+            if (NewPassword != null && RepeatPassword != null && MyPassword!=null && NewPassword.Length > 3 && RepeatPassword.Length > 3)
+            { return true; }
+            else{
+                return false;
+            }
+        }
         #endregion
         #region productcommands en methods
         private async void GetProducts()
@@ -277,8 +467,8 @@ namespace Desktop_Management.ViewModel
         {
             string barcode="";
              Customer c = new Customer();
-             if (SelectedCustomer.Id != 0)
-             { c.Id = SelectedCustomer.Id; }
+             if (SelectedCustomer.Barcode != 0)
+             { c.Barcode = SelectedCustomer.Barcode; }
 
              
             
@@ -343,21 +533,37 @@ namespace Desktop_Management.ViewModel
             // check insert (no ID assigned) or update (already an ID assigned)
             if (SelectedCustomer.Id == 0)
             {
-                using (HttpClient client = new HttpClient())
+                bool etest = false;
+                if (Customers.Count > 0) { 
+                foreach (Customer e in Customers)
                 {
-                    client.SetBearerToken(ApplicationVM.token.AccessToken);
-                    HttpResponseMessage response = await client.PostAsync("http://localhost:41983/api/customer", new StringContent(input, Encoding.UTF8, "application/json"));
-                    if (response.IsSuccessStatusCode)
+                    if (e.Barcode != SelectedEmployee.Barcode)
                     {
-                        string output = await response.Content.ReadAsStringAsync();
-                        SelectedCustomer.Id = Int32.Parse(output);
-                        GetCustomers();
+                        etest = true;
                     }
-                    else
+                    else { etest = false; }
+
+                }}
+                else { etest = true; }
+                if (etest == true)
+                {
+                    using (HttpClient client = new HttpClient())
                     {
-                        MessageBox.Show("Gebruiker bestaat al");
+                        client.SetBearerToken(ApplicationVM.token.AccessToken);
+                        HttpResponseMessage response = await client.PostAsync("http://localhost:41983/api/customer", new StringContent(input, Encoding.UTF8, "application/json"));
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string output = await response.Content.ReadAsStringAsync();
+                            SelectedCustomer.Barcode = Int64.Parse(output);
+                            GetCustomers();
+                        }
+                        else
+                        {
+                            Console.WriteLine("could not save customer");
+                        }
                     }
                 }
+                else { Console.WriteLine("Customer already exists"); }
             }
             else
             {
@@ -379,7 +585,7 @@ namespace Desktop_Management.ViewModel
             using (HttpClient client = new HttpClient())
             {
                 client.SetBearerToken(ApplicationVM.token.AccessToken);
-                HttpResponseMessage response = await client.DeleteAsync("http://localhost:41983/api/customer/" + SelectedCustomer.Id);
+                HttpResponseMessage response = await client.DeleteAsync("http://localhost:41983/api/customer/" + SelectedCustomer.Barcode);
                 if (!response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("error");
@@ -440,8 +646,8 @@ namespace Desktop_Management.ViewModel
         {
            
             Employee c = new Employee();
-            if (SelectedEmployee.Id != 0)
-            { c.Id = SelectedEmployee.Id; }
+            if (SelectedEmployee.Barcode != 0)
+            { c.Barcode = SelectedEmployee.Barcode; }
 
 
 
@@ -493,6 +699,7 @@ namespace Desktop_Management.ViewModel
             Employee c = new Employee();
 
             SelectedEmployee = c;
+            testE();
 
 
         }
@@ -500,26 +707,47 @@ namespace Desktop_Management.ViewModel
         private async void SaveEmployee()
         {
             string input = JsonConvert.SerializeObject(SelectedEmployee);
-
-            // check insert (no ID assigned) or update (already an ID assigned)
-            if (SelectedEmployee.Id == 0)
+          
+          
+            if (SelectedEmployee.Id==0)
             {
-                using (HttpClient client = new HttpClient())
+                bool etest=false;
+                if (Employees.Count > 0) { 
+                foreach(Employee e in Employees)
                 {
-                    client.SetBearerToken(ApplicationVM.token.AccessToken);
-                    HttpResponseMessage response = await client.PostAsync("http://localhost:41983/api/Employee", new StringContent(input, Encoding.UTF8, "application/json"));
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string output = await response.Content.ReadAsStringAsync();
-                        SelectedEmployee.Id = Int32.Parse(output);
-                        GetEmployees();
+                    if(e.Barcode!=SelectedEmployee.Barcode){
+                    etest=true;
                     }
-                    else
+                    else{etest=false;}
+                
+                }}
+                else { etest = true; }
+                if (etest == true)
+                {
+                    using (HttpClient client = new HttpClient())
                     {
-                        Console.WriteLine("error: could not save customer");
+                        client.SetBearerToken(ApplicationVM.token.AccessToken);
+                        HttpResponseMessage response = await client.PostAsync("http://localhost:41983/api/Employee", new StringContent(input, Encoding.UTF8, "application/json"));
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string output = await response.Content.ReadAsStringAsync();
+                            SelectedEmployee.Barcode = Int64.Parse(output);
+                            GetEmployees();
+                        }
+                        else
+                        {
+                            Console.WriteLine("error: could not save customer");
+
+                        }
                     }
                 }
-            }
+
+                else { Console.WriteLine("There is already a employee with the same barcode"); }
+                }
+            
+
+                
+                
             else
             {
                 using (HttpClient client = new HttpClient())
@@ -541,7 +769,7 @@ namespace Desktop_Management.ViewModel
             using (HttpClient client = new HttpClient())
             {
                 client.SetBearerToken(ApplicationVM.token.AccessToken);
-                HttpResponseMessage response = await client.DeleteAsync("http://localhost:41983/api/Employee/" + SelectedEmployee.Id);
+                HttpResponseMessage response = await client.DeleteAsync("http://localhost:41983/api/Employee/" + SelectedEmployee.Barcode);
                 if (!response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("error");
@@ -555,6 +783,8 @@ namespace Desktop_Management.ViewModel
 
 
         #endregion
+
+
 
     }
 }

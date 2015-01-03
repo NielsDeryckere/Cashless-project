@@ -44,18 +44,20 @@
                     <Label Content="Logged in as:" Margin="5" Grid.Row="2"/>
                     <TextBlock TextWrapping="Wrap"  Text="{Binding CompanyName}" Grid.Row="1" Grid.Column="1"  Margin="10,10,500,10"/>
                     <TextBlock TextWrapping="Wrap"  Text="{Binding AccountName}" Grid.Row="2" Grid.Column="1"  Margin="10,9,500,10"/>
-                    <TextBlock TextWrapping="Wrap"  Text="TextBlock" Grid.Row="4" Grid.Column="1" Width="300" Margin="10,26,530,198" Height="30"/>
+                    <TextBox TextWrapping="Wrap"  Text="TextBlock" Grid.Row="4" Grid.Column="1" Width="300" Margin="10,35,530,189" Height="30"/>
 
                     <Label Content="Current password" HorizontalAlignment="Left" Margin="10,30,0,0" Grid.Row="4" VerticalAlignment="Top" Width="126"/>
                     <Label Content="New password" HorizontalAlignment="Left" Margin="10,93,0,0" Grid.Row="4" VerticalAlignment="Top" Width="126"/>
-                    <TextBlock TextWrapping="Wrap" Background="LightBlue" Text="TextBlock" Grid.Row="4" Grid.Column="1" Width="300" Height="30" Margin="10,93,530,131"/>
+                    <TextBox TextWrapping="Wrap" Text="TextBlock" Grid.Row="4" Grid.Column="1" Width="300" Height="30" Margin="10,98,530,126"/>
                     <Label Content="Repeat new password" HorizontalAlignment="Left" Margin="10,141,0,0" Grid.Row="4" VerticalAlignment="Top" Grid.Column="0"/>
-                    <TextBlock TextWrapping="Wrap" Background="LightBlue" Text="TextBlock" Grid.Row="4" Grid.Column="1" Width="300" Height="30" Margin="10,137,530,87"/>
+                    <TextBox TextWrapping="Wrap" Text="TextBlock" Grid.Row="4" Grid.Column="1" Width="300" Height="30" Margin="10,146,530,78"/>
 
 
-                    <TextBlock HorizontalAlignment="Left" FontSize="30"  Background="LightBlue" Margin="10,73,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Change password" VerticalAlignment="Top" Height="44" Width="748" Grid.ColumnSpan="2"/>
-                    <Button Content="Change" Grid.Column="1" HorizontalAlignment="Left" Margin="10,181,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75"/>
-                    <Button Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="102,181,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75"/>
+                    <TextBlock HorizontalAlignment="Left" FontSize="30"  Margin="10,73,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Change password" VerticalAlignment="Top" Height="44" Width="748" Grid.ColumnSpan="2"/>
+                    <Button Content="Change" Grid.Column="1" HorizontalAlignment="Left" Margin="10,186,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75"/>
+                    <TextBlock TextWrapping="Wrap"  Text="" Grid.Row="4" Grid.Column="1" Width="300" Margin="345,35,195,189" Height="30"/>
+                    <TextBlock TextWrapping="Wrap"  Text="{Binding Error}" Grid.Row="4" Grid.Column="1" Width="300" Margin="345,35,195,189" Height="30"/>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding NewPassError}" Grid.Row="4" Grid.Column="1" Width="300" Height="30" Margin="345,98,195,126" />
 
 
                 </Grid>
@@ -146,10 +148,10 @@
                         <ColumnDefinition Width="424*"/>
                         <ColumnDefinition Width="495*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="2" ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}">
+                    <ListView Name="lstvEmployees" Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="2" ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Id" Width="25" DisplayMemberBinding= "{Binding Path=Id}"/>
+                                
                                 <GridViewColumn Header="Name" Width="75" DisplayMemberBinding= "{Binding Path=EmployeeName}"/>
 
                                 <GridViewColumn Header="Adress" Width="75" DisplayMemberBinding= "{Binding Path=Address}"/>
@@ -201,11 +203,10 @@
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <Button Name="btnNewEmployee" Content="New" Grid.Column="0" Grid.Row="0" Margin="10" Command="{Binding NewEmployeeCommand}"/>
-                            <Button Name="btnReadIdentityEmployee" Content="Read Identity" Grid.Column="0" Grid.Row="1" Margin="10" Command="{Binding ReadIdentityCardEmployeeCommand}"/>
+                            <Button Name="btnReadIdentityEmployee" Content="Read Identity" Grid.Column="0" Grid.Row="1" Margin="10" Command="{Binding ReadIdentityCardEmployeeCommand}" IsEnabled="{Binding TestE}"/>
                             <Button Name="btnSaveEmployee" Content="Save" Grid.Column="1" Grid.Row="0" Margin="10" Command="{Binding SaveEmployeeCommand}"/>
-                            <Button Name="btnDeleteEmployee" Content="Delete" Grid.Column="2" Grid.Row="0" Margin="10" Command="{Binding DeleteEmployeeCommand}"/>
-                            <Label Name="lblIdEmployee" Content="Id:" Grid.Column="0" Grid.Row="2" Margin="10" />
-                            <TextBlock Name="txtIdEmployee" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedEmployee.Id}" />
+                            <Button Name="btnDeleteEmployee" Content="Delete" Grid.Column="2" Grid.Row="0" Margin="10" Command="{Binding DeleteEmployeeCommand}" IsEnabled="{Binding ElementName=lstvEmployees, Path=SelectedItems.Count}"/>
+                            
 
                             <Label Name="lblNameEmployee" Content="Name" Grid.Column="0"  Grid.Row="3" Margin="10" />
                             <TextBlock Name="txtNameEmployee" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedEmployee.EmployeeName}" />
@@ -234,12 +235,12 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Margin="5" Grid.RowSpan="2" >
+                    <ListView Margin="5" Grid.RowSpan="2"  ItemsSource="{Binding Registers}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Id" Width="50"/>
-                                <GridViewColumn Header="Registername" Width="100"/>
-                                <GridViewColumn Header="Device" Width="100"/>
+                                <GridViewColumn Header="Id" Width="50" DisplayMemberBinding="{Binding Path=Id}"/>
+                                <GridViewColumn Header="Registername" Width="100" DisplayMemberBinding="{Binding Path=RegisterName}" />
+                                <GridViewColumn Header="Device" Width="100" DisplayMemberBinding="{Binding Path=Device}"/>
 
 
 
@@ -316,7 +317,7 @@
                     <ListView Name="lstvCustomer" Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="1" ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Id" Width="50" DisplayMemberBinding= "{Binding Path=Id}"/>
+                                
                                 <GridViewColumn Header="Name" Width="100" DisplayMemberBinding= "{Binding Path=CustomerName}"/>
 
                                 <GridViewColumn Header="Adress" Width="100" DisplayMemberBinding= "{Binding Path=Address}"/>
@@ -371,8 +372,7 @@
                             <Button Name="btnDeleteCustomer" Content="Delete" Grid.Column="2" Grid.Row="0" Margin="10" Command="{Binding DeleteCustomerCommand}" IsEnabled="{Binding ElementName=lstvCustomer, Path=SelectedItems.Count}"/>
                             <Image Name="imgCustomer" Grid.Row="1" Grid.Column="0" Margin="5" Source="{Binding SelectedCustomer.Picture}" />
                             <Button Content="Read identity card" Grid.Row="1" Grid.Column="1" Margin="5, 100,5,5" Command="{Binding ReadIdentityCardCommand}" IsEnabled="{Binding Test}" />
-                            <Label Name="lblIdCustomer" Content="Id:" Grid.Column="0" Grid.Row="2" Margin="10" />
-                            <TextBlock Name="txtIdCustomer" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.Id}" />
+                            
 
                             <Label Name="lblNameCustomer" Content="Name" Grid.Column="0"  Grid.Row="3" Margin="10" />
                             <TextBlock Name="txtNameCustomer" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.CustomerName}" />
@@ -404,15 +404,15 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="1">
+                    <ListView Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="1" ItemsSource="{Binding SalesList}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Id" Width="50"/>
-                                <GridViewColumn Header="Timestamp" Width="75"/>
-                                <GridViewColumn Header="Register" Width="75"/>
-                                <GridViewColumn Header="Productname" Width="75"/>
-                                <GridViewColumn Header="Amount" Width="75"/>
-                                <GridViewColumn Header="Total price" Width="75"/>
+                                <GridViewColumn Header="Id" Width="50" DisplayMemberBinding="{Binding Path=Id}" />
+                                <GridViewColumn Header="Timestamp" Width="75" DisplayMemberBinding="{Binding Path=Timestamp}"/>
+                                <GridViewColumn Header="Register" Width="75" DisplayMemberBinding="{Binding Path=RegisterId}"/>
+                                <GridViewColumn Header="Productname" Width="75" DisplayMemberBinding="{Binding Path=ProductId}"/>
+                                <GridViewColumn Header="Amount" Width="75" DisplayMemberBinding="{Binding Path=Amount}"/>
+                                <GridViewColumn Header="Total price" Width="75" DisplayMemberBinding="{Binding Path=TotalPrice}"/>
 
                             </GridView>
                         </ListView.View>
@@ -446,7 +446,7 @@
                             <ComboBox Name="cboRegister" Grid.Row="1" Grid.Column="1" Margin="10" />
 
                             <Label Name="lblProduct" Content="Product" Grid.Row="2" Margin="10"/>
-                            <ComboBox Name="cboProduct" Grid.Row="2" Grid.Column="1" Margin="10" />
+                            <ComboBox Name="cboProduct" Grid.Row="2" Grid.Column="1" Margin="10" ItemsSource="{Binding Products}"/>
                             <Button Name="btnApplyStat" Content="Apply" Grid.Column="0" Grid.Row="3" Margin="5" Grid.ColumnSpan="2" />
 
 

@@ -37,7 +37,7 @@ namespace WEB_API_2NMCT1.Controllers
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
-        public HttpResponseMessage Delete(int id)
+        public HttpResponseMessage Delete(long id)
         {
             ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
             EmployeeDA.DeleteEmployee(id, p.Claims);

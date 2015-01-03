@@ -13,8 +13,8 @@ namespace WEB_API_2NMCT1.Models
         public static Organisation CheckCredentials(string username, string password)
         {
             string sql = "SELECT * FROM Organisation WHERE Login=@Login AND Password=@Password";
-            DbParameter par1 = Database.addParameter("AdminDB", "@Login", username);
-            DbParameter par2 = Database.addParameter("AdminDB", "@Password",password);
+            DbParameter par1 = Database.addParameter("AdminDB", "@Login", Cryptography.Encrypt(username));
+            DbParameter par2 = Database.addParameter("AdminDB", "@Password",Cryptography.Encrypt(password));
             try
             {
                 DbDataReader reader = Database.GetData(Database.GetConnection("AdminDB"), sql, par1, par2);
@@ -22,11 +22,11 @@ namespace WEB_API_2NMCT1.Models
                 return new Organisation()
                 {
                     ID = Int32.Parse(reader["ID"].ToString()),
-                    Login = reader["Login"].ToString(),
-                    Password = reader["Password"].ToString(),
-                    DbName = reader["DbName"].ToString(),
-                    DbLogin = reader["DbLogin"].ToString(),
-                    DbPassword = reader["DbPassword"].ToString(),
+                    Login = Cryptography.Decrypt(reader["Login"].ToString()),
+                    Password = Cryptography.Decrypt(reader["Password"].ToString()),
+                    DbName =Cryptography.Decrypt( reader["DbName"].ToString()),
+                    DbLogin =Cryptography.Decrypt( reader["DbLogin"].ToString()),
+                    DbPassword = Cryptography.Decrypt(reader["DbPassword"].ToString()),
                     OrganisationName = reader["OrganisationName"].ToString(),
                     Address = reader["Address"].ToString(),
                     Email = reader["Email"].ToString(),

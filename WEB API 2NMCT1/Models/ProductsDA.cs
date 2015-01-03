@@ -62,6 +62,23 @@ namespace WEB_API_2NMCT1.Models
             return lijst;
         }
 
+        public static Product GetProduct(int productid, IEnumerable<Claim> claims)
+        {
+            Product p = new Product();
+            string sql = "SELECT * FROM Product WHERE ID=@ID";
+
+            DbParameter par1 = Database.addParameter("AdminDB", "@ID", productid);
+            DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql,par1);
+            reader.Read();
+            p.Id = int.Parse(reader["ID"].ToString());
+            p.ProductName = reader["ProductName"].ToString();
+            p.Price=double.Parse(reader["Price"].ToString());
+
+            reader.Close();
+            return p;
+
+        }
+
 
         private static Product Create(IDataRecord record )
         {
@@ -113,16 +130,16 @@ namespace WEB_API_2NMCT1.Models
             {
                 trans = Database.BeginTransaction(con);
                 
-                string sql = "UPDATE Customer SET Balance=Balance-@Amount WHERE ID=@ID";
+                string sql = "UPDATE Customer SET Balance=Balance-@Amount WHERE Barcode=@ID";
                 DbParameter par1 = Database.addParameter(con, "@Amount", t.Receiver.TotalPrice);
-                DbParameter par2 = Database.addParameter(con, "@ID", t.Sender.Id);
+                DbParameter par2 = Database.addParameter(con, "@ID", t.Sender.Barcode);
                 rowsaffected += Database.ModifyData(trans, sql, par1, par2);
 
                
-                string sql2 = "INSERT INTO Sale VALUES(@Timestamp,@CustomerID,@RegisterID,@ProductID,@Amount,@TotalPrice)";
+                string sql2 = "INSERT INTO Sales VALUES(@Timestamp,@CustomerID,@RegisterID,@ProductID,@Amount,@TotalPrice)";
                 DbParameter par3 = Database.addParameter(con, "@Amount", t.Receiver.Amount);
                 DbParameter par4 = Database.addParameter(con, "@Timestamp", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-                DbParameter par5 = Database.addParameter(con, "@CustomerID", t.Sender.Id);
+                DbParameter par5 = Database.addParameter(con, "@CustomerID", t.Sender.Barcode);
                 DbParameter par6 = Database.addParameter(con, "@RegisterID", t.Receiver.RegisterId);
                 DbParameter par7 = Database.addParameter(con, "@ProductID", t.Receiver.ProductId);
                 DbParameter par8 = Database.addParameter(con, "@TotalPrice", t.Receiver.TotalPrice);

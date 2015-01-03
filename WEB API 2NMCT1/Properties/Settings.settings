@@ -11,13 +11,13 @@
       <Value Profile="(Default)">Data Source=MCT-NIELS\DATAMANAGEMENT;Initial Catalog=Cashless_project_ClientDb;Integrated Security=True</Value>
     </Setting>
     <Setting Name="DBNAME" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">KVKortrijk</Value>
+      <Value Profile="(Default)">FCBarcelona</Value>
     </Setting>
     <Setting Name="DBLOGIN" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">KVKortrijk</Value>
+      <Value Profile="(Default)">FCBarcelona</Value>
     </Setting>
     <Setting Name="DBPASS" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">kvk</Value>
+      <Value Profile="(Default)">fcb</Value>
     </Setting>
   </Settings>
 </SettingsFile>

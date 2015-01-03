@@ -11,21 +11,20 @@ using WEB_API_2NMCT1.Models;
 namespace WEB_API_2NMCT1.Controllers
 {
     [Authorize]
-    public class AccountInfoController : ApiController
+    public class StatisticsController : ApiController
     {
-        public Organisation Get()
+        public List<Sales> Get()
         {
             ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
-            return AccountInfoDA.GetAccountInfo(p.Claims);
+            return StatisticsDA.GetSales(p.Claims);
+
         }
 
-        public HttpResponseMessage Put(Organisation o, string pass)
+        public Product Get(int id)
         {
             ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
-            AccountInfoDA.UpdateOrganisation(o,pass, p.Claims);
+            return ProductsDA.GetProduct(id,p.Claims);
 
-            return new HttpResponseMessage(HttpStatusCode.OK);
         }
     }
 }
-

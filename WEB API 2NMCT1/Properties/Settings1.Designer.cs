@@ -36,7 +36,7 @@ namespace WEB_API_2NMCT1.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("KVKortrijk")]
+        [global::System.Configuration.DefaultSettingValueAttribute("FCBarcelona")]
         public string DBNAME {
             get {
                 return ((string)(this["DBNAME"]));
@@ -45,7 +45,7 @@ namespace WEB_API_2NMCT1.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("KVKortrijk")]
+        [global::System.Configuration.DefaultSettingValueAttribute("FCBarcelona")]
         public string DBLOGIN {
             get {
                 return ((string)(this["DBLOGIN"]));
@@ -54,7 +54,7 @@ namespace WEB_API_2NMCT1.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("kvk")]
+        [global::System.Configuration.DefaultSettingValueAttribute("fcb")]
         public string DBPASS {
             get {
                 return ((string)(this["DBPASS"]));

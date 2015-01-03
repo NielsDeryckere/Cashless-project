@@ -40,7 +40,7 @@ namespace WEB_API_2NMCT1.Models
             while (reader.Read())
             {
                 Customer c = new Customer();
-                c.Id = Convert.ToInt32(reader["ID"]);
+                c.Id = int.Parse(reader["ID"].ToString());
                 c.CustomerName = reader["CustomerName"].ToString();
                 c.Address = reader["Address"].ToString();
                 if (!DBNull.Value.Equals(reader["Picture"]))
@@ -69,7 +69,7 @@ namespace WEB_API_2NMCT1.Models
             while (reader.Read())
             {
                 Customer c = new Customer();
-                c.Id = Convert.ToInt32(reader["ID"]);
+               
                 c.CustomerName = reader["CustomerName"].ToString();
                 c.Address = reader["Address"].ToString();
                 if (!DBNull.Value.Equals(reader["Picture"]))
@@ -120,20 +120,20 @@ namespace WEB_API_2NMCT1.Models
 
         public static void UpdateCustomer(Customer c, IEnumerable<Claim> claims)
         {
-            string sql = "UPDATE Customer SET CustomerName=@CustomerName, Address=@Address, Picture=@Picture, Balance=@Balance,Barcode=@Barcode WHERE ID=@ID";
+            string sql = "UPDATE Customer SET CustomerName=@CustomerName, Address=@Address, Picture=@Picture, Balance=@Balance,WHERE Barcode=@Barcode";
             DbParameter par1 = Database.addParameter("AdminDB", "@CustomerName", c.CustomerName);
             DbParameter par2 = Database.addParameter("AdminDB", "@Address", c.Address);
             DbParameter par3 = Database.addParameter("AdminDB", "@Picture", c.Picture);
             DbParameter par4 = Database.addParameter("AdminDB", "@Balance", c.Balance);
-            DbParameter par5 = Database.addParameter("AdminDB", "@ID", c.Id);
+           
             DbParameter par6 = Database.addParameter("AdminDB", "@Barcode", c.Barcode);
-            Database.ModifyData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4, par5,par6);
+            Database.ModifyData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4,par6);
         }
 
-        public static void DeleteCustomer(int id, IEnumerable<Claim> claims)
+        public static void DeleteCustomer(long id, IEnumerable<Claim> claims)
         {
-            string sql = "DELETE FROM Customer WHERE ID=@ID";
-            DbParameter par1 = Database.addParameter("AdminDB", "@ID", id);
+            string sql = "DELETE FROM Customer WHERE Barcode=@Barcode";
+            DbParameter par1 = Database.addParameter("AdminDB", "@Barcode", id);
             DbConnection con = Database.GetConnection(CreateConnectionString(claims));
             Database.ModifyData(con, sql, par1);
         }

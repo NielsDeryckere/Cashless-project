@@ -23,9 +23,9 @@ namespace models
             set { _timestamp = value; }
         }
 
-        private int _customerId;
+        private long _customerId;
 
-        public int CustomerId
+        public long CustomerId
         {
             get { return _customerId; }
             set { _customerId = value; }

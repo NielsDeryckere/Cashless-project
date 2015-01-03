@@ -11,6 +11,7 @@ namespace Register_Employee.ViewModel
 {
     class ApplicationVM : ObservableObject
     {
+       public DateTime From=new DateTime();
         public  Employee LoggedIn;
         public ApplicationVM()
         {

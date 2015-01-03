@@ -1,6 +1,7 @@
 ﻿using models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Common;
 using System.Linq;
 using System.Security.Claims;
@@ -11,13 +12,21 @@ namespace WEB_API_2NMCT1.Models
 {
     public class AccountInfoDA
     {
+        private static ConnectionStringSettings CreateConnectionString(IEnumerable<Claim> claims)
+        {
+            string dblogin = claims.FirstOrDefault(c => c.Type == "dblogin").Value;
+            string dbpass = claims.FirstOrDefault(c => c.Type == "dbpass").Value;
+            string dbname = claims.FirstOrDefault(c => c.Type == "dbname").Value;
+
+            return Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT", dbname, dblogin, dbpass);
+        }
         public static Organisation GetAccountInfo(IEnumerable<Claim>claims)
         {
             string login = claims.FirstOrDefault(c => c.Type == "login").Value;
             string pass = claims.FirstOrDefault(c => c.Type == "pass").Value;
             string sql = "SELECT * FROM Organisation WHERE Login=@Login AND Password=@Password";
-            DbParameter par1 = Database.addParameter("AdminDB", "@Login", login);
-            DbParameter par2 = Database.addParameter("AdminDB", "@Password", pass);
+            DbParameter par1 = Database.addParameter("AdminDB", "@Login",Cryptography.Encrypt( login));
+            DbParameter par2 = Database.addParameter("AdminDB", "@Password",Cryptography.Encrypt( pass));
             try
             {
                 DbDataReader reader = Database.GetData(Database.GetConnection("AdminDB"), sql, par1, par2);
@@ -25,11 +34,11 @@ namespace WEB_API_2NMCT1.Models
                 return new Organisation()
                 {
                     ID = Int32.Parse(reader["ID"].ToString()),
-                    Login = reader["Login"].ToString(),
-                    Password = reader["Password"].ToString(),
-                    DbName = reader["DbName"].ToString(),
-                    DbLogin = reader["DbLogin"].ToString(),
-                    DbPassword = reader["DbPassword"].ToString(),
+                    Login = Cryptography.Decrypt( reader["Login"].ToString()),
+                    Password =Cryptography.Decrypt( reader["Password"].ToString()),
+                    DbName = Cryptography.Decrypt( reader["DbName"].ToString()),
+                    DbLogin =Cryptography.Decrypt( reader["DbLogin"].ToString()),
+                    DbPassword =Cryptography.Decrypt( reader["DbPassword"].ToString()),
                     OrganisationName = reader["OrganisationName"].ToString(),
                     Address = reader["Address"].ToString(),
                     Email = reader["Email"].ToString(),
@@ -44,5 +53,15 @@ namespace WEB_API_2NMCT1.Models
         
         
         }
+        public static void UpdateOrganisation(Organisation o,string pass,IEnumerable<Claim> claims)
+        {
+             string sql = "UPDATE Organisation SET Password=@pass WHERE ID=@ID";
+            DbParameter par1 = Database.addParameter("AdminDB", "@pass",pass);
+            DbParameter par2 = Database.addParameter("AdminDB", "@ID",o.ID);
+          
+            Database.ModifyData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2);
+
+        }
+
     }
 }

@@ -35,7 +35,7 @@ namespace WEB_API_2NMCT1.Models
             while (reader.Read())
             {
                 Employee c = new Employee();
-                c.Id = Convert.ToInt32(reader["ID"]);
+               
                 c.EmployeeName = reader["EmployeeName"].ToString();
                 c.Address = reader["Address"].ToString();
                 c.Email = reader["Email"].ToString();
@@ -66,7 +66,7 @@ namespace WEB_API_2NMCT1.Models
             while (reader.Read())
             {
                 Employee c = new Employee();
-                c.Id = Convert.ToInt32(reader["ID"]);
+                c.Id = c.Id = int.Parse(reader["ID"].ToString());
                 c.EmployeeName = reader["EmployeeName"].ToString();
                 c.Address = reader["Address"].ToString();
                 c.Email = reader["Email"].ToString();
@@ -102,20 +102,20 @@ namespace WEB_API_2NMCT1.Models
 
         public static void UpdateEmployee(Employee c, IEnumerable<Claim> claims)
         {
-            string sql = "UPDATE Employee SET EmployeeName=@EmployeeName, Address=@Address, Email=@Email, Phone=@Phone,Barcode=@Barcode WHERE ID=@ID";
+            string sql = "UPDATE Employee SET EmployeeName=@EmployeeName, Address=@Address, Email=@Email, Phone=@Phone WHERE Barcode=@Barcode";
             DbParameter par1 = Database.addParameter("AdminDB", "@EmployeeName", c.EmployeeName);
             DbParameter par2 = Database.addParameter("AdminDB", "@Address", c.Address);
             DbParameter par3 = Database.addParameter("AdminDB", "@Email", c.Email);
             DbParameter par4 = Database.addParameter("AdminDB", "@Phone", c.Phone);
-            DbParameter par5 = Database.addParameter("AdminDB", "@ID", c.Id);
+          
             DbParameter par6 = Database.addParameter("AdminDB", "@Barcode", c.Barcode);
-            Database.ModifyData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4, par5, par6);
+            Database.ModifyData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4, par6);
         }
 
-        public static void DeleteEmployee(int id, IEnumerable<Claim> claims)
+        public static void DeleteEmployee(long id, IEnumerable<Claim> claims)
         {
-            string sql = "DELETE FROM Employee WHERE ID=@ID";
-            DbParameter par1 = Database.addParameter("AdminDB", "@ID", id);
+            string sql = "DELETE FROM Employee WHERE Barcode=@ID";
+            DbParameter par1 = Database.addParameter("AdminDB", "@Barcode", id);
             DbConnection con = Database.GetConnection(CreateConnectionString(claims));
             Database.ModifyData(con, sql, par1);
         }
