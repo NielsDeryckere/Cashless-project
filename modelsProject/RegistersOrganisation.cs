@@ -7,28 +7,37 @@ namespace models
 {
     public class RegistersOrganisation
     {
-        private int _id;
+        private int _registerid;
 
-        public int Id
+        public int RegisterId
         {
-            get { return _id; }
-            set { _id = value; }
+            get { return _registerid; }
+            set { _registerid = value; }
         }
 
-        private string _registerName;
+        private int _organisationid;
 
-        public string RegisterName
+        public int Organisationid
         {
-            get { return _registerName; }
-            set { _registerName = value; }
+            get { return _organisationid; }
+            set { _organisationid = value; }
+        }
+        
+
+        private DateTime _from;
+
+        public DateTime From
+        {
+            get { return _from; }
+            set { _from = value; }
         }
 
-        private string _device;
+        private DateTime _untill;
 
-        public string Device
+        public DateTime Untill
         {
-            get { return _device; }
-            set { _device = value; }
+            get { return _untill; }
+            set { _untill = value; }
         }
         
         

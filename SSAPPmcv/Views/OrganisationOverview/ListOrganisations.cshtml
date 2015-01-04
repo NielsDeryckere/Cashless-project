@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "ListOrganisations";
+}
+
+<h2>Organisations</h2>
+
+
+<table style="margin: 10px;padding:10px; border-width:2px">
+    <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Login</th>
+        <th>DbName</th>
+        <th>DbLogin</th>
+    </tr>
+    @foreach (models.Organisation o in ViewBag.Organisations)
+    {
+        <tr>
+            <td>@o.OrganisationName</td>
+            <td>@o.Address</td>
+            <td>@o.Email</td>
+            <td>@o.Phone</td>
+            <td>@models.Cryptography.Decrypt(o.Login)</td>
+            <td>@models.Cryptography.Decrypt(o.DbName)</td>
+            <td>@models.Cryptography.Decrypt(o.DbLogin)</td>
+            <td><a href="Edit/?id=@o.ID">Edit</a></td>
+            <td><a href="Delete/?id=@o.ID&dbname=@models.Cryptography.Decrypt(o.DbName)&dblogin=@models.Cryptography.Decrypt(o.DbLogin)">Delete</a></td>
+        </tr>
+    }
+
+</table>
+
+<p><a href="New/">New</a></p>

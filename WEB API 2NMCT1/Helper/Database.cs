@@ -263,37 +263,30 @@ namespace WEB_API_2NMCT1.Helper
             }
         }
 
-        public static int InsertData(DbConnection con, string sql, params DbParameter[] parameters)
+       
+
+       public static int InsertData(DbConnection con, string sql, params DbParameter[] parameters)
         {
-
             DbCommand command = null;
-
             try
             {
                 command = BuildCommand(con, sql, parameters);
                 command.ExecuteNonQuery();
 
                 command.Parameters.Clear();
-                command.CommandText = "select @@IDENTITY";
+                command.CommandText = "SELECT @@IDENTITY";
 
-                int id = Convert.ToInt32(command.ExecuteScalar());
+                int identity = Convert.ToInt32(command.ExecuteScalar());
                 command.Connection.Close();
 
-                return id;
-
+                return identity;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-
-
                 if (command != null)
-                {
                     ReleaseConnection(command.Connection);
-
-
-                }
-                throw;
+                return 0;
             }
         }
 
