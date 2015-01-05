@@ -75,9 +75,9 @@ namespace SSAPPmcv.DataAcces
             {
                 Organisationid = Int32.Parse(record["OrganisationID"].ToString()),
                 RegisterId = Int32.Parse(record["RegisterID"].ToString()),
-                From = DateTime.ParseExact(record["From"].ToString(), "yyyy-MM-dd",
+                From = DateTime.ParseExact(record["FromDate"].ToString(), "yyyy-MM-dd",
                                        System.Globalization.CultureInfo.InvariantCulture),
-                Untill = DateTime.ParseExact(record["Untill"].ToString(), "yyyy-MM-dd",
+                Untill = DateTime.ParseExact(record["UntilDate"].ToString(), "yyyy-MM-dd",
                                        System.Globalization.CultureInfo.InvariantCulture)
         };
         }

@@ -27,11 +27,9 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Name="txbScan" Text="Scan your card" FontSize="26" Grid.Row="0" Margin="10" TextAlignment="Center" Grid.ColumnSpan="2"/>
                 <TextBlock Name="txbBarcode" Text="Scanner not working? Type your barcode in the textbox" Grid.Row="1" TextAlignment="Center" Margin="10" Grid.ColumnSpan="2" />
-                <TextBox Name="txtBarcode" Grid.Row="2" Margin="20,10" />
-                <Button Name="btnOK" Grid.Row="2" Grid.Column="1" Content="Log in" Margin="20, 10" Command="{Binding DataContext.ChangePageCommand,
- RelativeSource={RelativeSource  AncestorType={x:Type Window}}}"  CommandParameter="{Binding DataContext.Pages[2],RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-                <Button Name="btnRegister" Content="New user? Register here" Grid.Row="3" Grid.ColumnSpan="2"  Margin="20, 10" Command="{Binding DataContext.ChangePageCommand,
- RelativeSource={RelativeSource  AncestorType={x:Type Window}}}"  CommandParameter="{Binding DataContext.Pages[1],RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                <TextBox Name="txtBarcode" Grid.Row="2" Margin="20,10" Text="{Binding Barcode}" />
+                <Button Name="btnOK" Grid.Row="2" Grid.Column="1" Content="Log in" Margin="20, 10" Command="{Binding LoginCommand}"/>
+                <Button Name="btnRegister" Content="New user? Register here" Grid.Row="3" Grid.ColumnSpan="2"  Margin="20, 10" Command="{Binding RegisterCommand}"  />
 
 
             </Grid>

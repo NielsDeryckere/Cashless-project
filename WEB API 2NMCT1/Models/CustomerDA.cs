@@ -118,6 +118,17 @@ namespace WEB_API_2NMCT1.Models
             return Database.InsertData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4,par5);
         }
 
+        public static int InsertCustomer(Customer c)
+        {
+            string sql = "INSERT INTO Customer VALUES(@CustomerName,@Address,@Picture,@Balance,@Barcode)";
+            DbParameter par1 = Database.addParameter("AdminDB", "@CustomerName", c.CustomerName);
+            DbParameter par2 = Database.addParameter("AdminDB", "@Address", c.Address);
+            DbParameter par3 = Database.addParameter("AdminDB", "@Picture", c.Picture);
+            DbParameter par4 = Database.addParameter("AdminDB", "@Balance", c.Balance);
+            DbParameter par5 = Database.addParameter("AdminDB", "@Barcode", c.Barcode);
+            return Database.InsertData(Database.GetConnection(Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT",DBNAME,DBLOGIN,DBPASS)), sql, par1, par2, par3, par4, par5);
+        }
+
         public static void UpdateCustomer(Customer c, IEnumerable<Claim> claims)
         {
             string sql = "UPDATE Customer SET CustomerName=@CustomerName, Address=@Address, Picture=@Picture, Balance=@Balance,WHERE Barcode=@Barcode";

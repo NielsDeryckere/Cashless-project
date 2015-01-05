@@ -216,6 +216,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountInfoController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\CustomerTerminalController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\CustomerRegisterController.cs" />
     <Compile Include="Controllers\EmployeeRegisterController.cs" />
@@ -230,6 +231,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\Database.cs" />
+    <Compile Include="Migrations\201501050045349_InitDatabase.cs" />
+    <Compile Include="Migrations\201501050045349_InitDatabase.Designer.cs">
+      <DependentUpon>201501050045349_InitDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountInfoDA.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -327,6 +333,9 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\201501050045349_InitDatabase.resx">
+      <DependentUpon>201501050045349_InitDatabase.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

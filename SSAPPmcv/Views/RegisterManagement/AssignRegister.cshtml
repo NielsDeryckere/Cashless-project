@@ -44,19 +44,19 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem =>models.Cryptography.Decrypt( item.Login))
+            @Html.DisplayFor(modelItem =>item.Login)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => models.Cryptography.Decrypt(item.Password))
+            @Html.DisplayFor(modelItem => item.Password)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => models.Cryptography.Decrypt(item.DbName))
+            @Html.DisplayFor(modelItem =>item.DbName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => models.Cryptography.Decrypt(item.DbLogin))
+            @Html.DisplayFor(modelItem =>item.DbLogin)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => models.Cryptography.Decrypt(item.DbPassword))
+            @Html.DisplayFor(modelItem =>item.DbPassword)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.OrganisationName)

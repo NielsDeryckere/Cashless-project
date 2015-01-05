@@ -235,12 +235,12 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Margin="5" Grid.RowSpan="2"  ItemsSource="{Binding Registers}">
+                    <ListView Name="lstvRegisters" Margin="5" Grid.RowSpan="2"  ItemsSource="{Binding Registers}" SelectedItem="{Binding SelectedRegister}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Id" Width="50" DisplayMemberBinding="{Binding Path=Id}"/>
+                                <GridViewColumn Header="Id" Width="50" DisplayMemberBinding="{Binding Path=RegisterID}"/>
                                 <GridViewColumn Header="Registername" Width="100" DisplayMemberBinding="{Binding Path=RegisterName}" />
-                                <GridViewColumn Header="Device" Width="100" DisplayMemberBinding="{Binding Path=Device}"/>
+                                <GridViewColumn Header="Device" Width="100" DisplayMemberBinding="{Binding Path=DeviceName}"/>
 
 
 
@@ -272,7 +272,7 @@
 
                             <Label Name="lblUntill" Grid.Row="2" Grid.Column="0" Content="Untill" Margin="20,10"/>
                             <ComboBox Name="cboUntill" Grid.Row="2" Grid.Column="1" Margin="10"></ComboBox>
-                            <Button Name="btnApply" Content="Apply" Grid.Column="0" Grid.Row="3" Margin="5" Grid.ColumnSpan="2" />
+                            <Button Name="btnApply" Content="Apply" Grid.Column="0" Grid.Row="3" Margin="5" Grid.ColumnSpan="2" Command="{Binding ViewRegisterUsersCommand}" IsEnabled="{Binding ElementName=lstvRegisters,Path=SelectedItem}" />
 
 
 
@@ -284,7 +284,7 @@
                     </GroupBox>
                     <GroupBox Name="grpbViewRegister" Header="View" Grid.Row="1" Grid.Column="1" Margin="5">
                         <Grid>
-                            <ListView Margin="5" Grid.RowSpan="2" >
+                            <ListView Margin="5" Grid.RowSpan="2">
                                 <ListView.View>
                                     <GridView>
                                         <GridViewColumn Header="Id Employee" Width="100"/>

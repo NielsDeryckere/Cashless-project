@@ -51,7 +51,7 @@ namespace SSAPPmcv.DataAcces
 
         public static void InsertRegister(Register r)
         {
-            string sql = "INSERT INTO Register VALUES(@RegisterName, @Device)";
+            string sql = "INSERT INTO Registers VALUES(@RegisterName, @Device)";
 
             DbParameter par1 = Database.addParameter(ConnectionString, "@RegisterName", r.RegisterName);
             DbParameter par2 = Database.addParameter(ConnectionString, "@Device", r.DeviceName);

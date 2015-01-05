@@ -37,7 +37,7 @@ namespace models
         private DateTime _purchaseDate;
 
       [Required]
-      [DataType(DataType.Date,ErrorMessage="De datum dient van het formaat YYYY-MM-DD  te zijn")]
+      [DataType(DataType.Date)]
       [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime PurchaseDate
         {

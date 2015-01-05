@@ -1,4 +1,5 @@
 ﻿using models;
+using modelsProject;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -23,37 +24,26 @@ namespace WEB_API_2NMCT1.Models
 
             return Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT", dbname, dblogin, dbpass);
         }
-        public static List<RegistersOrganisation> GetRegisters(int id,IEnumerable<Claim> claims)
+        public static List<RegisterClient> GetRegisters(IEnumerable<Claim> claims)
         {
-            List<RegistersOrganisation> lijst = new List<RegistersOrganisation>();
-            List<int> registerid=new List<int>();
-            string sql = "SELECT RegisterID FROM Organisation_Register WHERE OrganisationID=@OrganisationID";
-         
-            DbParameter par1 = Database.addParameter("AdminDB", "@OrganisationID", id);
-            DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql,par1);
-            while (reader.Read())
-            {
+            List<RegisterClient> lijst = new List<RegisterClient>();
+           
+          
+                string sql2 = "SELECT * FROM Registers";
 
-                registerid.Add(int.Parse(reader["OrganisationID"].ToString()));
-
-            }
-            reader.Close();
-            foreach(int i in registerid)
-            {
-                string sql2 = "SELECT * FROM Registers WHERE ID=@ID";
-                DbParameter par2 = Database.addParameter("AdminDB", "@ID", i);
-                DbDataReader reader2 = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql2,par2);
+                DbDataReader reader2 = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql2);
                 while (reader2.Read())
                 {
-                    RegistersOrganisation ro = new RegistersOrganisation();
-                    ro.Id = int.Parse(reader2["ID"].ToString());
-                    ro.Device = reader2["Device"].ToString();
-                    ro.RegisterName = reader2["RegisterName"].ToString();
+                    RegisterClient r= new RegisterClient();
+                    r.RegisterID = int.Parse(reader2["ID"].ToString());
+                    r.DeviceName = reader2["Device"].ToString();
+                    r.RegisterName = reader2["RegisterName"].ToString();
+                  
 
-                   lijst.Add(ro);
+                   lijst.Add(r);
 
                 }
-            }
+            
 
 
 
@@ -71,6 +61,35 @@ namespace WEB_API_2NMCT1.Models
             DbParameter par4 = Database.addParameter("AdminDB", "@EmployeeID", EmployeeId);
 
             return Database.InsertData(Database.GetConnection(con), sql, par1, par2,par3,par4);
+        }
+
+        public static List<EmployeeRegister> GetRegisterEmployee(int RegisterId,IEnumerable<Claim> claims)
+        {
+            List<EmployeeRegister> list = new List<EmployeeRegister>();
+            string sql = "SELECT * FROM Register_Employee WHERE ID=@id";
+            DbParameter par1 = Database.addParameter("AdminDB", "@id", RegisterId);
+            DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql);
+
+            while(reader.Read())
+            {
+                EmployeeRegister er = new EmployeeRegister()
+                {
+
+                    EmployeeID = int.Parse(reader["EmployeeID"].ToString()),
+                    RegisterID = int.Parse(reader["RegisterID"].ToString()),
+                    From = DateTime.ParseExact(reader["Fromt"].ToString(), "yyyy-MM-dd HH:mm:ss",
+                                       System.Globalization.CultureInfo.InvariantCulture),
+
+                Untill=DateTime.ParseExact(reader["Untilt"].ToString(), "yyyy-MM-dd HH:mm:ss",
+                                       System.Globalization.CultureInfo.InvariantCulture)
+
+                };
+                list.Add(er);
+
+            }
+
+            return list;
+
         }
 
     }

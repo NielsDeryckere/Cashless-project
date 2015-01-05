@@ -78,3 +78,4 @@ C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cas
 C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\WEB API 2NMCT1\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\WEB API 2NMCT1\bin\System.Web.Http.Owin.xml
 C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\WEB API 2NMCT1\obj\Debug\WEB API 2NMCT1.pdb
+C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\WEB API 2NMCT1\obj\Debug\WEB_API_2NMCT1.Migrations.InitDatabase.resources

@@ -3,6 +3,7 @@ using be.belgium.eid;
 using Desktop_Management.Converter;
 using GalaSoft.MvvmLight.CommandWpf;
 using models;
+using modelsProject;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -140,13 +141,22 @@ namespace Desktop_Management.ViewModel
             set { _sales = value; OnPropertyChanged("SalesList"); }
         }
 
-        private ObservableCollection<RegistersOrganisation> _registers;
+        private ObservableCollection<RegisterClient> _registers;
 
-        public ObservableCollection<RegistersOrganisation> Registers
+        public ObservableCollection<RegisterClient> Registers
         {
             get { return _registers; }
             set { _registers = value; OnPropertyChanged("Registers"); }
         }
+
+        private RegisterClient selected_register;
+
+        public RegisterClient SelectedRegister
+        {
+            get { return selected_register; }
+            set { selected_register = value; OnPropertyChanged("SelectedRegister"); }
+        }
+        
 
         private bool _teste;
 
@@ -154,6 +164,13 @@ namespace Desktop_Management.ViewModel
         {
             get { return _teste; }
             set { _teste = value; OnPropertyChanged("TestE"); }
+        }
+        private bool _testReg;
+
+        public bool TestReg
+        {
+            get { return _testReg; }
+            set { _testReg = value; OnPropertyChanged("TestReg"); }
         }
         
         
@@ -167,7 +184,7 @@ namespace Desktop_Management.ViewModel
             GetCustomers();
             GetEmployees();
             GetSales();
-            
+            GetRegisters();
             test();
             testE();
             }
@@ -177,17 +194,17 @@ namespace Desktop_Management.ViewModel
         private async void GetRegisters()
         {
             
-            Registers= new ObservableCollection<RegistersOrganisation>();
+            Registers= new ObservableCollection<RegisterClient>();
             try
             {
                 using (HttpClient client = new HttpClient())
                     {
                         client.SetBearerToken(ApplicationVM.token.AccessToken);
-                        HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/Register/"+AccountInfo.ID);
+                        HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/Register/");
                         if (response.IsSuccessStatusCode)
                         {
                             string json = await response.Content.ReadAsStringAsync();
-                            Registers = JsonConvert.DeserializeObject<ObservableCollection<RegistersOrganisation>>(json);
+                            Registers = JsonConvert.DeserializeObject<ObservableCollection<RegisterClient>>(json);
 
                         }
                      }
@@ -230,7 +247,7 @@ namespace Desktop_Management.ViewModel
                     AccountName = AccountInfo.Login;
                     CompanyName = AccountInfo.OrganisationName;
                     ManagementPassword =AccountInfo.Password;
-                    GetRegisters();
+                   
                 }
             }
         }
@@ -251,6 +268,12 @@ namespace Desktop_Management.ViewModel
             else { TestE = false; }
         }
 
+        public void TestRegister()
+        {
+            if(selected_register!=null)
+            { TestReg = true; }
+            else { TestReg = false; }
+        }
 
         #region accountinfo method and command
 
@@ -262,7 +285,9 @@ namespace Desktop_Management.ViewModel
         private void SignOut()
         {
             
+            
               ApplicationVM appvm = App.Current.MainWindow.DataContext as ApplicationVM;
+        
             appvm.ChangePage( new LoginVM());
         }
 
@@ -784,7 +809,29 @@ namespace Desktop_Management.ViewModel
 
         #endregion
 
+        public ICommand ViewRegisterUsersCommand
+        {
+            get { return new RelayCommand(ViewRegisterUsers); }
+        }
 
+        private async void ViewRegisterUsers()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.SetBearerToken(ApplicationVM.token.AccessToken);
+                HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/AccountInfo/"+selected_register.RegisterID);
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    AccountInfo = JsonConvert.DeserializeObject<Organisation>(json);
+                    AccountName = AccountInfo.Login;
+                    CompanyName = AccountInfo.OrganisationName;
+                    ManagementPassword = AccountInfo.Password;
+
+                }
+            }
+            
+        }
 
     }
 }

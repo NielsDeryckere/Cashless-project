@@ -272,7 +272,7 @@ namespace Register_Employee.ViewModel
             ApplicationVM appvm = App.Current.MainWindow.DataContext as ApplicationVM;
             using (HttpClient client = new HttpClient())
             {
-                object[] data = { 1, CurrentEmployee.Barcode,appvm.From,DateTime.Now };
+                object[] data = { 2, CurrentEmployee.Barcode,appvm.From,DateTime.Now };
                 string input = JsonConvert.SerializeObject(data);
              
                 HttpResponseMessage response = await client.PostAsync("http://localhost:41983/api/EmployeeRegister", new StringContent(input, Encoding.UTF8, "application/json"));

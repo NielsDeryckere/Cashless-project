@@ -41,12 +41,10 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Height="50" x:Name="txbOrganization" Margin="10" />
-            <Image  Name="imgCustomer" Margin="20" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" />
-            <TextBlock Name="txbCustomerName"  Margin="10" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
-            <Label Name="lblWrongAccount"  Margin="10" Grid.Row="3"/>
-            <Button Name="btnLogout" Content="Logout" Grid.Row="3" Grid.Column="1" Margin="10" Command="{Binding DataContext.ChangePageCommand,
- RelativeSource={RelativeSource  AncestorType={x:Type Window}}}"  CommandParameter="{Binding DataContext.Pages[0],RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-            <Button Name="btnChangeInfo" Content="Change personal info" Grid.Row="3" Grid.Column="2" Margin="10"/>
+            <Image  Name="imgCustomer" Margin="20" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding LoggedInCustomer.Picture}" />
+            <TextBlock Name="txbCustomerName"  Margin="10" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding LoggedInCustomer.CustomerName}"/>
+            
+            <Button Name="btnLogout" Content="Logout" Grid.Row="3" Grid.Column="1" Margin="10" Command="{Binding LogoutCommand}"/>
         </Grid>
         <Grid Name="grdCustomerInfo" Grid.Row="1" Grid.RowSpan="3" Margin="10" Grid.Column="0">
             <Grid.RowDefinitions>
@@ -61,22 +59,19 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="First Name: " Grid.Row="0" Grid.Column="0" Margin="10"/>
-            <Label Content="Last Name:" Grid.Row="1" Grid.Column="0" Margin="10"/>
-            <Label Content="Street:" Grid.Row="2" Grid.Column="0" Margin="10"/>
-            <Label Content="Number:" Grid.Row="3" Grid.Column="0" Margin="10"/>
-            <Label Content="City:" Grid.Row="4" Grid.Column="0" Margin="10"/>
-            <Label Content="Postal Code:" Grid.Row="5" Grid.Column="0" Margin="10"/>
+            <Label Content=" Name: " Grid.Row="0" Grid.Column="0" Margin="10"/>
+           
+            <Label Content="Adress:" Grid.Row="1" Grid.Column="0" Margin="10"/>
+            
+            
 
-            <TextBlock  Grid.Row="0" Grid.Column="1" Margin="20, 10"/>
-            <TextBlock Grid.Row="1" Grid.Column="1" Margin="20, 10"/>
-            <TextBlock  Grid.Row="2" Grid.Column="1" Margin="20, 10"/>
-            <TextBlock  Grid.Row="3" Grid.Column="3" Margin="20, 10"/>
-            <TextBlock Grid.Row="4" Grid.Column="1" Margin="20, 10"/>
-            <TextBlock  Grid.Row="5" Grid.Column="3" Margin="20, 10"/>
+            <TextBlock  Grid.Row="0" Grid.Column="1" Margin="20, 10" Text="{Binding LoggedInCustomer.CustomerName}"/>
+         
+            <TextBlock  Grid.Row="1" Grid.Column="1" Margin="20, 10" Text="{Binding LoggedInCustomer.Address}"/>
+          
         </Grid>
-        <Label Content="Current saldo:" Grid.Column="1"/>
-        <TextBlock Name="txbSaldo" Grid.Column="1" Height="50" Margin="112,10,10,235"/>
+        <Label Content="Current saldo:" Grid.Column="1" FontSize="20"/>
+        <TextBlock Name="txbSaldo" Grid.Column="1" Height="50" FontSize="20" Margin="112,10,10,235" Text="{Binding LoggedInCustomer.Balance}"/>
 
         <GroupBox Header="Charge your card" FontSize="12" Name="grpCharge" Grid.Column="1" Grid.RowSpan="3" Margin="10,100,10,10">
             <Grid Name="grdCharge">

@@ -53,6 +53,15 @@ namespace SSAPPmcv.Controllers
         public ActionResult AssignRegister(int id)
         {
             List<Organisation> list = OrganisationDA.GetOrganisations();
+            foreach(Organisation o in list)
+            {
+                o.Login = Cryptography.Decrypt(o.Login);
+                o.Password = Cryptography.Decrypt(o.Password);
+                o.DbLogin = Cryptography.Decrypt(o.DbLogin);
+                o.DbName = Cryptography.Decrypt(o.DbName);
+                o.DbPassword = Cryptography.Decrypt(o.DbPassword);
+
+            }
             ViewBag.Register = id;
             return View(list);
         }
@@ -78,9 +87,9 @@ namespace SSAPPmcv.Controllers
            
         }
         [HttpGet]
-        public ActionResult UnAssignRegister(int regid,int rogid)
+        public ActionResult UnAssignRegister(int regid,int orgid)
         {
-            Register_OrganisationDA.DeleteRegistersOrganisation(regid,rogid);
+            Register_OrganisationDA.DeleteRegistersOrganisation(regid,orgid);
             Register_OrganisationDA.ModifyRegisterAssignValueToFalse(regid);
             
 

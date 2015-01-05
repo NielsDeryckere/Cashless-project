@@ -43,11 +43,13 @@
     <Compile Include="Cryptography.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="EmployeeRegister.cs" />
     <Compile Include="Errorlog.cs" />
     <Compile Include="Organisation.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Register.cs" />
+    <Compile Include="RegisterClient.cs" />
     <Compile Include="RegistersOrganisation.cs" />
     <Compile Include="Sales.cs" />
     <Compile Include="Transfer.cs" />

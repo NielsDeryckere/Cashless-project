@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,14 @@ namespace Terminal_Customer.ViewModel
     {
         public ApplicationVM()
         {
-            Pages.Add(new LoginScreenCustomerVM());
-            Pages.Add(new PageTwoVM());
-            Pages.Add(new PageThreeVM());
+            
+            
+         
             // Add other pages
 
-            CurrentPage = Pages[0];
+            CurrentPage = new LoginScreenCustomerVM();
         }
+        public Customer LoggedInCustomer = new Customer();
 
         private object currentPage;
         public object CurrentPage
@@ -43,7 +45,7 @@ namespace Terminal_Customer.ViewModel
             get { return new RelayCommand<IPage>(ChangePage); }
         }
 
-        private void ChangePage(IPage page)
+        public void ChangePage(IPage page)
         {
             CurrentPage = page;
         }
