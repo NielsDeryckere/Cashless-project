@@ -99,6 +99,10 @@
     <Compile Include="View\PageTwo.xaml.cs">
       <DependentUpon>PageTwo.xaml</DependentUpon>
     </Compile>
+    <Page Include="StyleDark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

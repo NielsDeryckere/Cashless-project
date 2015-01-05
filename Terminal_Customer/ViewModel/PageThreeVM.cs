@@ -36,7 +36,7 @@ namespace Terminal_Customer.ViewModel
         }
 
         public ICommand LogoutCommand
-        { get { return new RelayCommand(Logout)} }
+        { get { return new RelayCommand(Logout); } }
 
         private void Logout()
         {
