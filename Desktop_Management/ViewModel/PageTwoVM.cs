@@ -156,6 +156,14 @@ namespace Desktop_Management.ViewModel
             get { return selected_register; }
             set { selected_register = value; OnPropertyChanged("SelectedRegister"); }
         }
+
+        private List<EmployeeRegister> _employeeRegisters;
+
+        public List<EmployeeRegister> EmployeeRegisters
+        {
+            get { return _employeeRegisters; }
+            set { _employeeRegisters = value; OnPropertyChanged("EmployeeRegisters"); }
+        }
         
 
         private bool _teste;
@@ -172,6 +180,15 @@ namespace Desktop_Management.ViewModel
             get { return _testReg; }
             set { _testReg = value; OnPropertyChanged("TestReg"); }
         }
+
+        private bool _testProduct;
+        
+        public bool TestProduct
+        {
+            get { return _testProduct; }
+            set { _testProduct = value; OnPropertyChanged("TestProduct"); }
+        }
+        
         
         
         
@@ -187,6 +204,7 @@ namespace Desktop_Management.ViewModel
             GetRegisters();
             test();
             testE();
+            TestProductControl();
             }
         }
         #region GETS
@@ -273,6 +291,18 @@ namespace Desktop_Management.ViewModel
             if(selected_register!=null)
             { TestReg = true; }
             else { TestReg = false; }
+        }
+
+        public void TestProductControl()
+        {
+            if(SelectedProduct!=null)
+            { TestProduct = true; }
+            else
+            {
+                TestProduct = false;
+
+            }
+
         }
 
         #region accountinfo method and command
@@ -819,16 +849,15 @@ namespace Desktop_Management.ViewModel
             using (HttpClient client = new HttpClient())
             {
                 client.SetBearerToken(ApplicationVM.token.AccessToken);
-                HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/AccountInfo/"+selected_register.RegisterID);
+                HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/EmployeeRegister/"+selected_register.RegisterID);
                 if (response.IsSuccessStatusCode)
                 {
                     string json = await response.Content.ReadAsStringAsync();
-                    AccountInfo = JsonConvert.DeserializeObject<Organisation>(json);
-                    AccountName = AccountInfo.Login;
-                    CompanyName = AccountInfo.OrganisationName;
-                    ManagementPassword = AccountInfo.Password;
+                    EmployeeRegisters = JsonConvert.DeserializeObject<List<EmployeeRegister>>(json);
+                    
 
                 }
+                else { MessageBox.Show("Could not get Employee_registers"); }
             }
             
         }

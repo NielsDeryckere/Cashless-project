@@ -50,15 +50,15 @@ namespace WEB_API_2NMCT1.Models
             return lijst;
         }
 
-        public static int InsertEmployeeRegister(int RegisterId,long EmployeeId,DateTime from,DateTime untill)
+        public static int InsertEmployeeRegister(EmployeeRegister er)
         {
 
             ConnectionStringSettings con = Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT", DBNAME, DBLOGIN, DBPASS);
             string sql = "INSERT INTO Register_Employee VALUES(@RegisterID,@EmployeeID,@From,@Untill)";
-            DbParameter par1 = Database.addParameter("AdminDB", "@RegisterID", RegisterId);
-            DbParameter par2 = Database.addParameter("AdminDB", "@From", from.ToString("yyyy-MM-dd HH:mm:ss"));
-            DbParameter par3 = Database.addParameter("AdminDB", "@Untill", untill.ToString("yyyy-MM-dd HH:mm:ss"));
-            DbParameter par4 = Database.addParameter("AdminDB", "@EmployeeID", EmployeeId);
+            DbParameter par1 = Database.addParameter("AdminDB", "@RegisterID", er.RegisterID);
+            DbParameter par2 = Database.addParameter("AdminDB", "@From", er.From.ToString("yyyy-MM-dd HH:mm:ss"));
+            DbParameter par3 = Database.addParameter("AdminDB", "@Untill", er.Untill.ToString("yyyy-MM-dd HH:mm:ss"));
+            DbParameter par4 = Database.addParameter("AdminDB", "@EmployeeID", er.EmployeeID);
 
             return Database.InsertData(Database.GetConnection(con), sql, par1, par2,par3,par4);
         }
@@ -66,16 +66,16 @@ namespace WEB_API_2NMCT1.Models
         public static List<EmployeeRegister> GetRegisterEmployee(int RegisterId,IEnumerable<Claim> claims)
         {
             List<EmployeeRegister> list = new List<EmployeeRegister>();
-            string sql = "SELECT * FROM Register_Employee WHERE ID=@id";
+            string sql = "SELECT * FROM Register_Employee WHERE RegisterID=@id";
             DbParameter par1 = Database.addParameter("AdminDB", "@id", RegisterId);
-            DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql);
+            DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql,par1);
 
             while(reader.Read())
             {
                 EmployeeRegister er = new EmployeeRegister()
                 {
 
-                    EmployeeID = int.Parse(reader["EmployeeID"].ToString()),
+                    EmployeeID = long.Parse(reader["EmployeeID"].ToString()),
                     RegisterID = int.Parse(reader["RegisterID"].ToString()),
                     From = DateTime.ParseExact(reader["Fromt"].ToString(), "yyyy-MM-dd HH:mm:ss",
                                        System.Globalization.CultureInfo.InvariantCulture),

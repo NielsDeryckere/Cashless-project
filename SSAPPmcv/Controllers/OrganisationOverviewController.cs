@@ -28,8 +28,12 @@ namespace SSAPPmcv.Controllers
         [HttpPost]
         public ActionResult New(Organisation o)
         {
+            if(ModelState.IsValid)
+            { 
             OrganisationDA.InsertOrganisation(o);
             return RedirectToAction("ListOrganisations");
+            }
+            else { return View("New"); }
         }
 
         [HttpGet]

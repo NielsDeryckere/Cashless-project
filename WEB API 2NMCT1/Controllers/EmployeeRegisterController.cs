@@ -13,10 +13,10 @@ namespace WEB_API_2NMCT1.Controllers
   
     public class EmployeeRegisterController : ApiController
     {
-        public HttpResponseMessage Post(int RegisterId, long EmployeeId, DateTime from, DateTime untill)
+        public HttpResponseMessage Post(EmployeeRegister er)
         {
            
-            int id = RegisterDA.InsertEmployeeRegister(RegisterId, EmployeeId, from, untill);
+            int id = RegisterDA.InsertEmployeeRegister(er);
 
 
             HttpResponseMessage message = new HttpResponseMessage(HttpStatusCode.OK);

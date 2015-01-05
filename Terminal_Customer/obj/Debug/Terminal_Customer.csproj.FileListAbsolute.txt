@@ -130,3 +130,5 @@ C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cas
 C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Terminal_Customer\obj\Debug\Terminal_Customer.exe
 C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Terminal_Customer\obj\Debug\Terminal_Customer.pdb
 C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Terminal_Customer\bin\Debug\Aspose.BarCode.WPF.dll
+C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Terminal_Customer\obj\Debug\StyleDark.baml
+C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Terminal_Customer\obj\Debug\App.baml

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 
@@ -17,6 +18,7 @@ namespace models
 
         private string _login;
 
+        [Required]
         public string Login
         {
             get { return _login; }
@@ -24,7 +26,7 @@ namespace models
         }
 
         private string _password;
-
+        [Required]
         public string Password
         {
             get { return _password; }
@@ -32,7 +34,7 @@ namespace models
         }
 
         private string _dbName;
-
+        [Required]
         public string DbName
         {
             get { return _dbName; }
@@ -40,7 +42,7 @@ namespace models
         }
 
         private string _dbLogin;
-
+        [Required]
         public string DbLogin
         {
             get { return _dbLogin; }
@@ -48,7 +50,7 @@ namespace models
         }
 
         private string _dbPassword;
-
+        [Required]
         public string DbPassword
         {
             get { return _dbPassword; }
@@ -56,7 +58,7 @@ namespace models
         }
 
         private string _organisationName;
-
+        [Required]
         public string OrganisationName
         {
             get { return _organisationName; }
@@ -64,7 +66,7 @@ namespace models
         }
 
         private string _address;
-
+        [Required]
         public string Address
         {
             get { return _address; }
@@ -72,7 +74,7 @@ namespace models
         }
 
         private string _email;
-
+        [Required]
         public string Email
         {
             get { return _email; }
@@ -80,7 +82,7 @@ namespace models
         }
 
         private string _phone;
-
+        [Required]
         public string Phone
         {
             get { return _phone; }

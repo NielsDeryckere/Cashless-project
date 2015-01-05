@@ -16,9 +16,9 @@ namespace modelsProject
             set { _regiserID = value; }
         }
 
-        private int _employeeID;
+        private long _employeeID;
 
-        public int EmployeeID
+        public long EmployeeID
         {
             get { return _employeeID; }
             set { _employeeID = value; }

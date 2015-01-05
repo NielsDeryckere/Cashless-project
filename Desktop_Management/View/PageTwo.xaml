@@ -25,7 +25,7 @@
             <ColumnDefinition Width="145*"/>
             <ColumnDefinition Width="871*"/>
         </Grid.ColumnDefinitions>
-        <TabControl HorizontalAlignment="Left" Height="662" Margin="10,10,0,0" VerticalAlignment="Top" Width="996" Grid.ColumnSpan="2">
+        <TabControl HorizontalAlignment="Left" Height="673" Margin="10,-1,0,0" VerticalAlignment="Top" Width="996" Grid.ColumnSpan="2">
             <TabItem Header="Account">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -99,7 +99,7 @@
                             </Grid.RowDefinitions>
                             <Button Name="btnNew" Content="New" Grid.Column="0" Grid.Row="0" Margin="10" Command="{Binding NewProductCommand}"/>
 
-                            <Button Name="btnDelete" Content="Delete" Grid.Column="1" Grid.Row="0" Margin="10" Command="{Binding DeleteProductCommand}"/>
+                            <Button Name="btnDelete" Content="Delete" Grid.Column="1" Grid.Row="0" Margin="10" Command="{Binding DeleteProductCommand}" IsEnabled="{Binding TestProduct}"/>
 
                             <Label Name="lblProductName" Content="Product name:" Grid.Column="0" Grid.Row="1" Margin="20" />
                             <TextBox Name="txtProductName"  Text="{Binding SelectedProduct.ProductName}" Grid.Column="1" Grid.Row="1" Margin="20" />
@@ -239,12 +239,12 @@
                     </GroupBox>
                     <GroupBox Name="grpbViewRegister" Header="View" Grid.Row="1" Grid.Column="1" Margin="5">
                         <Grid>
-                            <ListView Margin="5" Grid.RowSpan="2">
+                            <ListView Margin="5" Grid.RowSpan="2" ItemsSource="{Binding EmployeeRegisters}">
                                 <ListView.View>
                                     <GridView>
-                                        <GridViewColumn Header="Id Employee" Width="100"/>
-                                        <GridViewColumn Header="From" Width="100"/>
-                                        <GridViewColumn Header="Untill" Width="100"/>
+                                        <GridViewColumn Header="Id Employee" Width="100" DisplayMemberBinding="{Binding EmployeeID}"/>
+                                        <GridViewColumn Header="From" Width="100" DisplayMemberBinding="{ Binding From}"/>
+                                        <GridViewColumn Header="Untill" Width="100" DisplayMemberBinding="{Binding Untill}"/>
 
 
 
@@ -356,8 +356,8 @@
 
         </TabControl>
         <Label Content="Logged in as: " HorizontalAlignment="Left" Margin="537,-1,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="626,5,0,0" TextWrapping="Wrap" Text="{Binding AccountName}" VerticalAlignment="Top" Width="150" Height="20" Grid.Column="1"/>
-        <Button Content="Sign out" HorizontalAlignment="Left" Margin="776,5,0,0" VerticalAlignment="Top" Width="85"  Grid.Column="1" Command="{Binding SignOutCommand}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="616,-1,0,0" TextWrapping="Wrap" Text="{Binding AccountName}" VerticalAlignment="Top" Width="150" Height="20" Grid.Column="1"/>
+        <Button Content="Sign out" HorizontalAlignment="Left" Margin="766,0,0,0" VerticalAlignment="Top" Width="85"  Grid.Column="1" Command="{Binding SignOutCommand}"/>
 
 
     </Grid>

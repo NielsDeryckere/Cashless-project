@@ -167,7 +167,7 @@ namespace Register_Employee.ViewModel
                         s.Amount = 1;
                         s.CustomerId = ScannedCustomer.Barcode;
                         s.ProductId = p.Id;
-                        s.RegisterId = 1;
+                        s.RegisterId = 2;
                         s.Timestamp = DateTime.Now;
                         s.TotalPrice = p.Price;
 
@@ -272,8 +272,9 @@ namespace Register_Employee.ViewModel
             ApplicationVM appvm = App.Current.MainWindow.DataContext as ApplicationVM;
             using (HttpClient client = new HttpClient())
             {
-                object[] data = { 2, CurrentEmployee.Barcode,appvm.From,DateTime.Now };
-                string input = JsonConvert.SerializeObject(data);
+                EmployeeRegister er = new EmployeeRegister() {RegisterID= 2,EmployeeID= CurrentEmployee.Barcode,From= appvm.From,Untill=DateTime.Now };
+                
+                string input = JsonConvert.SerializeObject(er);
              
                 HttpResponseMessage response = await client.PostAsync("http://localhost:41983/api/EmployeeRegister", new StringContent(input, Encoding.UTF8, "application/json"));
                 if (response.IsSuccessStatusCode)
