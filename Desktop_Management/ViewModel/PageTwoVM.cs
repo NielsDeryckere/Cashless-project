@@ -210,6 +210,19 @@ namespace Desktop_Management.ViewModel
             set { _accountError = value; OnPropertyChanged("AccountError"); }
         }
         
+        
+          private bool CanExecuteAddClient()
+        {
+            if (SelectedCustomer == null)
+            {
+                return false;
+            }
+            else
+            {
+                return SelectedCustomer.IsValid();
+            }
+        
+        }
         #endregion
 
 
@@ -565,7 +578,7 @@ namespace Desktop_Management.ViewModel
 
                 wbp.Workbook.Save();
                 doc.Close();
-                MessageBox.Show("Export succeeded")
+                MessageBox.Show("Export succeeded");
             }
             catch (Exception)
             {
@@ -604,7 +617,7 @@ namespace Desktop_Management.ViewModel
 
         public ICommand SaveCustomerCommand
         {
-            get {  return new RelayCommand(SaveCustomer); }
+            get { return new RelayCommand(SaveCustomer, CanExecuteAddClient); }
         }
 
         public ICommand DeleteCustomerCommand

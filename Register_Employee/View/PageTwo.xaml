@@ -11,6 +11,16 @@
 
     <UserControl.Resources>
         <c:IntToColorConverter x:Key="IntToColorConverter"/>
+        <DataTemplate x:Key="ProductTemplate">
+            <Grid Width="280">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding ProductName}" Grid.Column="0"/>
+                <TextBlock Text="{Binding Price}" Grid.Column="1" TextAlignment="Right"/>
+            </Grid>
+        </DataTemplate>
     </UserControl.Resources>
     <UserControl.DataContext>
 
@@ -30,7 +40,7 @@
 
         </Grid.RowDefinitions>
 
-        <ListBox Name="lstBestelling" Grid.Row="1" Grid.Column="0" Margin="10" ItemsSource="{Binding OrderedProducts}"  DisplayMemberPath="ProductName"/>
+        <ListBox Name="lstBestelling" Grid.Row="1" Grid.Column="0" Margin="10" ItemsSource="{Binding OrderedProducts,Mode=TwoWay}"  ItemTemplate="{StaticResource ProductTemplate}"/>
         <TextBlock Name="txbTotaal" Grid.Row="2" Grid.Column="0" Text="{Binding TotalPrice}" Background="White" Margin="10"/>
 
         <ItemsControl Name="ButtonsPanel" Grid.Row="1" Grid.Column="1" Margin="10" ItemsSource="{Binding Products}" IsEnabled="{Binding CustomerScanned}">
@@ -86,7 +96,7 @@
             <Button Name="btnLogoff" Grid.Row="1" Grid.Column="4" Content="Logoff" Margin="47,9,47,10" Command="{Binding LoggOffCommand}"/>
             <Label Content="please scan customer" FontSize="18" Margin="10
                    "/>
-            <TextBox Grid.Column="1" Margin="10" Text="{Binding BarcodeCustomer}"/>
+            <TextBox Grid.Column="1" Margin="10" Text="{Binding BarcodeCustomer,Mode=TwoWay}"/>
             <Button Grid.Column="1" Content="Scan customer" Margin="10,0,46,19" Grid.Row="1" Command="{Binding ScanCustomerCommand}"/>
         </Grid>
 

@@ -127,3 +127,6 @@ C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cas
 C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Register_Employee\obj\Debug\Register_Employee.pdb
 C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Register_Employee\obj\Debug\StyleDark.baml
 C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Register_Employee\obj\Debug\App.baml
+C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Register_Employee\bin\Debug\Aspose.BarCode.WPF.dll
+C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Register_Employee\bin\Debug\WiaDotNet.dll
+C:\Users\niels\Google Drive\Semester 3\Business applications\Project\nmct.ba.cashlessproject.ui\Register_Employee\bin\Debug\WiaDotNet.pdb

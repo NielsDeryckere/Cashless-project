@@ -192,25 +192,26 @@ namespace Register_Employee.ViewModel
                             HttpResponseMessage response = await client.PutAsync("http://localhost:41983/api/ProductRegister/", new StringContent(input, Encoding.UTF8, "application/json"));
                             if (response.IsSuccessStatusCode)
                             {
-                               
+                                
 
                             }
                             else
                             {
-
+                                MessageBox.Show("There were no transactions");
                             }
                         }
 
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("There were no transactions");
+                            MessageBox.Show("Order failed");
                             
                           
                         }
                        
                       
                     } ScannedCustomer = null;
+                    CustomerScanned = false;
                     OrderedProducts.Clear();
                     Customers.Clear();
                     GetCustomers();
@@ -320,21 +321,25 @@ namespace Register_Employee.ViewModel
         private void RemoveProduct(Product obj)
         {
             try
-            { 
-                if(OrderedProducts.Count==1)
-                { OrderedProducts.Clear();
-                TotalPrice -= obj.Price;
-                DifferenceTotalBalance = ScannedCustomer.Balance - TotalPrice;
+            {
+                if (OrderedProducts.Count == 1)
+                {
+                    OrderedProducts.Clear();
+                    TotalPrice -= obj.Price;
+                    DifferenceTotalBalance = 0;
 
                 }
-                OrderedProducts.Remove(obj);
+                else { OrderedProducts.Remove(obj);
                 TotalPrice -= obj.Price;
-                DifferenceTotalBalance = ScannedCustomer.Balance - TotalPrice;
+                DifferenceTotalBalance = ScannedCustomer.Balance - TotalPrice; 
+                    }
+               
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {  
                 MessageBox.Show("You have to select a product to return");
+
                 
 
            
