@@ -28,8 +28,8 @@ namespace WEB_API_2NMCT1.Models
             List<Employee> list = new List<Employee>();
             string sql = "SELECT * FROM Employee";
 
-
-            DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql);
+            try
+            {  DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql);
 
             //ConnectionStringSettingsCollection ConnectionStrings = ConfigurationManager.ConnectionStrings;
             while (reader.Read())
@@ -50,6 +50,15 @@ namespace WEB_API_2NMCT1.Models
             }
             reader.Close();
             return list;
+
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+
+          
         }
 
         
@@ -62,31 +71,41 @@ namespace WEB_API_2NMCT1.Models
 
             List<Employee> lijst = new List<Employee>();
             string sql = "SELECT * FROM Employee";
-            DbDataReader reader = Database.GetData(Database.GetConnection(Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT", DBNAME, DBLOGIN, DBPASS)), sql);
-            while (reader.Read())
+            try
             {
-                Employee c = new Employee();
-                c.Id = c.Id = int.Parse(reader["ID"].ToString());
-                c.EmployeeName = reader["EmployeeName"].ToString();
-                c.Address = reader["Address"].ToString();
-                c.Email = reader["Email"].ToString();
-                c.Phone = reader["Phone"].ToString();
-                //if (!DBNull.Value.Equals(reader["Picture"]))
-                //    c.Picture = (byte[])reader["Picture"];
-                //else
-                //    c.Picture = new byte[0];
+                    DbDataReader reader = Database.GetData(Database.GetConnection(Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT", DBNAME, DBLOGIN, DBPASS)), sql);
+                while (reader.Read())
+                {
+                    Employee c = new Employee();
+                    c.Id = c.Id = int.Parse(reader["ID"].ToString());
+                    c.EmployeeName = reader["EmployeeName"].ToString();
+                    c.Address = reader["Address"].ToString();
+                    c.Email = reader["Email"].ToString();
+                    c.Phone = reader["Phone"].ToString();
+                    //if (!DBNull.Value.Equals(reader["Picture"]))
+                    //    c.Picture = (byte[])reader["Picture"];
+                    //else
+                    //    c.Picture = new byte[0];
 
-                c.Barcode = Int64.Parse(reader["Barcode"].ToString());
-                lijst.Add(c);
+                    c.Barcode = Int64.Parse(reader["Barcode"].ToString());
+                    lijst.Add(c);
 
                
+                }
+                reader.Close();
+
+
+
+
+                return lijst;
+
             }
-            reader.Close();
+            catch (Exception)
+            {
 
-
-
-
-            return lijst;
+                return null;
+            }
+           
         }
 
         public static int InsertEmployee(Employee c, IEnumerable<Claim> claims)
@@ -97,10 +116,20 @@ namespace WEB_API_2NMCT1.Models
             DbParameter par3 = Database.addParameter("AdminDB", "@Email", c.Email);
             DbParameter par4 = Database.addParameter("AdminDB", "@Phone", c.Phone);
             DbParameter par5 = Database.addParameter("AdminDB", "@Barcode", c.Barcode);
-            return Database.InsertData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4, par5);
+            try
+            {  
+                return Database.InsertData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4, par5);
+
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+           
         }
 
-        public static void UpdateEmployee(Employee c, IEnumerable<Claim> claims)
+        public static int UpdateEmployee(Employee c, IEnumerable<Claim> claims)
         {
             string sql = "UPDATE Employee SET EmployeeName=@EmployeeName, Address=@Address, Email=@Email, Phone=@Phone WHERE Barcode=@Barcode";
             DbParameter par1 = Database.addParameter("AdminDB", "@EmployeeName", c.EmployeeName);
@@ -109,15 +138,37 @@ namespace WEB_API_2NMCT1.Models
             DbParameter par4 = Database.addParameter("AdminDB", "@Phone", c.Phone);
           
             DbParameter par6 = Database.addParameter("AdminDB", "@Barcode", c.Barcode);
-            Database.ModifyData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4, par6);
+
+            try
+            {
+                return Database.ModifyData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4, par6);
+
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+          
         }
 
-        public static void DeleteEmployee(long id, IEnumerable<Claim> claims)
+        public static int DeleteEmployee(long id, IEnumerable<Claim> claims)
         {
             string sql = "DELETE FROM Employee WHERE Barcode=@ID";
             DbParameter par1 = Database.addParameter("AdminDB", "@Barcode", id);
             DbConnection con = Database.GetConnection(CreateConnectionString(claims));
-            Database.ModifyData(con, sql, par1);
+            try
+            { 
+                return Database.ModifyData(con, sql, par1);
+               
+
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+          
         }
     }
 }

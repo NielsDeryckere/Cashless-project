@@ -33,26 +33,34 @@ namespace WEB_API_2NMCT1.Models
             List<Customer> list = new List<Customer>();
             string sql = "SELECT * FROM Customer";
 
+            try
+            { DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql);
 
-            DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql);
+                //ConnectionStringSettingsCollection ConnectionStrings = ConfigurationManager.ConnectionStrings;
+                while (reader.Read())
+                {
+                    Customer c = new Customer();
+                    c.Id = int.Parse(reader["ID"].ToString());
+                    c.CustomerName = reader["CustomerName"].ToString();
+                    c.Address = reader["Address"].ToString();
+                    if (!DBNull.Value.Equals(reader["Picture"]))
+                        c.Picture = (byte[])reader["Picture"];
+                    else
+                        c.Picture = new byte[0];
+                    c.Balance = Double.Parse(reader["Balance"].ToString());
+                    c.Barcode = Int64.Parse(reader["BarCode"].ToString());
+                    list.Add(c);
+                }
+                reader.Close();
+                return list;
 
-            //ConnectionStringSettingsCollection ConnectionStrings = ConfigurationManager.ConnectionStrings;
-            while (reader.Read())
-            {
-                Customer c = new Customer();
-                c.Id = int.Parse(reader["ID"].ToString());
-                c.CustomerName = reader["CustomerName"].ToString();
-                c.Address = reader["Address"].ToString();
-                if (!DBNull.Value.Equals(reader["Picture"]))
-                    c.Picture = (byte[])reader["Picture"];
-                else
-                    c.Picture = new byte[0];
-                c.Balance = Double.Parse(reader["Balance"].ToString());
-                c.Barcode = Int64.Parse(reader["BarCode"].ToString());
-                list.Add(c);
             }
-            reader.Close();
-            return list;
+            catch (Exception)
+            {
+
+                return null;
+            }
+           
         }
 
         public static List<Customer> GetCustomers()
@@ -62,26 +70,34 @@ namespace WEB_API_2NMCT1.Models
             List<Customer> list = new List<Customer>();
             string sql = "SELECT * FROM Customer";
 
-
-            DbDataReader reader = Database.GetData(Database.GetConnection(Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT",DBNAME,DBLOGIN,DBPASS)), sql);
+            try
+            { DbDataReader reader = Database.GetData(Database.GetConnection(Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT",DBNAME,DBLOGIN,DBPASS)), sql);
 
             //ConnectionStringSettingsCollection ConnectionStrings = ConfigurationManager.ConnectionStrings;
-            while (reader.Read())
-            {
-                Customer c = new Customer();
+                while (reader.Read())
+                {
+                    Customer c = new Customer();
                
-                c.CustomerName = reader["CustomerName"].ToString();
-                c.Address = reader["Address"].ToString();
-                if (!DBNull.Value.Equals(reader["Picture"]))
-                    c.Picture = (byte[])reader["Picture"];
-                else
-                    c.Picture = new byte[0];
-                c.Balance = Double.Parse(reader["Balance"].ToString());
-                c.Barcode = Int64.Parse(reader["BarCode"].ToString());
-                list.Add(c);
-            }
+                    c.CustomerName = reader["CustomerName"].ToString();
+                    c.Address = reader["Address"].ToString();
+                    if (!DBNull.Value.Equals(reader["Picture"]))
+                        c.Picture = (byte[])reader["Picture"];
+                    else
+                        c.Picture = new byte[0];
+                    c.Balance = Double.Parse(reader["Balance"].ToString());
+                    c.Barcode = Int64.Parse(reader["BarCode"].ToString());
+                    list.Add(c);
+                }
             reader.Close();
             return list;
+
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+           
         }
 
         //public static Customer GetCustomer(int id)
@@ -115,7 +131,18 @@ namespace WEB_API_2NMCT1.Models
             DbParameter par3 = Database.addParameter("AdminDB", "@Picture", c.Picture);
             DbParameter par4 = Database.addParameter("AdminDB", "@Balance", c.Balance);
             DbParameter par5 = Database.addParameter("AdminDB", "@Barcode", c.Barcode);
-            return Database.InsertData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4,par5);
+
+            try
+            {
+                return Database.InsertData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4,par5);
+
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+            
         }
 
         public static int InsertCustomer(Customer c)
@@ -126,10 +153,20 @@ namespace WEB_API_2NMCT1.Models
             DbParameter par3 = Database.addParameter("AdminDB", "@Picture", c.Picture);
             DbParameter par4 = Database.addParameter("AdminDB", "@Balance", c.Balance);
             DbParameter par5 = Database.addParameter("AdminDB", "@Barcode", c.Barcode);
-            return Database.InsertData(Database.GetConnection(Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT",DBNAME,DBLOGIN,DBPASS)), sql, par1, par2, par3, par4, par5);
+            try
+            { 
+                return Database.InsertData(Database.GetConnection(Database.CreateConnectionString("System.Data.SqlClient", @"MCT-NIELS\DATAMANAGEMENT",DBNAME,DBLOGIN,DBPASS)), sql, par1, par2, par3, par4, par5);
+
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+           
         }
 
-        public static void UpdateCustomer(Customer c, IEnumerable<Claim> claims)
+        public static int UpdateCustomer(Customer c, IEnumerable<Claim> claims)
         {
             string sql = "UPDATE Customer SET CustomerName=@CustomerName, Address=@Address, Picture=@Picture, Balance=@Balance,WHERE Barcode=@Barcode";
             DbParameter par1 = Database.addParameter("AdminDB", "@CustomerName", c.CustomerName);
@@ -138,15 +175,35 @@ namespace WEB_API_2NMCT1.Models
             DbParameter par4 = Database.addParameter("AdminDB", "@Balance", c.Balance);
            
             DbParameter par6 = Database.addParameter("AdminDB", "@Barcode", c.Barcode);
-            Database.ModifyData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4,par6);
+            try
+            { 
+               return Database.ModifyData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4,par6);
+
+            }
+            catch (Exception)
+            {
+                return 0;
+               
+            }
+           
         }
 
-        public static void DeleteCustomer(long id, IEnumerable<Claim> claims)
+        public static int DeleteCustomer(long id, IEnumerable<Claim> claims)
         {
             string sql = "DELETE FROM Customer WHERE Barcode=@Barcode";
             DbParameter par1 = Database.addParameter("AdminDB", "@Barcode", id);
             DbConnection con = Database.GetConnection(CreateConnectionString(claims));
-            Database.ModifyData(con, sql, par1);
+            try
+            {
+               return Database.ModifyData(con, sql, par1);
+
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+            
         }
 
       

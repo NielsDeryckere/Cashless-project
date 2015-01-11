@@ -16,6 +16,7 @@ namespace Register_Employee.ViewModel
 {
     class PageTwoVM: ObservableObject,IPage
     {
+        #region Getters/setters
         public PageTwoVM()
         {
             GetProducts();
@@ -116,8 +117,17 @@ namespace Register_Employee.ViewModel
             get { return _error; }
             set { _error = value; OnPropertyChanged("Error"); }
         }
+
+        private double _differenceTotalBalance;
+
+        public double DifferenceTotalBalance
+        {
+            get { return _differenceTotalBalance; }
+            set { _differenceTotalBalance = value; OnPropertyChanged("DifferenceTotalBalance"); }
+        }
         
-        
+        #endregion
+
         public async void GetProducts()
         {
             using (HttpClient client = new HttpClient())
@@ -128,6 +138,7 @@ namespace Register_Employee.ViewModel
                     string json = await response.Content.ReadAsStringAsync();
                     Products = JsonConvert.DeserializeObject<ObservableCollection<Product>>(json);
                 }
+                else { MessageBox.Show("Could not load products,contact responsible"); }
             }
             
             
@@ -167,7 +178,7 @@ namespace Register_Employee.ViewModel
                         s.Amount = 1;
                         s.CustomerId = ScannedCustomer.Barcode;
                         s.ProductId = p.Id;
-                        s.RegisterId = 2;
+                        s.RegisterId = 5;
                         s.Timestamp = DateTime.Now;
                         s.TotalPrice = p.Price;
 
@@ -181,6 +192,11 @@ namespace Register_Employee.ViewModel
                             HttpResponseMessage response = await client.PutAsync("http://localhost:41983/api/ProductRegister/", new StringContent(input, Encoding.UTF8, "application/json"));
                             if (response.IsSuccessStatusCode)
                             {
+                               
+
+                            }
+                            else
+                            {
 
                             }
                         }
@@ -188,9 +204,9 @@ namespace Register_Employee.ViewModel
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine(ex.Message);
+                            MessageBox.Show("There were no transactions");
                             
-                            throw;
+                          
                         }
                        
                       
@@ -199,10 +215,11 @@ namespace Register_Employee.ViewModel
                     Customers.Clear();
                     GetCustomers();
                     TotalPrice = 0;
+                    DifferenceTotalBalance = 0;
                     }
                 else
                     {
-                        Error = "The customer his balance is not sufficient";
+                       MessageBox.Show("Customers balance is insufficient");
                         
                         
                     }
@@ -228,7 +245,8 @@ namespace Register_Employee.ViewModel
                 
                 OrderedProducts.Add(ClickedProduct);
              
-                 TotalPrice += ClickedProduct.Price; 
+                 TotalPrice += ClickedProduct.Price;
+                 DifferenceTotalBalance = ScannedCustomer.Balance - TotalPrice;
             }
             catch (Exception ex)
             {
@@ -252,7 +270,9 @@ namespace Register_Employee.ViewModel
             {
                 ScannedCustomer = (from p in Customers where p.Barcode == BarcodeCustomer select p).First();
                 if (ScannedCustomer != null)
-                { CustomerScanned = true; }
+                { CustomerScanned = true;
+                DifferenceTotalBalance = ScannedCustomer.Balance - TotalPrice;
+                }
 
             }
             catch (Exception ex)
@@ -272,7 +292,7 @@ namespace Register_Employee.ViewModel
             ApplicationVM appvm = App.Current.MainWindow.DataContext as ApplicationVM;
             using (HttpClient client = new HttpClient())
             {
-                EmployeeRegister er = new EmployeeRegister() {RegisterID= 2,EmployeeID= CurrentEmployee.Barcode,From= appvm.From,Untill=DateTime.Now };
+                EmployeeRegister er = new EmployeeRegister() {RegisterID= 5,EmployeeID= CurrentEmployee.Barcode,From= appvm.From,Untill=DateTime.Now };
                 
                 string input = JsonConvert.SerializeObject(er);
              
@@ -299,8 +319,33 @@ namespace Register_Employee.ViewModel
 
         private void RemoveProduct(Product obj)
         {
-            OrderedProducts.Remove(obj);
-            TotalPrice -= obj.Price;
+            try
+            { 
+                if(OrderedProducts.Count==1)
+                { OrderedProducts.Clear();
+                TotalPrice -= obj.Price;
+                DifferenceTotalBalance = ScannedCustomer.Balance - TotalPrice;
+
+                }
+                OrderedProducts.Remove(obj);
+                TotalPrice -= obj.Price;
+                DifferenceTotalBalance = ScannedCustomer.Balance - TotalPrice;
+
+            }
+            catch (Exception ex)
+            {  
+                MessageBox.Show("You have to select a product to return");
+                
+
+           
+               
+            }
+               
+            
+
+              
+               
+            
         }
       
     }

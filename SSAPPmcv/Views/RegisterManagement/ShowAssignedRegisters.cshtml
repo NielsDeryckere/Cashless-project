@@ -2,25 +2,15 @@
 @{
     ViewBag.Title = "ShowAssignedRegisters";
 }
-<div class="navbar-collapse collapse">
-    <ul class="nav navbar-nav">
-        <li>@Html.ActionLink("New", "New", "RegisterManagement")</li>
-        <li>@Html.ActionLink("Show Available Registers", "ShowAvailableRegisters", "RegisterManagement")</li>
-        <li>@Html.ActionLink("Show assigned Registers", "ShowAssignedRegisters", "RegisterManagement")</li>
 
-    </ul>
-
-
-</div>
-<h2>Show assigned registers for each organisation</h2>
-
+<h2>Assigned Registers</h2>
 
 @{
     int i = 0;
     foreach (models.Organisation o in ViewBag.Organisations)
     {
         <h3>@o.OrganisationName</h3>
-        <table style="margin: 10px;">
+        <table class="table">
             <tr>
                 <th>Registername</th>
                 <th>Device</th>
@@ -34,7 +24,9 @@
                     <td>@r.DeviceName</td>
                     <td>@r.PurchaseDate</td>
                     <td>@r.ExpiresDate</td>
-                    <td><a href="UnAssignRegister/?regid=@r.Id&orgid=@o.ID">Unassign</a></td>
+                    <td> @Html.ActionLink("Unassign", "UnAssignRegister", new { regid = r.Id,orgid=o.ID})</td>
+                    <td> @Html.ActionLink("View Log", "ViewErrorlog", new { regid = r.Id, orgid = o.ID })       </td>
+                    
                 </tr>
             }
 

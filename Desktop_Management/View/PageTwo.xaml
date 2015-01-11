@@ -44,17 +44,17 @@
                     <Label Content="Logged in as:" Margin="5" Grid.Row="2"/>
                     <TextBlock TextWrapping="Wrap"  Text="{Binding CompanyName}" Grid.Row="1" Grid.Column="1"  Margin="10,10,500,10"/>
                     <TextBlock TextWrapping="Wrap"  Text="{Binding AccountName}" Grid.Row="2" Grid.Column="1"  Margin="10,9,500,10"/>
-                    <TextBox TextWrapping="Wrap"  Text="{Binding MyPassword}" Grid.Row="4" Grid.Column="1" Width="300" Margin="10,35,530,189" Height="30"/>
+                    <TextBox TextWrapping="Wrap"  Text="{Binding MyPassword}" Grid.Row="4" Grid.Column="1" Width="300" Margin="13,16,532,214" Height="30"/>
 
                     <Label Content="Current password" HorizontalAlignment="Left" Margin="10,30,0,0" Grid.Row="4" VerticalAlignment="Top" Width="126"/>
                     <Label Content="New password" HorizontalAlignment="Left" Margin="10,93,0,0" Grid.Row="4" VerticalAlignment="Top" Width="126"/>
-                    <TextBox TextWrapping="Wrap" Text="{Binding NewPassword}" Grid.Row="4" Grid.Column="1" Width="300" Height="30" Margin="10,98,530,126"/>
+                    <TextBox TextWrapping="Wrap" Text="{Binding NewPassword}" Grid.Row="4" Grid.Column="1" Width="300" Height="30" Margin="13,79,532,151"/>
                     <Label Content="Repeat new password" HorizontalAlignment="Left" Margin="10,141,0,0" Grid.Row="4" VerticalAlignment="Top" Grid.Column="0"/>
-                    <TextBox TextWrapping="Wrap" Text="{Binding RepeatPassword}" Grid.Row="4" Grid.Column="1" Width="300" Height="30" Margin="10,146,530,78"/>
+                    <TextBox TextWrapping="Wrap" Text="{Binding RepeatPassword}" Grid.Row="4" Grid.Column="1" Width="300" Height="30" Margin="13,127,532,103"/>
 
 
                     <TextBlock HorizontalAlignment="Left" FontSize="30"  Margin="10,73,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Change password" VerticalAlignment="Top" Height="44" Width="748" Grid.ColumnSpan="2"/>
-                    <Button Content="Change" Grid.Column="1" HorizontalAlignment="Left" Margin="10,186,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75"/>
+                    <Button Content="Change" Grid.Column="1" HorizontalAlignment="Left" Margin="10,186,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75" Command="{Binding ChangePasswordCommand}"/>
                     <TextBlock TextWrapping="Wrap"  Text="" Grid.Row="4" Grid.Column="1" Width="300" Margin="345,35,195,189" Height="30"/>
                     <TextBlock TextWrapping="Wrap"  Text="{Binding Error}" Grid.Row="4" Grid.Column="1" Width="300" Margin="345,35,195,189" Height="30"/>
                     <TextBlock TextWrapping="Wrap" Text="{Binding NewPassError}" Grid.Row="4" Grid.Column="1" Width="300" Height="30" Margin="345,98,195,126" />
@@ -302,23 +302,23 @@
                             <Button Name="btnNewCostumer" Content="New" Grid.Column="0" Grid.Row="0" Margin="10" Command="{Binding NewCustomerCommand}"/>
                             <Button Name="btnSaveCustomer" Content="Save" Grid.Column="1" Grid.Row="0" Margin="10" Command="{Binding SaveCustomerCommand}" />
                             <Button Name="btnDeleteCustomer" Content="Delete" Grid.Column="2" Grid.Row="0" Margin="10" Command="{Binding DeleteCustomerCommand}" IsEnabled="{Binding ElementName=lstvCustomer, Path=SelectedItems.Count}"/>
-                            <Image Name="imgCustomer" Grid.Row="1" Grid.Column="0" Margin="5" Source="{Binding SelectedCustomer.Picture}" />
+                            <Image Name="imgCustomer" Grid.Row="1" Grid.Column="0" Margin="5" Source="{Binding SelectedCustomer.Picture,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                             <Button Content="Read identity card" Grid.Row="1" Grid.Column="1" Margin="5, 100,5,5" Command="{Binding ReadIdentityCardCommand}" IsEnabled="{Binding Test}" />
 
 
                             <Label Name="lblNameCustomer" Content="Name" Grid.Column="0"  Grid.Row="3" Margin="10" />
-                            <TextBlock Name="txtNameCustomer" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.CustomerName}" />
+                            <TextBlock Name="txtNameCustomer" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.CustomerName,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  Validation.ErrorTemplate="{StaticResource ErrorTemplate}" />
 
 
                             <Label Name="lblAddressCustomer" Content="Address" Grid.Column="0" Grid.Row="4" Margin="10" />
-                            <TextBlock Name="txtAddressCustomer" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.Address}" />
+                            <TextBlock Name="txtAddressCustomer" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.Address,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  Validation.ErrorTemplate="{StaticResource ErrorTemplate}" />
 
                             <Label Name="lblBalanceCustomer" Content="Balance" Grid.Column="0" Grid.Row="5" Margin="10" />
-                            <TextBlock Name="txtBalanceCustomer" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.Balance}"/>
+                            <TextBox Name="txtBalanceCustomer" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.Balance,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"  Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
 
 
                             <Label Name="lblBarcode" Content="Barcode" Grid.Column="0" Grid.Row="6" Margin="10" />
-                            <TextBlock Name="txtBarcode" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.Barcode, UpdateSourceTrigger=Default, ValidatesOnDataErrors=True}"/>
+                            <TextBlock Name="txtBarcode" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.Barcode, UpdateSourceTrigger=Default, ValidatesOnDataErrors=True}"  Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
 
 
 

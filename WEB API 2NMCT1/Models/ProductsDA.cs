@@ -138,7 +138,7 @@ namespace WEB_API_2NMCT1.Models
                
                 string sql2 = "INSERT INTO Sales VALUES(@Timestamp,@CustomerID,@RegisterID,@ProductID,@Amount,@TotalPrice)";
                 DbParameter par3 = Database.addParameter(con, "@Amount", t.Receiver.Amount);
-                DbParameter par4 = Database.addParameter(con, "@Timestamp", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                DbParameter par4 = Database.addParameter(con, "@Timestamp",DateConverter.DateTimeToUnixTimestamp(DateTime.Now));
                 DbParameter par5 = Database.addParameter(con, "@CustomerID", t.Sender.Barcode);
                 DbParameter par6 = Database.addParameter(con, "@RegisterID", t.Receiver.RegisterId);
                 DbParameter par7 = Database.addParameter(con, "@ProductID", t.Receiver.ProductId);
@@ -152,6 +152,17 @@ namespace WEB_API_2NMCT1.Models
             {
                 if (trans != null)
                     trans.Rollback();
+                Errorlog er = new Errorlog()
+                {
+
+                    Message = "Could not complete transaction",
+                    RegisterId = 5,
+                    Stacktrace = ex.StackTrace,
+                    Timestamp = DateTime.Now,
+
+                };
+
+                ErrorlogDA.InsertErrorlog(er);
             }
             finally
             {

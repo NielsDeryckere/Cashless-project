@@ -1,5 +1,6 @@
 ﻿using models;
 using SSAPPmcv.DataAcces;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,7 +80,7 @@ namespace SSAPPmcv.Controllers
 
 
             RegisterClientDAcs.ChangeConnectionString("System.Data.SqlClient", "MCT-NIELS"+@"\DATAMANAGEMENT", Cryptography.Decrypt(o.DbName), Cryptography.Decrypt(o.DbLogin), Cryptography.Decrypt(o.DbPassword));
-            RegisterClientDAcs.InsertRegister(r);
+             RegisterClientDAcs.InsertRegister(r);
 
 
 
@@ -101,8 +102,14 @@ namespace SSAPPmcv.Controllers
         [HttpGet]
         public ActionResult ShowAssignedRegisters()
         {
+           
+                List<Organisation> oList = OrganisationDA.GetOrganisations();
             List<RegistersOrganisation> orList = Register_OrganisationDA.GetOrganisation_Registers();
-            List<Organisation> oList = OrganisationDA.GetOrganisations();
+            List<Register> registers=new List<Register>();
+
+
+
+
             List<Register>[] rList = new List<Register>[oList.Count]; int i = 0;
             for (i = 0; i < rList.Length; i++)
             {
@@ -121,6 +128,20 @@ namespace SSAPPmcv.Controllers
             ViewBag.Organisations = oList;
             ViewBag.Registers = rList;
             return View();
+        }
+
+        public ActionResult ViewErrorlog(int regid,int orgid)
+        {
+            Organisation o = new Organisation();
+            o = OrganisationDA.GetOrganisations(orgid);
+            ViewBag.register = regid;
+            ErrorlogDA.ChangeConnectionString("System.Data.SqlClient", "MCT-NIELS" + @"\DATAMANAGEMENT", Cryptography.Decrypt(o.DbName), Cryptography.Decrypt(o.DbLogin), Cryptography.Decrypt(o.DbPassword));
+            List<Errorlog> errorlist = new List<Errorlog>();
+            errorlist = ErrorlogDA.GetErrorlogs(regid);
+
+            return View(errorlist);
+
+
         }
 
     }

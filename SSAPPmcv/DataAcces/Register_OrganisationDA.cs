@@ -81,14 +81,24 @@ namespace SSAPPmcv.DataAcces
                                        System.Globalization.CultureInfo.InvariantCulture)
         };
         }
-        public static void InsertOrganisation_Register(RegistersOrganisation or)
+        public static int InsertOrganisation_Register(RegistersOrganisation or)
         {
+            try
+            { 
             string sql = "INSERT INTO Organisation_Register VALUES(@OrganisationID, @RegisterID, @FromDate, @UntilDate)";
             DbParameter par1 = Database.addParameter(ConnectionString, "@OrganisationID", or.Organisationid);
             DbParameter par2 = Database.addParameter(ConnectionString, "@RegisterID", or.RegisterId);
             DbParameter par3 = Database.addParameter(ConnectionString, "@FromDate", or.From.ToString("yyyy-MM-dd"));
             DbParameter par4 = Database.addParameter(ConnectionString, "@UntilDate", or.Untill.ToString("yyyy-MM-dd"));
-            Database.InsertData(Database.GetConnection(ConnectionString), sql, par1, par2, par3, par4);
+           return Database.InsertData(Database.GetConnection(ConnectionString), sql, par1, par2, par3, par4);
+
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+           
         }
 
         public static void DeleteRegistersOrganisation(int regid,int orgid)

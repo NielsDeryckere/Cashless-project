@@ -30,8 +30,12 @@ namespace SSAPPmcv.Controllers
         {
             if(ModelState.IsValid)
             { 
-            OrganisationDA.InsertOrganisation(o);
-            return RedirectToAction("ListOrganisations");
+                int id=OrganisationDA.InsertOrganisation(o);
+
+                if (id > 0) { 
+            return RedirectToAction("ListOrganisations");}
+
+                else { return View("Error3"); }
             }
             else { return View("New"); }
         }
@@ -51,8 +55,11 @@ namespace SSAPPmcv.Controllers
         [HttpPost]
         public ActionResult Edit(Organisation o)
         {
-            OrganisationDA.EditOrganisation(o);
-            return RedirectToAction("ListOrganisations");
+            if (!ModelState.IsValid)
+            { return View("Edit", o); }
+            else { 
+          OrganisationDA.EditOrganisation(o);
+           return RedirectToAction("ListOrganisations");} 
         }
 
       

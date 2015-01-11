@@ -6,7 +6,7 @@
 <h2>Organisations</h2>
 
 
-<table style="margin: 10px;padding:10px; border-width:2px">
+<table class="table">
     <tr>
         <th>Name</th>
         <th>Address</th>
@@ -15,6 +15,7 @@
         <th>Login</th>
         <th>DbName</th>
         <th>DbLogin</th>
+        <th>DbPassword</th>
     </tr>
     @foreach (models.Organisation o in ViewBag.Organisations)
     {
@@ -26,6 +27,7 @@
             <td>@models.Cryptography.Decrypt(o.Login)</td>
             <td>@models.Cryptography.Decrypt(o.DbName)</td>
             <td>@models.Cryptography.Decrypt(o.DbLogin)</td>
+            <td>@models.Cryptography.Decrypt(o.DbPassword)</td>
             <td><a href="Edit/?id=@o.ID">Edit</a></td>
             <td><a href="Delete/?id=@o.ID&dbname=@models.Cryptography.Decrypt(o.DbName)&dblogin=@models.Cryptography.Decrypt(o.DbLogin)">Delete</a></td>
         </tr>

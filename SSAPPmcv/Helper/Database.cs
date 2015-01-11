@@ -81,12 +81,14 @@ namespace WEB_API_2NMCT1.Helper
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                
                 if (reader != null)
                     reader.Close();
                 if (command != null)
                     ReleaseConnection(command.Connection);
-                throw;
+
+
+                return null;
             }
         }
 
@@ -161,7 +163,7 @@ namespace WEB_API_2NMCT1.Helper
                 {
                     ReleaseConnection(command.Connection);
 
-                    return 0;
+                   
                 }
                 return 0;
                
@@ -190,9 +192,9 @@ namespace WEB_API_2NMCT1.Helper
                 {
                     ReleaseConnection(command.Connection);
 
-                    return 0;
-                }
-                throw;
+                   
+                } return 0;
+               
             }
         }
         private static DbCommand BuildCommand(DbTransaction trans, string sql, params DbParameter[] parameters)

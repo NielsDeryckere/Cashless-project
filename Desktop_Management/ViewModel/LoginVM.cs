@@ -60,7 +60,7 @@ namespace Desktop_Management.ViewModel
             }
             else
             {
-                Error = "Gebruikersnaam of paswoord kloppen niet";
+                Error = "Username and/or password doesn't match";
             }
         }
 

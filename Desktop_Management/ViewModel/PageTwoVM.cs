@@ -19,6 +19,7 @@ namespace Desktop_Management.ViewModel
 {
     class PageTwoVM : ObservableObject, IPage
     {
+        #region Getters/setters
         private ObservableCollection<Product> _products;
         public ObservableCollection<Product> Products
         {
@@ -133,6 +134,15 @@ namespace Desktop_Management.ViewModel
             set { _newPassError = value; OnPropertyChanged("NewPassError"); }
         }
 
+        private string _passError;
+
+        public string PasswordError
+        {
+            get { return _passError; }
+            set { _passError = value; OnPropertyChanged("Could not change password"); }
+        }
+        
+
         private ObservableCollection<Sales> _sales;
 
         public ObservableCollection<Sales> SalesList
@@ -188,10 +198,19 @@ namespace Desktop_Management.ViewModel
             get { return _testProduct; }
             set { _testProduct = value; OnPropertyChanged("TestProduct"); }
         }
+
+        private string _accountError;
+
+        public string AccountError
+        {
+            get { return _accountError; }
+            set { _accountError = value; OnPropertyChanged("AccountError"); }
+        }
         
-        
-        
-        
+        #endregion
+
+
+
         public PageTwoVM()
         {
             if (ApplicationVM.token != null)
@@ -261,14 +280,33 @@ namespace Desktop_Management.ViewModel
                 if (response.IsSuccessStatusCode)
                 {
                     string json = await response.Content.ReadAsStringAsync();
+                     
                     AccountInfo = JsonConvert.DeserializeObject<Organisation>(json);
                     AccountName = AccountInfo.Login;
                     CompanyName = AccountInfo.OrganisationName;
                     ManagementPassword =AccountInfo.Password;
+
+
                    
                 }
             }
         }
+
+        private async void GetProducts()
+        {
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.SetBearerToken(ApplicationVM.token.AccessToken);
+                HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/Product");
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    Products = JsonConvert.DeserializeObject<ObservableCollection<Product>>(json);
+                }
+            }
+
+        }  
         #endregion
 
         public void test()
@@ -335,17 +373,17 @@ namespace Desktop_Management.ViewModel
                 {
                     if (NewPassword == RepeatPassword)
                     {
-                        object[] data = { AccountInfo, NewPassword };
+                        object[] data = { AccountInfo.ID, NewPassword };
                         string input = JsonConvert.SerializeObject(data);
                         using (HttpClient client = new HttpClient())
                         {
-                            client.SetBearerToken(ApplicationVM.token.AccessToken);
+                            //client.SetBearerToken(ApplicationVM.token.AccessToken);
                             HttpResponseMessage response = await client.PutAsync("http://localhost:41983/api/AccountInfo", new StringContent(input, Encoding.UTF8, "application/json"));
                             if (!response.IsSuccessStatusCode)
                             {
-                                Console.WriteLine("error could not change password");
+                                MessageBox.Show("Could not change password");
                             }
-
+                            //MessageBox.Show("Password has been changed");
                         }
 
 
@@ -367,7 +405,7 @@ namespace Desktop_Management.ViewModel
 
 
             }
-            else { Console.WriteLine("The passwords cannot be empty!"); }
+            else { MessageBox.Show("you have to fill in data"); }
         }
 
         private bool CheckFilledInPasswords()
@@ -380,21 +418,7 @@ namespace Desktop_Management.ViewModel
         }
         #endregion
         #region productcommands en methods
-        private async void GetProducts()
-        {
-
-            using (HttpClient client = new HttpClient())
-            {
-                client.SetBearerToken(ApplicationVM.token.AccessToken);
-                HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/Product");
-                if (response.IsSuccessStatusCode)
-                {
-                    string json = await response.Content.ReadAsStringAsync();
-                    Products = JsonConvert.DeserializeObject<ObservableCollection<Product>>(json);
-                }
-            }
-
-        }  
+       
         public ICommand NewProductCommand
         {
             get { return new RelayCommand(NewProduct); }
@@ -490,7 +514,7 @@ namespace Desktop_Management.ViewModel
             }
         }
 
-        private Customer _selected;
+        private Customer _selected=null;
         public Customer SelectedCustomer
         {
             get { return _selected; }
@@ -504,7 +528,7 @@ namespace Desktop_Management.ViewModel
 
         public ICommand SaveCustomerCommand
         {
-            get {  return new RelayCommand(SaveCustomer); }
+            get {  return new RelayCommand(SaveCustomer,SelectedCustomer.IsValid); }
         }
 
         public ICommand DeleteCustomerCommand
@@ -520,7 +544,8 @@ namespace Desktop_Management.ViewModel
 
         private void ReadIdentity()
         {
-            string barcode="";
+            try
+            {string barcode="";
              Customer c = new Customer();
              if (SelectedCustomer.Barcode != 0)
              { c.Barcode = SelectedCustomer.Barcode; }
@@ -567,6 +592,15 @@ namespace Desktop_Management.ViewModel
             bb.Save(c.CustomerName+".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
             c.Barcode = Int64.Parse(barcode);
             SelectedCustomer = c;
+
+
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("Could not read identitycard");
+            }
+            
         }
 
       
@@ -614,11 +648,11 @@ namespace Desktop_Management.ViewModel
                         }
                         else
                         {
-                            Console.WriteLine("could not save customer");
+                            MessageBox.Show("Could not save customer");
                         }
                     }
                 }
-                else { Console.WriteLine("Customer already exists"); }
+                else { MessageBox.Show("Customer already exists"); }
             }
             else
             {
@@ -630,6 +664,7 @@ namespace Desktop_Management.ViewModel
                     {
                         Console.WriteLine("error");
                     }
+                    MessageBox.Show("Customer Saved");
                     GetCustomers();
                 }
             }
@@ -643,10 +678,12 @@ namespace Desktop_Management.ViewModel
                 HttpResponseMessage response = await client.DeleteAsync("http://localhost:41983/api/customer/" + SelectedCustomer.Barcode);
                 if (!response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("error");
+                    MessageBox.Show("Could not save customer");
                 }
                 else
                 {
+                    MessageBox.Show("Customer Updated");
+
                     GetCustomers();
                 }
             }

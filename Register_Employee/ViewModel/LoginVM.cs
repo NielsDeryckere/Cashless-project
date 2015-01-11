@@ -4,11 +4,17 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using Aspose.BarCode;
+using Aspose.BarCodeRecognition;
+using System.Drawing.Imaging;
+using WiaDotNet;
 
 namespace Register_Employee.ViewModel
 {
@@ -74,6 +80,7 @@ namespace Register_Employee.ViewModel
                     string json = await response.Content.ReadAsStringAsync();
                     EmployeeLogins = JsonConvert.DeserializeObject<ObservableCollection<Employee>>(json);
                 }
+                else { MessageBox.Show("Could not load users"); }
             }
         
         }
@@ -86,8 +93,8 @@ namespace Register_Employee.ViewModel
             foreach(Employee e in EmployeeLogins)
             {
                 if(_logintrue==false)
-            { 
-                
+            {
+              
                 if (e.Barcode==Int64.Parse(Barcode))
                 {
                     _logintrue = true;
@@ -95,10 +102,7 @@ namespace Register_Employee.ViewModel
                     
                     
                 }
-                else {
-                  
-            
-                }
+                
                 }
 
 

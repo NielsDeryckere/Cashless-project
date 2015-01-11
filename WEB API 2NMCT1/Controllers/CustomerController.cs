@@ -32,15 +32,17 @@ namespace WEB_API_2NMCT1.Controllers
         public HttpResponseMessage Put(Customer c)
         {
             ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
-            CustomerDA.UpdateCustomer(c, p.Claims);
-
+            int i=CustomerDA.UpdateCustomer(c, p.Claims);
+            if(i==0)
+            { return new HttpResponseMessage(HttpStatusCode.NoContent); }
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
         public HttpResponseMessage Delete(long id)
         {
             ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
-            CustomerDA.DeleteCustomer(id, p.Claims);
+            int i=CustomerDA.DeleteCustomer(id, p.Claims);
+            if (i == 0) { return new HttpResponseMessage(HttpStatusCode.NoContent); }
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
     }

@@ -76,17 +76,17 @@ namespace WEB_API_2NMCT1.Helper
             {
                 command = BuildCommand(con, sql, parameters);
                 reader = command.ExecuteReader(CommandBehavior.CloseConnection);
-
+              
                 return reader;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                if (reader != null)
+                 if (reader != null)
                     reader.Close();
                 if (command != null)
                     ReleaseConnection(command.Connection);
-                throw;
+                return null;
             }
         }
 
@@ -133,7 +133,7 @@ namespace WEB_API_2NMCT1.Helper
 
 
                 }
-                throw;
+                return null;
             }
 
 
@@ -161,9 +161,9 @@ namespace WEB_API_2NMCT1.Helper
                 {
                     ReleaseConnection(command.Connection);
 
-                    return 0;
+                   
                 }
-                throw;
+                return 0;
             }
         }
         private static DbCommand BuildCommand(DbTransaction trans, string sql, params DbParameter[] parameters)
@@ -209,7 +209,7 @@ namespace WEB_API_2NMCT1.Helper
 
 
                 }
-                throw;
+                return null;
             }
 
 
@@ -237,7 +237,7 @@ namespace WEB_API_2NMCT1.Helper
 
 
                 }
-                throw;
+                return 0;
             }
         }
 
@@ -259,7 +259,7 @@ namespace WEB_API_2NMCT1.Helper
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                throw;
+                return 0;
             }
         }
 
@@ -325,7 +325,7 @@ namespace WEB_API_2NMCT1.Helper
             {
                 Console.WriteLine(ex.Message);
                 ReleaseConnection(con);
-                throw;
+                return null;
             }
 
 
@@ -344,7 +344,7 @@ namespace WEB_API_2NMCT1.Helper
             {
                 Console.WriteLine(ex.Message);
                 ReleaseConnection(con);
-                throw;
+                return null;
             }
 
 

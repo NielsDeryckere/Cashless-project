@@ -220,6 +220,8 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\CustomerRegisterController.cs" />
     <Compile Include="Controllers\EmployeeRegisterController.cs" />
+    <Compile Include="Controllers\ErrorlogController.cs" />
+    <Compile Include="Controllers\ErrorlogManagementController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginRegisterController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -241,6 +243,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CustomerDA.cs" />
     <Compile Include="Models\EmployeeDA.cs" />
+    <Compile Include="Models\ErrorlogDA.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\OrganisationDA.cs" />
     <Compile Include="Models\ProductsDA.cs" />

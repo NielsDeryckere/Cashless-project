@@ -10,6 +10,8 @@ using be.belgium.eid;
 using Aspose.BarCode.WPF;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.Windows;
+
 
 namespace Terminal_Customer.ViewModel
 {
@@ -124,54 +126,62 @@ namespace Terminal_Customer.ViewModel
 
         private void register()
         {
-       
-            string barcode="";
-             Customer c = new Customer();
-             if (NewCustomer.Barcode != 0)
-             { c.Barcode = NewCustomer.Barcode; }
 
-             
-            
-
-           
-            BEID_ReaderSet.initSDK();
-            // access the eID card here
-            if (BEID_ReaderSet.instance().readerCount() > 0)
+            try
             {
-                BEID_ReaderContext readerContext = readerContext = BEID_ReaderSet.instance().getReader();
-                if (readerContext != null)
+                string barcode = "";
+                Customer c = new Customer();
+                if (NewCustomer.Barcode != 0)
+                { c.Barcode = NewCustomer.Barcode; }
+
+
+
+
+
+                BEID_ReaderSet.initSDK();
+                // access the eID card here
+                if (BEID_ReaderSet.instance().readerCount() > 0)
                 {
-                    if (readerContext.getCardType() == BEID_CardType.BEID_CARDTYPE_EID)
+                    BEID_ReaderContext readerContext = readerContext = BEID_ReaderSet.instance().getReader();
+                    if (readerContext != null)
                     {
-                        BEID_EIDCard card = readerContext.getEIDCard();
-                      
-                        BEID_Picture picture;
+                        if (readerContext.getCardType() == BEID_CardType.BEID_CARDTYPE_EID)
+                        {
+                            BEID_EIDCard card = readerContext.getEIDCard();
 
-                        byte[] bytearray;
-                        picture = card.getPicture();
-                        bytearray = picture.getData().GetBytes();
-                        c.Picture =bytearray;
-                       
-                        
-                        //c.Picture = StringToImageConverter.BitmapImageFromBytes(bytearray);
-                        //img.Height = 100;
+                            BEID_Picture picture;
 
-                       c.CustomerName = card.getID().getFirstName() + " " + card.getID().getSurname();
-                       c.Address = card.getID().getStreet() + " " + card.getID().getMunicipality();
-                       barcode = card.getID().getNationalNumber();
+                            byte[] bytearray;
+                            picture = card.getPicture();
+                            bytearray = picture.getData().GetBytes();
+                            c.Picture = bytearray;
 
+
+                            //c.Picture = StringToImageConverter.BitmapImageFromBytes(bytearray);
+                            //img.Height = 100;
+
+                            c.CustomerName = card.getID().getFirstName() + " " + card.getID().getSurname();
+                            c.Address = card.getID().getStreet() + " " + card.getID().getMunicipality();
+                            barcode = card.getID().getNationalNumber();
+
+                        }
                     }
-                } 
+                }
+
+                BEID_ReaderSet.releaseSDK();
+
+                BarCodeBuilder bb = new BarCodeBuilder();
+                bb.CodeText = barcode;
+                bb.SymbologyType = Symbology.Code128;
+                bb.Save(c.CustomerName + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                c.Barcode = Int64.Parse(barcode);
+                NewCustomer = c;
             }
+            catch (Exception)
+            {
 
-            BEID_ReaderSet.releaseSDK();
-
-            BarCodeBuilder bb = new BarCodeBuilder();
-            bb.CodeText = barcode;
-            bb.SymbologyType = Symbology.Code128;
-            bb.Save(c.CustomerName+".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
-            c.Barcode = Int64.Parse(barcode);
-            NewCustomer = c;
+                MessageBox.Show("Please insert a valid identitycard and try again");
+            }
         
  
         

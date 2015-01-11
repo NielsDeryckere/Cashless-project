@@ -25,13 +25,13 @@ namespace WEB_API_2NMCT1.Models
             string login = claims.FirstOrDefault(c => c.Type == "login").Value;
             string pass = claims.FirstOrDefault(c => c.Type == "pass").Value;
             string sql = "SELECT * FROM Organisation WHERE Login=@Login AND Password=@Password";
-            DbParameter par1 = Database.addParameter("AdminDB", "@Login",Cryptography.Encrypt( login));
-            DbParameter par2 = Database.addParameter("AdminDB", "@Password",Cryptography.Encrypt( pass));
+            DbParameter par1 = Database.addParameter("AdminDB", "@Login",Cryptography.Encrypt(login));
+            DbParameter par2 = Database.addParameter("AdminDB", "@Password",Cryptography.Encrypt(pass));
             try
             {
                 DbDataReader reader = Database.GetData(Database.GetConnection("AdminDB"), sql, par1, par2);
                 reader.Read();
-                return new Organisation()
+                Organisation test= new Organisation()
                 {
                     ID = Int32.Parse(reader["ID"].ToString()),
                     Login = Cryptography.Decrypt( reader["Login"].ToString()),
@@ -44,22 +44,31 @@ namespace WEB_API_2NMCT1.Models
                     Email = reader["Email"].ToString(),
                     Phone = reader["Phone"].ToString()
                 };
+                return test;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("Problems..........................................");
                 return null;
             }
         
         
         }
-        public static void UpdateOrganisation(Organisation o,string pass,IEnumerable<Claim> claims)
+        public static int UpdateOrganisation(int id,string pass)
         {
              string sql = "UPDATE Organisation SET Password=@pass WHERE ID=@ID";
-            DbParameter par1 = Database.addParameter("AdminDB", "@pass",pass);
-            DbParameter par2 = Database.addParameter("AdminDB", "@ID",o.ID);
+            DbParameter par1 = Database.addParameter("AdminDB", "@pass",Cryptography.Encrypt(pass));
+            DbParameter par2 = Database.addParameter("AdminDB", "@ID",id);
+            try
+            {
+                return Database.ModifyData(Database.GetConnection("AdminDB"), sql, par1, par2);
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
           
-            Database.ModifyData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2);
 
         }
 

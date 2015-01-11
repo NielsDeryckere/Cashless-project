@@ -10,20 +10,23 @@ using WEB_API_2NMCT1.Models;
 
 namespace WEB_API_2NMCT1.Controllers
 {
-    [Authorize]
+    
     public class AccountInfoController : ApiController
     {
         public Organisation Get()
         {
             ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
-            return AccountInfoDA.GetAccountInfo(p.Claims);
+           Organisation test=AccountInfoDA.GetAccountInfo(p.Claims);
+           return test;
         }
 
-        public HttpResponseMessage Put(Organisation o, string pass)
+        public HttpResponseMessage Put(int id, string pass)
         {
-            ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
-            AccountInfoDA.UpdateOrganisation(o,pass, p.Claims);
+           
+            int i=AccountInfoDA.UpdateOrganisation(id,pass);
 
+            if(i==0)
+            { return new HttpResponseMessage(HttpStatusCode.NoContent); }
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
     }

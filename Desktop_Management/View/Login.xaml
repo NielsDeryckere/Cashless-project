@@ -14,7 +14,7 @@
 
     <Grid>
 
-        <GroupBox Header="Loginscreen" Background="LightGray" Margin="300,200">
+        <GroupBox Header="Loginscreen" Margin="300,200">
             <Grid HorizontalAlignment="Right" Height="327" VerticalAlignment="Top" Width="416" Margin="0,0,-12,-12">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>

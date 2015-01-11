@@ -35,6 +35,7 @@ namespace SSAPPmcv.DataAcces
 
             string sql = "SELECT * FROM Organisation WHERE ID=@ID";
             DbParameter par1 = Database.addParameter(ConnectionString, "@ID", ID);
+           
             DbDataReader reader = Database.GetData(Database.GetConnection(ConnectionString), sql, par1);
 
             reader.Read();
@@ -101,11 +102,21 @@ namespace SSAPPmcv.DataAcces
             DbParameter par7 = Database.addParameter(ConnectionString, "@Address", o.Address);
             DbParameter par8 = Database.addParameter(ConnectionString, "@Email", o.Email);
             DbParameter par9 = Database.addParameter(ConnectionString, "@Phone", o.Phone);
-            int id = Database.InsertData(Database.GetConnection(ConnectionString), sql, par1, par2, par3, par4, par5, par6, par7, par8, par9);
+
+            try
+            {  int id = Database.InsertData(Database.GetConnection(ConnectionString), sql, par1, par2, par3, par4, par5, par6, par7, par8, par9);
 
             CreateDatabase(o);
 
             return id;
+
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+          
         }
 
         private static void CreateDatabase(Organisation o)

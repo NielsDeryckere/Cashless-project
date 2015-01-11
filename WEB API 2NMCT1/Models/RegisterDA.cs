@@ -30,24 +30,32 @@ namespace WEB_API_2NMCT1.Models
            
           
                 string sql2 = "SELECT * FROM Registers";
-
-                DbDataReader reader2 = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql2);
-                while (reader2.Read())
-                {
-                    RegisterClient r= new RegisterClient();
-                    r.RegisterID = int.Parse(reader2["ID"].ToString());
-                    r.DeviceName = reader2["Device"].ToString();
-                    r.RegisterName = reader2["RegisterName"].ToString();
+                try
+                    { DbDataReader reader2 = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql2);
+                    while (reader2.Read())
+                    {
+                        RegisterClient r= new RegisterClient();
+                        r.RegisterID = int.Parse(reader2["ID"].ToString());
+                        r.DeviceName = reader2["Device"].ToString();
+                        r.RegisterName = reader2["RegisterName"].ToString();
                   
 
-                   lijst.Add(r);
+                       lijst.Add(r);
 
-                }
+                    }
             
 
 
 
-            return lijst;
+                return lijst;
+
+                }
+                catch (Exception)
+                {
+
+                    return null;
+                }
+               
         }
 
         public static int InsertEmployeeRegister(EmployeeRegister er)
@@ -59,8 +67,16 @@ namespace WEB_API_2NMCT1.Models
             DbParameter par2 = Database.addParameter("AdminDB", "@From", er.From.ToString("yyyy-MM-dd HH:mm:ss"));
             DbParameter par3 = Database.addParameter("AdminDB", "@Untill", er.Untill.ToString("yyyy-MM-dd HH:mm:ss"));
             DbParameter par4 = Database.addParameter("AdminDB", "@EmployeeID", er.EmployeeID);
+            try
+            {
+                return Database.InsertData(Database.GetConnection(con), sql, par1, par2,par3,par4);
+            }
+            catch (Exception)
+            {
 
-            return Database.InsertData(Database.GetConnection(con), sql, par1, par2,par3,par4);
+                return 0;
+            }
+            
         }
 
         public static List<EmployeeRegister> GetRegisterEmployee(int RegisterId,IEnumerable<Claim> claims)
@@ -68,27 +84,37 @@ namespace WEB_API_2NMCT1.Models
             List<EmployeeRegister> list = new List<EmployeeRegister>();
             string sql = "SELECT * FROM Register_Employee WHERE RegisterID=@id";
             DbParameter par1 = Database.addParameter("AdminDB", "@id", RegisterId);
-            DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql,par1);
 
-            while(reader.Read())
-            {
-                EmployeeRegister er = new EmployeeRegister()
+            try
+            {  DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql,par1);
+
+                while(reader.Read())
                 {
+                    EmployeeRegister er = new EmployeeRegister()
+                    {
 
-                    EmployeeID = long.Parse(reader["EmployeeID"].ToString()),
-                    RegisterID = int.Parse(reader["RegisterID"].ToString()),
-                    From = DateTime.ParseExact(reader["Fromt"].ToString(), "yyyy-MM-dd HH:mm:ss",
-                                       System.Globalization.CultureInfo.InvariantCulture),
+                        EmployeeID = long.Parse(reader["EmployeeID"].ToString()),
+                        RegisterID = int.Parse(reader["RegisterID"].ToString()),
+                        From = DateTime.ParseExact(reader["Fromt"].ToString(), "yyyy-MM-dd HH:mm:ss",
+                                           System.Globalization.CultureInfo.InvariantCulture),
 
-                Untill=DateTime.ParseExact(reader["Untilt"].ToString(), "yyyy-MM-dd HH:mm:ss",
-                                       System.Globalization.CultureInfo.InvariantCulture)
+                    Untill=DateTime.ParseExact(reader["Untilt"].ToString(), "yyyy-MM-dd HH:mm:ss",
+                                           System.Globalization.CultureInfo.InvariantCulture)
 
-                };
-                list.Add(er);
+                    };
+                    list.Add(er);
 
             }
 
             return list;
+
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+          
 
         }
 

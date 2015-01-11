@@ -53,6 +53,7 @@ namespace models
 
         private double _balance;
       
+       [RegularExpression(@"^\d+.\d{0,2}$")]
         public double Balance
         {
             get { return _balance; }
@@ -60,7 +61,7 @@ namespace models
         }
 
         private long _barCode;
-       
+       [Required]
         public long Barcode
         {
             get { return _barCode; }

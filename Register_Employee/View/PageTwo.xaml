@@ -5,14 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:Register_Employee.ViewModel"
              xmlns:v="clr-namespace:Register_Employee.View"
+             xmlns:c="clr-namespace:Register_Employee.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="768" d:DesignWidth="1024">
 
+    <UserControl.Resources>
+        <c:IntToColorConverter x:Key="IntToColorConverter"/>
+    </UserControl.Resources>
     <UserControl.DataContext>
 
         <vm:PageTwoVM/>
     </UserControl.DataContext>
-    <Grid Background="LightGray">
+    <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*" />
@@ -26,7 +30,7 @@
 
         </Grid.RowDefinitions>
 
-        <ListBox Name="lstBestelling" Grid.Row="1" Grid.Column="0" Margin="10" ItemsSource="{Binding OrderedProducts,Mode=TwoWay}"  DisplayMemberPath="ProductName"/>
+        <ListBox Name="lstBestelling" Grid.Row="1" Grid.Column="0" Margin="10" ItemsSource="{Binding OrderedProducts}"  DisplayMemberPath="ProductName"/>
         <TextBlock Name="txbTotaal" Grid.Row="2" Grid.Column="0" Text="{Binding TotalPrice}" Background="White" Margin="10"/>
 
         <ItemsControl Name="ButtonsPanel" Grid.Row="1" Grid.Column="1" Margin="10" ItemsSource="{Binding Products}" IsEnabled="{Binding CustomerScanned}">
@@ -75,6 +79,8 @@
             <TextBlock Name="txbCustomerName" Grid.Row="2" Margin="10,40,10,10" Text="{Binding ScannedCustomer.CustomerName}"  />
             <TextBlock Grid.Row="3" Text="Balance" FontSize="40" Margin="10,10,16,0"  />
             <TextBlock Name="txbSaldo" Grid.Column="1"  FontSize="40" Margin="10" Grid.Row="3" Text="{Binding ScannedCustomer.Balance}"/>
+            <TextBlock Grid.Column="3"  FontSize="40" Margin="10,10,9,10" Grid.Row="3" Text="{Binding DifferenceTotalBalance}" Background="{Binding DifferenceTotalBalance,Converter={StaticResource IntToColorConverter}}"/>
+            <TextBlock Grid.Row="3" Grid.Column="2" Text="Balance after order:" FontSize="20"  Margin="10"  />
             <TextBlock Grid.Row="0" Grid.Column="3" Text="Logged in as:" FontSize="20" Margin="10,20,204,10" Grid.ColumnSpan="2"/>
             <TextBlock Name="txbEmployee" Grid.Column="4"  FontSize="20" Margin="10" Text="{Binding CurrentEmployee.EmployeeName}"/>
             <Button Name="btnLogoff" Grid.Row="1" Grid.Column="4" Content="Logoff" Margin="47,9,47,10" Command="{Binding LoggOffCommand}"/>

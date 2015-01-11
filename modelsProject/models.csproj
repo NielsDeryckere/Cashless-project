@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Cryptography.cs" />
     <Compile Include="Customer.cs" />
+    <Compile Include="Converter\DateConverter.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="EmployeeRegister.cs" />
     <Compile Include="Errorlog.cs" />
@@ -54,9 +55,7 @@
     <Compile Include="Sales.cs" />
     <Compile Include="Transfer.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converter\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

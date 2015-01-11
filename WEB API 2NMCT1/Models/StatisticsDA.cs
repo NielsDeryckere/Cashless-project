@@ -41,12 +41,11 @@ namespace WEB_API_2NMCT1.Models
 
         private static Sales Create(IDataRecord record)
         {
-            DateTime myDate = DateTime.ParseExact(record["Timestamp"].ToString(), "yyyy-MM-dd HH:mm:ss",
-                                       System.Globalization.CultureInfo.InvariantCulture);
+            
             return new Sales()
             {
 
-                 Timestamp =myDate,
+                Timestamp =DateConverter.UnixTimeStampToDateTime(double.Parse(record["Timestamp"].ToString())),
                 Amount = int.Parse(record["Amount"].ToString()),
                 Id = int.Parse(record["ID"].ToString()),
                 CustomerId=long.Parse((record["CustomerID"]).ToString()),
