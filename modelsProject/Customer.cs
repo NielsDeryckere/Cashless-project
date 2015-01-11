@@ -52,8 +52,8 @@ namespace models
         }//het path waar de afbeelding zich bevindt
 
         private double _balance;
-      
-       [RegularExpression(@"^\d+.\d{0,2}$")]
+
+      [Range(0.00, 999999999)]
         public double Balance
         {
             get { return _balance; }
@@ -78,7 +78,11 @@ namespace models
 
         public bool IsValid()
         {
-            return Validator.TryValidateObject(this, new ValidationContext(this, null, null), null, true);
+            
+                return Validator.TryValidateObject(this, new ValidationContext(this, null, null), null, true);
+            
+
+            
         }
         public string this[string columnName]
         {

@@ -40,6 +40,10 @@
     <Reference Include="beid35libCS">
       <HintPath>..\..\..\..\..\..\..\Documents\Belgium Identity Card SDK\beidlib\dotNet\bin\beid35libCS.dll</HintPath>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Open XML SDK\V2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight">
       <HintPath>..\packages\MvvmLightLibs.5.0.2.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -92,7 +96,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converter\StringToImageConverter.cs" />
-    <Compile Include="Models\Customer.cs" />
     <Compile Include="PassHelper\PasswordHelper.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
     <Compile Include="View\Login.xaml.cs">

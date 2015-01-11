@@ -269,7 +269,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Name="lstvCustomer" Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="1" ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}">
+                    <ListView Name="lstvCustomer" Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="1" ItemsSource="{Binding Customers}" SelectedIndex="1" SelectedItem="{Binding SelectedCustomer}">
                         <ListView.View>
                             <GridView>
 
@@ -341,7 +341,8 @@
                             <GridView>
                                 <GridViewColumn Header="Id" Width="50" DisplayMemberBinding="{Binding Path=Id}" />
                                 <GridViewColumn Header="Timestamp" Width="75" DisplayMemberBinding="{Binding Path=Timestamp}"/>
-                                <GridViewColumn Header="Register" Width="75" DisplayMemberBinding="{Binding Path=RegisterId}"/>
+                                <GridViewColumn Header="CustomerID" Width="75" DisplayMemberBinding="{Binding Path=CustomerId}"/>
+                                <GridViewColumn Header="RegisterID" Width="75" DisplayMemberBinding="{Binding Path=RegisterId}"/>
                                 <GridViewColumn Header="Productname" Width="75" DisplayMemberBinding="{Binding Path=ProductId}"/>
                                 <GridViewColumn Header="Amount" Width="75" DisplayMemberBinding="{Binding Path=Amount}"/>
                                 <GridViewColumn Header="Total price" Width="75" DisplayMemberBinding="{Binding Path=TotalPrice}"/>
@@ -349,15 +350,15 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-
+                    <Button Content="Export to Excel" Grid.Column="1" Width="100" Height="50" Command="{Binding ExportCommand}"/>
                 </Grid>
             </TabItem>
 
 
         </TabControl>
         <Label Content="Logged in as: " HorizontalAlignment="Left" Margin="537,-1,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="616,-1,0,0" TextWrapping="Wrap" Text="{Binding AccountName}" VerticalAlignment="Top" Width="150" Height="20" Grid.Column="1"/>
-        <Button Content="Sign out" HorizontalAlignment="Left" Margin="766,0,0,0" VerticalAlignment="Top" Width="85"  Grid.Column="1" Command="{Binding SignOutCommand}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="616,-1,0,0" TextWrapping="Wrap" Text="{Binding AccountName}" VerticalAlignment="Top" Width="133" Height="20" Grid.Column="1"/>
+        <Button Content="Sign out" HorizontalAlignment="Left" Margin="754,0,0,0" VerticalAlignment="Top" Width="85"  Grid.Column="1" Command="{Binding SignOutCommand}"/>
 
 
     </Grid>

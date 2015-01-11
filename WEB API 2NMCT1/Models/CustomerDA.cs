@@ -168,7 +168,7 @@ namespace WEB_API_2NMCT1.Models
 
         public static int UpdateCustomer(Customer c, IEnumerable<Claim> claims)
         {
-            string sql = "UPDATE Customer SET CustomerName=@CustomerName, Address=@Address, Picture=@Picture, Balance=@Balance,WHERE Barcode=@Barcode";
+            string sql = "UPDATE Customer SET CustomerName=@CustomerName, Address=@Address, Picture=@Picture, Balance=@Balance WHERE Barcode=@Barcode";
             DbParameter par1 = Database.addParameter("AdminDB", "@CustomerName", c.CustomerName);
             DbParameter par2 = Database.addParameter("AdminDB", "@Address", c.Address);
             DbParameter par3 = Database.addParameter("AdminDB", "@Picture", c.Picture);

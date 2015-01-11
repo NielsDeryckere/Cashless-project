@@ -1,6 +1,9 @@
 ﻿using Aspose.BarCode;
 using be.belgium.eid;
 using Desktop_Management.Converter;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 using GalaSoft.MvvmLight.CommandWpf;
 using models;
 using modelsProject;
@@ -224,6 +227,7 @@ namespace Desktop_Management.ViewModel
             test();
             testE();
             TestProductControl();
+            
             }
         }
         #region GETS
@@ -309,6 +313,7 @@ namespace Desktop_Management.ViewModel
         }  
         #endregion
 
+        #region TESTS
         public void test()
         {
             if (SelectedCustomer!=null)
@@ -342,7 +347,7 @@ namespace Desktop_Management.ViewModel
             }
 
         }
-
+        #endregion
         #region accountinfo method and command
 
         public ICommand SignOutCommand
@@ -497,6 +502,77 @@ namespace Desktop_Management.ViewModel
                 }
             }
         }
+
+        public ICommand ExportCommand
+        { get { return new RelayCommand(ExportToExcel); } }
+
+        private void ExportToExcel()
+        {
+            try
+            {
+                string s=string.Concat( DateTime.Now.ToString(),"StatisticsProducts.xlsx");
+                SpreadsheetDocument doc = SpreadsheetDocument.Create(s, SpreadsheetDocumentType.Workbook);
+
+                WorkbookPart wbp = doc.AddWorkbookPart();
+                wbp.Workbook = new Workbook();
+
+                WorksheetPart wsp = wbp.AddNewPart<WorksheetPart>();
+                SheetData data = new SheetData();
+                wsp.Worksheet = new Worksheet(data);
+
+                Sheets sheets = doc.WorkbookPart.Workbook.AppendChild<Sheets>(new Sheets());
+
+                // Append a new worksheet and associate it with the workbook.
+                Sheet sheet = new Sheet()
+                {
+                    Id = doc.WorkbookPart.GetIdOfPart(wsp),
+                    SheetId = 1,
+                    Name = "statistics",
+                };
+                sheets.Append(sheet);
+
+                Row header = new Row() { RowIndex = 1 };
+                Cell ID = new Cell() { CellReference = "A1", DataType = CellValues.String, CellValue = new CellValue("ID") };
+                Cell Timestamp = new Cell() { CellReference = "B1", DataType = CellValues.String, CellValue = new CellValue("Timestamp") };
+                Cell CustomerID = new Cell() { CellReference = "C1", DataType = CellValues.String, CellValue = new CellValue("CustomerID") };
+                Cell RegisterID = new Cell() { CellReference = "D1", DataType = CellValues.String, CellValue = new CellValue("RegisterID") };
+                Cell ProductID = new Cell() { CellReference = "E1", DataType = CellValues.String, CellValue = new CellValue("ProductID") };
+                Cell Amount = new Cell() { CellReference = "F1", DataType = CellValues.String, CellValue = new CellValue("Amount") };
+                Cell TotalPrice = new Cell() { CellReference = "G1", DataType = CellValues.String, CellValue = new CellValue("TotalPrice") };
+                header.Append(ID, Timestamp, CustomerID, RegisterID, ProductID, Amount, TotalPrice);
+                data.Append(header);
+                for (int i = 2; i < SalesList.Count+2; i++)
+                {
+                    Sales saleitem = SalesList[i - 2];
+                    Int32 rowindex = Convert.ToInt32(i);
+
+
+
+                    Row sale = new Row() { RowIndex = Convert.ToUInt32(rowindex) };
+                    Cell Value1 = new Cell() { CellReference = "A" + i, DataType = CellValues.Number, CellValue = new CellValue(saleitem.Id.ToString()) };
+                    Cell Value2 = new Cell() { CellReference = "B" + i, DataType = CellValues.Date, CellValue = new CellValue(saleitem.Timestamp.ToString()) };
+                    Cell Value3 = new Cell() { CellReference = "C" + i, DataType = CellValues.Number, CellValue = new CellValue(saleitem.ProductId.ToString()) };
+                    Cell Value4 = new Cell() { CellReference = "D" + i, DataType = CellValues.Number, CellValue = new CellValue(saleitem.RegisterId.ToString()) };
+                    Cell Value5 = new Cell() { CellReference = "E" + i, DataType = CellValues.Number, CellValue = new CellValue(saleitem.ProductId.ToString()) };
+                    Cell Value6 = new Cell() { CellReference = "F" + i, DataType = CellValues.Number, CellValue = new CellValue(saleitem.Amount.ToString()) };
+                    Cell Value7 = new Cell() { CellReference = "G" + i, DataType = CellValues.Number, CellValue = new CellValue(saleitem.TotalPrice.ToString()) };
+
+                    sale.Append(Value1, Value2, Value3, Value4, Value5, Value6, Value7);
+                    data.Append(sale);
+
+                }
+
+
+                wbp.Workbook.Save();
+                doc.Close();
+                MessageBox.Show("Export succeeded")
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("Couldn't Export statistics");
+            }
+        }
         #endregion
 
         #region Customer commands and methods
@@ -528,7 +604,7 @@ namespace Desktop_Management.ViewModel
 
         public ICommand SaveCustomerCommand
         {
-            get {  return new RelayCommand(SaveCustomer,SelectedCustomer.IsValid); }
+            get {  return new RelayCommand(SaveCustomer); }
         }
 
         public ICommand DeleteCustomerCommand
@@ -616,57 +692,67 @@ namespace Desktop_Management.ViewModel
 
         private async void SaveCustomer()
         {
-           
-            string input = JsonConvert.SerializeObject(SelectedCustomer);
 
-            // check insert (no ID assigned) or update (already an ID assigned)
-            if (SelectedCustomer.Id == 0)
+            try
             {
-                bool etest = false;
-                if (Customers.Count > 0) { 
-                foreach (Customer e in Customers)
-                {
-                    if (e.Barcode != SelectedEmployee.Barcode)
-                    {
-                        etest = true;
-                    }
-                    else { etest = false; }
+                string input = JsonConvert.SerializeObject(SelectedCustomer);
 
-                }}
-                else { etest = true; }
-                if (etest == true)
+                // check insert (no ID assigned) or update (already an ID assigned)
+                if (SelectedCustomer.Id == 0)
+                {
+                    bool etest = false;
+                    if (Customers.Count > 0)
+                    {
+                        foreach (Customer e in Customers)
+                        {
+                            if (e.Barcode != SelectedEmployee.Barcode)
+                            {
+                                etest = true;
+                            }
+                            else { etest = false; }
+
+                        }
+                    }
+                    else { etest = true; }
+                    if (etest == true && SelectedCustomer.IsValid())
+                    {
+                        using (HttpClient client = new HttpClient())
+                        {
+                            client.SetBearerToken(ApplicationVM.token.AccessToken);
+                            HttpResponseMessage response = await client.PostAsync("http://localhost:41983/api/customer", new StringContent(input, Encoding.UTF8, "application/json"));
+                            if (response.IsSuccessStatusCode)
+                            {
+                                string output = await response.Content.ReadAsStringAsync();
+                                SelectedCustomer.Barcode = Int64.Parse(output);
+                                GetCustomers();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Could not save customer,");
+                            }
+                        }
+                    }
+                    else { MessageBox.Show("Could not save customer,make sure that all filled in values are correct"); }
+                }
+                else
                 {
                     using (HttpClient client = new HttpClient())
                     {
                         client.SetBearerToken(ApplicationVM.token.AccessToken);
-                        HttpResponseMessage response = await client.PostAsync("http://localhost:41983/api/customer", new StringContent(input, Encoding.UTF8, "application/json"));
-                        if (response.IsSuccessStatusCode)
+                        HttpResponseMessage response = await client.PutAsync("http://localhost:41983/api/customer", new StringContent(input, Encoding.UTF8, "application/json"));
+                        if (!response.IsSuccessStatusCode)
                         {
-                            string output = await response.Content.ReadAsStringAsync();
-                            SelectedCustomer.Barcode = Int64.Parse(output);
-                            GetCustomers();
+                            Console.WriteLine("error");
                         }
-                        else
-                        {
-                            MessageBox.Show("Could not save customer");
-                        }
+                        MessageBox.Show("Customer Saved");
+                        GetCustomers();
                     }
                 }
-                else { MessageBox.Show("Customer already exists"); }
             }
-            else
+            catch (Exception)
             {
-                using (HttpClient client = new HttpClient())
-                {
-                    client.SetBearerToken(ApplicationVM.token.AccessToken);
-                    HttpResponseMessage response = await client.PutAsync("http://localhost:41983/api/customer", new StringContent(input, Encoding.UTF8, "application/json"));
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        Console.WriteLine("error");
-                    }
-                    MessageBox.Show("Customer Saved");
-                    GetCustomers();
-                }
+
+                MessageBox.Show("There is no customer or new customer selected");
             }
         }
 
