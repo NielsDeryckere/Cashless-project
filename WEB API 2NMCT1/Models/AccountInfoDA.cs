@@ -54,10 +54,12 @@ namespace WEB_API_2NMCT1.Models
         
         
         }
-        public static int UpdateOrganisation(int id,string pass)
+        public static int UpdateOrganisation(int id, string passw, IEnumerable<Claim> claims)
         {
+            string login = claims.FirstOrDefault(c => c.Type == "login").Value;
+            string pass = claims.FirstOrDefault(c => c.Type == "pass").Value;
              string sql = "UPDATE Organisation SET Password=@pass WHERE ID=@ID";
-            DbParameter par1 = Database.addParameter("AdminDB", "@pass",Cryptography.Encrypt(pass));
+            DbParameter par1 = Database.addParameter("AdminDB", "@pass",Cryptography.Encrypt(passw));
             DbParameter par2 = Database.addParameter("AdminDB", "@ID",id);
             try
             {

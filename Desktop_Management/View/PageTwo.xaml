@@ -20,12 +20,12 @@
             </StackPanel>
         </ControlTemplate>
     </UserControl.Resources>
-    <Grid>
+    <Grid Width="1024" Height="768">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="145*"/>
             <ColumnDefinition Width="871*"/>
         </Grid.ColumnDefinitions>
-        <TabControl HorizontalAlignment="Left" Height="673" Margin="10,-1,0,0" VerticalAlignment="Top" Width="996" Grid.ColumnSpan="2">
+        <TabControl  Margin="10" Grid.ColumnSpan="2">
             <TabItem Header="Account">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -72,7 +72,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="1" ItemsSource="{Binding Products,Mode=TwoWay}" SelectedItem="{Binding SelectedProduct}">
+                    <ListView Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="1" ItemsSource="{Binding ActiveProducts}" SelectedItem="{Binding SelectedProduct}">
 
                         <ListView.View>
                             <GridView>
@@ -83,7 +83,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <GroupBox Name="grpbView" Header="View" Grid.Column="1" Margin="10,-9,0,230" Grid.RowSpan="2">
+                    <GroupBox Name="grpbView" Header="View" Grid.Column="1" Margin="10,5,0,216" Grid.RowSpan="2">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -102,10 +102,10 @@
                             <Button Name="btnDelete" Content="Delete" Grid.Column="1" Grid.Row="0" Margin="10" Command="{Binding DeleteProductCommand}" IsEnabled="{Binding TestProduct}"/>
 
                             <Label Name="lblProductName" Content="Product name:" Grid.Column="0" Grid.Row="1" Margin="20" />
-                            <TextBox Name="txtProductName"  Text="{Binding SelectedProduct.ProductName}" Grid.Column="1" Grid.Row="1" Margin="20" />
+                            <TextBox Name="txtProductName"  Text="{Binding SelectedProduct.ProductName,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Grid.Column="1" Grid.Row="1" Margin="20" />
 
                             <Label Name="lblPrice" Content="Price:" Grid.Column="0" Grid.Row="2" Margin="20" />
-                            <TextBox Name="txtPrice" Grid.Column="1" Text="{Binding SelectedProduct.Price}" Grid.Row="2" Margin="20" />
+                            <TextBox Name="txtPrice" Grid.Column="1" Text="{Binding SelectedProduct.Price,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Grid.Row="2" Margin="20" />
 
                             <Button Name="btnSave" Grid.Column="2" Grid.Row="0" Content="Save" Margin="10" Command="{Binding SaveProductCommand}" />
 
@@ -126,7 +126,7 @@
                         <ColumnDefinition Width="424*"/>
                         <ColumnDefinition Width="495*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Name="lstvEmployees" Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="2" ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}">
+                    <ListView Name="lstvEmployees" Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="2" ItemsSource="{Binding ActiveEmployees}" SelectedItem="{Binding SelectedEmployee}">
                         <ListView.View>
                             <GridView>
 
@@ -164,16 +164,16 @@
 
 
                             <Label Name="lblNameEmployee" Content="Name" Grid.Column="0"  Grid.Row="3" Margin="10" />
-                            <TextBlock Name="txtNameEmployee" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedEmployee.EmployeeName}" />
+                            <TextBlock Name="txtNameEmployee" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedEmployee.EmployeeName,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" />
 
                             <Label Name="lblPhoneEmployee" Content="Phone" Grid.Column="0" Grid.Row="5" Margin="10" />
-                            <TextBox Name="txtPhoneEmployee" Grid.Column="1" Grid.Row="5" Margin="10" Grid.ColumnSpan="2" Text="{Binding SelectedEmployee.Phone}"/>
+                            <TextBox Name="txtPhoneEmployee" Grid.Column="1" Grid.Row="5" Margin="10" Grid.ColumnSpan="2" Text="{Binding SelectedEmployee.Phone,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
 
                             <Label Name="lblAddressEmployee" Content="Address" Grid.Column="0" Grid.Row="4" Margin="10" />
-                            <TextBlock Name="txtAddressEmployee" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedEmployee.Address}" />
+                            <TextBlock Name="txtAddressEmployee" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedEmployee.Address,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
 
                             <Label Name="lblEmailEmployee" Content="Email" Grid.Column="0" Grid.Row="6" Margin="10" />
-                            <TextBox Name="txtEmailEmployee" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedEmployee.Email}" />
+                            <TextBox Name="txtEmailEmployee" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedEmployee.Email,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
 
 
                         </Grid>
@@ -202,42 +202,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-
-                    <GroupBox  Name="grpbFilterDetails" Grid.Row="0" Grid.Column="1" Margin="5" Header="Filter details">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-
-                            </Grid.ColumnDefinitions>
-                            <DatePicker Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="10,10,30,10" />
-                            <Label Name="lblFrom" Grid.Row="1" Content="From" Margin="20,10"/>
-                            <ComboBox Name="cboFrom" Grid.Row="1" Grid.Column="1" Margin="10"></ComboBox>
-
-                            <Label Name="lblUntill" Grid.Row="2" Grid.Column="0" Content="Untill" Margin="20,10"/>
-                            <ComboBox Name="cboUntill" Grid.Row="2" Grid.Column="1" Margin="10"></ComboBox>
-                            <Button Name="btnApply" Content="Apply" Grid.Column="0" Grid.Row="3" Margin="5" Grid.ColumnSpan="2" Command="{Binding ViewRegisterUsersCommand}" IsEnabled="{Binding ElementName=lstvRegisters,Path=SelectedItem}" />
-
-
-
-
-
-
-                        </Grid>
-
-                    </GroupBox>
-                    <GroupBox Name="grpbViewRegister" Header="View" Grid.Row="1" Grid.Column="1" Margin="5">
+                    <GroupBox Name="grpbViewRegister" Header="View" Grid.Column="1" Margin="10,5,0,247" Grid.RowSpan="2">
                         <Grid>
                             <ListView Margin="5" Grid.RowSpan="2" ItemsSource="{Binding EmployeeRegisters}">
                                 <ListView.View>
@@ -269,7 +234,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Name="lstvCustomer" Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="1" ItemsSource="{Binding Customers}" SelectedIndex="1" SelectedItem="{Binding SelectedCustomer}">
+                    <ListView Name="lstvCustomer" Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="1" ItemsSource="{Binding ActiveCustomers}" SelectedIndex="1" SelectedItem="{Binding SelectedCustomer}">
                         <ListView.View>
                             <GridView>
 
@@ -301,24 +266,24 @@
                             </Grid.RowDefinitions>
                             <Button Name="btnNewCostumer" Content="New" Grid.Column="0" Grid.Row="0" Margin="10" Command="{Binding NewCustomerCommand}"/>
                             <Button Name="btnSaveCustomer" Content="Save" Grid.Column="1" Grid.Row="0" Margin="10" Command="{Binding SaveCustomerCommand}" />
-                            <Button Name="btnDeleteCustomer" Content="Delete" Grid.Column="2" Grid.Row="0" Margin="10" Command="{Binding DeleteCustomerCommand}" IsEnabled="{Binding ElementName=lstvCustomer, Path=SelectedItems.Count}"/>
+                            <Button Name="btnDeleteCustomer" Content="Delete" Grid.Column="2" Grid.Row="0" Margin="10" Command="{Binding DeleteCustomerCommand}" IsEnabled="{Binding Test}"/>
                             <Image Name="imgCustomer" Grid.Row="1" Grid.Column="0" Margin="5" Source="{Binding SelectedCustomer.Picture,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                             <Button Content="Read identity card" Grid.Row="1" Grid.Column="1" Margin="5, 100,5,5" Command="{Binding ReadIdentityCardCommand}" IsEnabled="{Binding Test}" />
 
 
                             <Label Name="lblNameCustomer" Content="Name" Grid.Column="0"  Grid.Row="3" Margin="10" />
-                            <TextBlock Name="txtNameCustomer" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.CustomerName,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  Validation.ErrorTemplate="{StaticResource ErrorTemplate}" />
+                            <TextBlock Name="txtNameCustomer" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="15" Text="{Binding SelectedCustomer.CustomerName,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  Validation.ErrorTemplate="{StaticResource ErrorTemplate}" />
 
 
                             <Label Name="lblAddressCustomer" Content="Address" Grid.Column="0" Grid.Row="4" Margin="10" />
-                            <TextBlock Name="txtAddressCustomer" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.Address,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  Validation.ErrorTemplate="{StaticResource ErrorTemplate}" />
+                            <TextBlock Name="txtAddressCustomer" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="15" Text="{Binding SelectedCustomer.Address,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  Validation.ErrorTemplate="{StaticResource ErrorTemplate}" />
 
                             <Label Name="lblBalanceCustomer" Content="Balance" Grid.Column="0" Grid.Row="5" Margin="10" />
-                            <TextBox Name="txtBalanceCustomer" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.Balance,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"  Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
+                            <TextBox Name="txtBalanceCustomer" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Margin="15" Text="{Binding SelectedCustomer.Balance,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"  Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
 
 
                             <Label Name="lblBarcode" Content="Barcode" Grid.Column="0" Grid.Row="6" Margin="10" />
-                            <TextBlock Name="txtBarcode" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Margin="10" Text="{Binding SelectedCustomer.Barcode, UpdateSourceTrigger=Default, ValidatesOnDataErrors=True}"  Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
+                            <TextBlock Name="txtBarcode" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Margin="15" Text="{Binding SelectedCustomer.Barcode, UpdateSourceTrigger=Default, ValidatesOnDataErrors=True}"  Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
 
 
 
@@ -350,15 +315,41 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <Button Content="Export to Excel" Grid.Column="1" Width="100" Height="50" Command="{Binding ExportCommand}"/>
+                    <Button Content="Export to Excel" Grid.Column="1" Width="100" Height="50" Command="{Binding ExportCommand}" Margin="0,313,402,0"/>
+                    <GroupBox Grid.Column="1" Margin="0,0,0,55">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                        <TextBlock Text="From" Grid.Column="0" Margin="10"/>
+                        <DatePicker Margin="10" Grid.Column="1" />
+                        <TextBlock Text="Untill" Grid.Column="0" Grid.Row="1" Margin="10"/>
+                        <DatePicker Margin="10" Grid.Column="1" Grid.Row="1" />
+                        
+                        <ComboBox Margin="10" Grid.Row="2" Grid.Column="2"/>
+                        <RadioButton Content="Filter on product" Grid.Column="0" Grid.Row="2" />
+                            <ComboBox Margin="10" Grid.Row="3" Grid.Column="2"/>
+                        <RadioButton Content="Filter on Kassa" Grid.Column="0" Grid.Row="3"/>
+                            <Button Content="Apply" Grid.Row="4" Grid.Column="0" Margin="10"/>
+                        </Grid>
+                    </GroupBox>
                 </Grid>
             </TabItem>
 
 
+
         </TabControl>
-        <Label Content="Logged in as: " HorizontalAlignment="Left" Margin="537,-1,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="616,-1,0,0" TextWrapping="Wrap" Text="{Binding AccountName}" VerticalAlignment="Top" Width="133" Height="20" Grid.Column="1"/>
-        <Button Content="Sign out" HorizontalAlignment="Left" Margin="754,0,0,0" VerticalAlignment="Top" Width="85"  Grid.Column="1" Command="{Binding SignOutCommand}"/>
+        <Label Content="Logged in as: " HorizontalAlignment="Left" Margin="472,10,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="561,10,0,0" TextWrapping="Wrap" Text="{Binding AccountName}" VerticalAlignment="Top" Width="133" Height="20" Grid.Column="1"/>
+        <Button Content="Sign out" Height="20" Width="85"  Command="{Binding SignOutCommand}" Grid.Column="1" Margin="699,10,94,738"/>
 
 
     </Grid>

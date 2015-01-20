@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Terminal_Customer.ViewModel"
         xmlns:v="clr-namespace:Terminal_Customer.View"
-        Title="MainWindow" Height="768" Width="1024" Background="DarkGray" ResizeMode="NoResize">
+        Title="MainWindow" Height="768" Width="1024"  ResizeMode="NoResize">
     <Window.DataContext>
         <vm:ApplicationVM/>
     </Window.DataContext>

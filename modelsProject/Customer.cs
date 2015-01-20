@@ -21,7 +21,7 @@ namespace models
        
        // private string _customerName;
 
-        [Required(ErrorMessage = "scan aub uw identiteitskaart in")]
+        [Required(ErrorMessage = "scan your identitycard")]
         [StringLength(50, MinimumLength = 2)]
         public string CustomerName
         {
@@ -32,7 +32,7 @@ namespace models
         }
 
        // private string _address;
-        [Required(ErrorMessage = "scan aub uw identiteitskaart in")]
+        [Required(ErrorMessage = "scan your identitycard")]
         [StringLength(50, MinimumLength = 2)]
         public string Address
         {
@@ -53,7 +53,7 @@ namespace models
 
         private double _balance;
 
-      [Range(0.00, 999999999)]
+      [Range(0.00, 999999999,ErrorMessage="Please fill in a valid value")]
         public double Balance
         {
             get { return _balance; }
@@ -61,14 +61,21 @@ namespace models
         }
 
         private long _barCode;
-       [Required]
+       [Required(ErrorMessage = "scan your identitycard")]
         public long Barcode
         {
             get { return _barCode; }
             set { _barCode = value; }
         }
 
+       private bool _active;
 
+       public bool Active
+       {
+           get { return _active; }
+           set { _active = value; }
+       }
+       
 
         public string Error
         {

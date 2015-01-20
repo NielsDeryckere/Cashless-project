@@ -85,13 +85,13 @@ namespace Terminal_Customer.ViewModel
        private async void Confirm()
        {
            try
-           {
+           {        ApplicationVM appvm = App.Current.MainWindow.DataContext as ApplicationVM;
+                   appvm.LoggedInCustomer = NewCustomer;
+                   string input = JsonConvert.SerializeObject(NewCustomer);
                TestCustomer = (from p in Customers where p.Barcode == NewCustomer.Barcode select p).First();
                if (TestCustomer == null)
                {
-                   ApplicationVM appvm = App.Current.MainWindow.DataContext as ApplicationVM;
-                   appvm.LoggedInCustomer = NewCustomer;
-                   string input = JsonConvert.SerializeObject(NewCustomer);
+                  
                    using (HttpClient client = new HttpClient())
                    {
                        
@@ -104,18 +104,44 @@ namespace Terminal_Customer.ViewModel
                        }
                        else
                        {
-                           Console.WriteLine("could not save customer");
+                           MessageBox.Show("could not save customer");
                        }
                    }
                    appvm.ChangePage(new PageThreeVM());
 
+               }
+               else if(TestCustomer.Active==false)
+               {
+                   using (HttpClient client = new HttpClient())
+                   {
+
+                       HttpResponseMessage response = await client.PutAsync("http://localhost:41983/api/ExistingCustomer", new StringContent(input, Encoding.UTF8, "application/json"));
+                       if (response.IsSuccessStatusCode)
+                       {
+                           string output = await response.Content.ReadAsStringAsync();
+
+
+                       }
+                       else
+                       {
+                           MessageBox.Show("could not save customer");
+                       }
+                   }
+                   appvm.ChangePage(new PageThreeVM());
+
+
+               }
+
+               else
+               {
+                   MessageBox.Show("Failed to create new customer");
                }
 
            }
            catch (Exception ex)
            {
 
-               Error = "Customer already exists!";
+               Error = "Couldn't create new customer";
            }
        }
 

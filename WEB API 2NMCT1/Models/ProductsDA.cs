@@ -73,6 +73,7 @@ namespace WEB_API_2NMCT1.Models
             p.Id = int.Parse(reader["ID"].ToString());
             p.ProductName = reader["ProductName"].ToString();
             p.Price=double.Parse(reader["Price"].ToString());
+            p.Active = bool.Parse(reader["Active"].ToString());
 
             reader.Close();
             return p;
@@ -87,7 +88,8 @@ namespace WEB_API_2NMCT1.Models
 
                 ProductName = record["ProductName"].ToString(),
                 Price = double.Parse(record["Price"].ToString()),
-                Id=int.Parse(record["ID"].ToString())
+                Id=int.Parse(record["ID"].ToString()),
+                Active = bool.Parse(record["Active"].ToString())
 
 
             };
@@ -112,12 +114,33 @@ namespace WEB_API_2NMCT1.Models
             Database.ModifyData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3);
         }
 
+        public static int NotActiveToActive(Product c, IEnumerable<Claim> claims)
+        {
+            string sql = "UPDATE Product SET Price=@Price,Active=@Active WHERE ProductName=@ProductName";
+            DbParameter par1 = Database.addParameter("AdminDB", "@ProductName", c.ProductName);
+            DbParameter par2 = Database.addParameter("AdminDB", "@Price", c.Price);
+            DbParameter par3 = Database.addParameter("AdminDB", "@ID", c.Id);
+            DbParameter par4 = Database.addParameter("AdminDB", "@Active",1);
+
+            try
+            {
+               return Database.ModifyData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3,par4);
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+        }
+
         public static void DeleteProduct(int id, IEnumerable<Claim> claims)
         {
-            string sql = "DELETE FROM Product WHERE ID=@ID";
+            string sql = "UPDATE Product SET Active=@Active WHERE ID=@ID";
             DbParameter par1 = Database.addParameter("AdminDB", "@ID", id);
+            DbParameter par2 = Database.addParameter("AdminDB", "@Active", 0);
             DbConnection con = Database.GetConnection(CreateConnectionString(claims));
-            Database.ModifyData(con, sql, par1);
+
+            Database.ModifyData(con, sql, par1,par2);
         }
 
         public static int UpdateAccounts(Transfer t)

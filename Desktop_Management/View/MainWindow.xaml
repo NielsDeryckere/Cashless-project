@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Desktop_Management.ViewModel"
         xmlns:v="clr-namespace:Desktop_Management.View"
-        Title="MainWindow" Height="768" Width="1024" SizeToContent="WidthAndHeight" ResizeMode="NoResize" >
+        Title="MainWindow" Width="Auto" Height="Auto" SizeToContent="WidthAndHeight"  WindowState="Maximized" >
     <Window.DataContext>
         <vm:ApplicationVM/>
     </Window.DataContext>

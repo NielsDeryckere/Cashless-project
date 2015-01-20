@@ -80,7 +80,7 @@ namespace Desktop_Management.ViewModel
         public Product SelectedProduct
         {
             get { return _selectedProduct; }
-            set { _selectedProduct = value; OnPropertyChanged("SelectedProduct"); }
+            set { _selectedProduct = value; TestProductControl(); OnPropertyChanged("SelectedProduct"); }
         }
         private ObservableCollection<Customer> _customers;
         public ObservableCollection<Customer> Customers
@@ -167,7 +167,7 @@ namespace Desktop_Management.ViewModel
         public RegisterClient SelectedRegister
         {
             get { return selected_register; }
-            set { selected_register = value; OnPropertyChanged("SelectedRegister"); }
+            set { selected_register = value; ViewRegisterUsers(); OnPropertyChanged("SelectedRegister"); }
         }
 
         private List<EmployeeRegister> _employeeRegisters;
@@ -223,6 +223,55 @@ namespace Desktop_Management.ViewModel
             }
         
         }
+          private bool CanExecuteAddProduct()
+          {
+              if (SelectedProduct == null)
+              {
+                  return false;
+              }
+              else
+              {
+                  return SelectedProduct.IsValid();
+              }
+
+          }
+          private bool CanExecuteAddEmployee()
+          {
+              if (SelectedEmployee == null)
+              {
+                  return false;
+              }
+              else
+              {
+                  return SelectedEmployee.IsValid();
+              }
+
+          }
+
+          private List<Customer> _activeCustomers;
+
+          public List<Customer> ActiveCustomers
+          {
+              get { return _activeCustomers; }
+              set { _activeCustomers = value; OnPropertyChanged("ActiveCustomers"); }
+          }
+
+          private List<Product> _activeProducts;
+
+          public List<Product> ActiveProducts
+          {
+              get { return _activeProducts; }
+              set { _activeProducts = value; OnPropertyChanged("ActiveProducts"); }
+          }
+
+          private List<Employee> _activeEmployees;
+
+          public List<Employee> ActiveEmployees
+          {
+              get { return _activeEmployees; }
+              set { _activeEmployees = value; OnPropertyChanged("ActiveEmployees"); }
+          }
+          
         #endregion
 
 
@@ -234,12 +283,14 @@ namespace Desktop_Management.ViewModel
             GetProducts();
             GetAccountInfo();
             GetCustomers();
+            
             GetEmployees();
             GetSales();
             GetRegisters();
-            test();
-            testE();
-            TestProductControl();
+           
+            
+           
+
             
             }
         }
@@ -309,21 +360,7 @@ namespace Desktop_Management.ViewModel
             }
         }
 
-        private async void GetProducts()
-        {
-
-            using (HttpClient client = new HttpClient())
-            {
-                client.SetBearerToken(ApplicationVM.token.AccessToken);
-                HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/Product");
-                if (response.IsSuccessStatusCode)
-                {
-                    string json = await response.Content.ReadAsStringAsync();
-                    Products = JsonConvert.DeserializeObject<ObservableCollection<Product>>(json);
-                }
-            }
-
-        }  
+       
         #endregion
 
         #region TESTS
@@ -395,6 +432,7 @@ namespace Desktop_Management.ViewModel
                         string input = JsonConvert.SerializeObject(data);
                         using (HttpClient client = new HttpClient())
                         {
+                            client.SetBearerToken(ApplicationVM.token.AccessToken);
                             //client.SetBearerToken(ApplicationVM.token.AccessToken);
                             HttpResponseMessage response = await client.PutAsync("http://localhost:41983/api/AccountInfo", new StringContent(input, Encoding.UTF8, "application/json"));
                             if (!response.IsSuccessStatusCode)
@@ -434,9 +472,77 @@ namespace Desktop_Management.ViewModel
                 return false;
             }
         }
+
+        private bool _rbtProduct;
+
+        public bool RbtProduct
+        {
+            get { return _rbtProduct; }
+            set { _rbtProduct = value; OnPropertyChanged("RbtProduct"); }
+        }
+
+        private bool _rbtRegister;
+
+        public bool RbtRegister
+        {
+            get { return _rbtRegister; }
+            set { _rbtRegister = value; OnPropertyChanged("RbtRegister"); }
+        }
+        private bool _enable;
+
+        public bool Enable
+        {
+            get { return _enable; }
+            set { _enable = value; OnPropertyChanged("Enable"); }
+        }
+        
+        private void Filter()
+        {
+            if(RbtProduct==true)
+            {
+
+            }
+            else if(RbtRegister==true)
+            {
+
+            }
+
+
+        }
+
+        
         #endregion
         #region productcommands en methods
-       
+        private async void GetProducts()
+        {
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.SetBearerToken(ApplicationVM.token.AccessToken);
+                HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/Product");
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    Products = JsonConvert.DeserializeObject<ObservableCollection<Product>>(json);
+                    List<Product> lijst = new List<Product>();
+                    if (Products!=null &&Products.Count > 0) { 
+                    foreach(Product p in Products)
+                    {
+                        if(p.Active==true)
+                        {
+                   
+                            lijst.Add(p);
+                        }
+                        
+                    }
+                    ActiveProducts = lijst;
+                    }
+                }
+                else { MessageBox.Show("Could not load products"); }
+            }
+            
+
+        }  
         public ICommand NewProductCommand
         {
             get { return new RelayCommand(NewProduct); }
@@ -451,15 +557,20 @@ namespace Desktop_Management.ViewModel
 
         public ICommand SaveProductCommand
         {
-            get { return new RelayCommand(SaveProduct); }
+            get { return new RelayCommand(SaveProduct,CanExecuteAddProduct); }
         }
 
         private async void SaveProduct()
         {
             string input = JsonConvert.SerializeObject(SelectedProduct);
+            bool exists = false;
+           foreach(Product p in Products)
+           {
+               if(p.ProductName==SelectedProduct.ProductName)
+               { exists = true; }
 
-           
-            if (SelectedProduct.Id == 0)
+           }
+            if (SelectedProduct.Id == 0 && exists==false)
             {
                 using (HttpClient client = new HttpClient())
                 {
@@ -473,11 +584,27 @@ namespace Desktop_Management.ViewModel
                     }
                     else
                     {
-                        Console.WriteLine("error");
+                        MessageBox.Show("Could not save new product");
                     }
                 }
             }
-            else
+            else if(exists==true)
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.SetBearerToken(ApplicationVM.token.AccessToken);
+                    HttpResponseMessage response = await client.PutAsync("http://localhost:41983/api/ExistingProduct", new StringContent(input, Encoding.UTF8, "application/json"));
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine("error");
+                    }
+                    GetProducts();
+                }
+
+
+            }
+            else 
             {
                 using (HttpClient client = new HttpClient())
                 {
@@ -488,7 +615,7 @@ namespace Desktop_Management.ViewModel
                     {
                         Console.WriteLine("error");
                     }  
-                    //GetProducts();
+                    GetProducts();
                 }
             }
 
@@ -591,15 +718,34 @@ namespace Desktop_Management.ViewModel
         #region Customer commands and methods
         private async void GetCustomers()
         {
-            using (HttpClient client = new HttpClient())
+            try
             {
-                client.SetBearerToken(ApplicationVM.token.AccessToken);
-                HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/Customer");
-                if (response.IsSuccessStatusCode)
+
+                using (HttpClient client = new HttpClient())
                 {
-                    string json = await response.Content.ReadAsStringAsync();
-                    Customers = JsonConvert.DeserializeObject<ObservableCollection<Customer>>(json);
+                    client.SetBearerToken(ApplicationVM.token.AccessToken);
+                    HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/Customer");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string json = await response.Content.ReadAsStringAsync();
+                        Customers = JsonConvert.DeserializeObject<ObservableCollection<Customer>>(json);
+                    }
                 }
+               List<Customer> lijst = new List<Customer>();
+                if (Customers!=null && Customers.Count>0)
+                {
+                    foreach (Customer c in Customers)
+                    {
+                        if (c.Active == true)
+                        { lijst.Add(c); }
+                    }
+                    ActiveCustomers = lijst;
+                }
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("Could not load customers");
             }
         }
 
@@ -607,7 +753,7 @@ namespace Desktop_Management.ViewModel
         public Customer SelectedCustomer
         {
             get { return _selected; }
-            set { _selected = value; OnPropertyChanged("SelectedCustomer"); }
+            set { _selected = value; test(); OnPropertyChanged("SelectedCustomer"); }
         }
 
         public ICommand NewCustomerCommand
@@ -699,7 +845,7 @@ namespace Desktop_Management.ViewModel
             Customer c = new Customer();
 
             SelectedCustomer = c;
-            test();
+            
            
         }
 
@@ -714,20 +860,21 @@ namespace Desktop_Management.ViewModel
                 if (SelectedCustomer.Id == 0)
                 {
                     bool etest = false;
+                    bool Active=true;
                     if (Customers.Count > 0)
                     {
                         foreach (Customer e in Customers)
                         {
-                            if (e.Barcode != SelectedEmployee.Barcode)
+                            if (e.Barcode != SelectedCustomer.Barcode)
                             {
                                 etest = true;
                             }
-                            else { etest = false; }
+                            else { etest = false; Active = e.Active; }
 
                         }
                     }
                     else { etest = true; }
-                    if (etest == true && SelectedCustomer.IsValid())
+                    if (etest == true)
                     {
                         using (HttpClient client = new HttpClient())
                         {
@@ -745,7 +892,31 @@ namespace Desktop_Management.ViewModel
                             }
                         }
                     }
-                    else { MessageBox.Show("Could not save customer,make sure that all filled in values are correct"); }
+                    else if (etest == false && Active==false)
+                    {
+                        using (HttpClient client = new HttpClient())
+                        {
+                            client.SetBearerToken(ApplicationVM.token.AccessToken);
+                            HttpResponseMessage response = await client.PutAsync("http://localhost:41983/api/ExistingCustomer", new StringContent(input, Encoding.UTF8, "application/json"));
+                            if (response.IsSuccessStatusCode)
+                            {
+                                
+                                
+                                GetCustomers();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Could not save customer,");
+                            }
+                        }
+
+                         
+                    }
+
+                    else
+                    {
+                        MessageBox.Show("Could not save customer");
+                    }
                 }
                 else
                 {
@@ -793,15 +964,35 @@ namespace Desktop_Management.ViewModel
         #region Methods and commands Employee
         private async void GetEmployees()
         {
-            using (HttpClient client = new HttpClient())
+            try
             {
-                client.SetBearerToken(ApplicationVM.token.AccessToken);
-                HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/Employee");
-                if (response.IsSuccessStatusCode)
+                using (HttpClient client = new HttpClient())
                 {
-                    string json = await response.Content.ReadAsStringAsync();
-                    Employees = JsonConvert.DeserializeObject<ObservableCollection<Employee>>(json);
+                    client.SetBearerToken(ApplicationVM.token.AccessToken);
+                    HttpResponseMessage response = await client.GetAsync("http://localhost:41983/api/Employee");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string json = await response.Content.ReadAsStringAsync();
+                        Employees = JsonConvert.DeserializeObject<ObservableCollection<Employee>>(json);
+                    }
                 }
+                if (Employees!=null && Employees.Count > 0) {
+                    List<Employee> lijst = new List<Employee>();
+                foreach (Employee e in Employees)
+                {
+                    if (e.Active == true)
+                    {
+                       lijst.Add(e);
+                    }
+
+                }
+                ActiveEmployees = lijst;
+                }
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("There are no employees in the database or something went wrong trying to pick them from database");
             }
         }
 
@@ -809,7 +1000,7 @@ namespace Desktop_Management.ViewModel
         public Employee SelectedEmployee
         {
             get { return _selectedEmployee; }
-            set { _selectedEmployee = value; OnPropertyChanged("SelectedEmployee"); }
+            set { _selectedEmployee = value; testE(); OnPropertyChanged("SelectedEmployee"); }
         }
 
         public ICommand NewEmployeeCommand
@@ -819,7 +1010,7 @@ namespace Desktop_Management.ViewModel
 
         public ICommand SaveEmployeeCommand
         {
-            get { return new RelayCommand(SaveEmployee); }
+            get { return new RelayCommand(SaveEmployee,CanExecuteAddEmployee); }
         }
 
         public ICommand DeleteEmployeeCommand
@@ -890,7 +1081,7 @@ namespace Desktop_Management.ViewModel
             Employee c = new Employee();
 
             SelectedEmployee = c;
-            testE();
+            
 
 
         }
@@ -902,6 +1093,7 @@ namespace Desktop_Management.ViewModel
           
             if (SelectedEmployee.Id==0)
             {
+                bool Active = true;
                 bool etest=false;
                 if (Employees.Count > 0) { 
                 foreach(Employee e in Employees)
@@ -909,7 +1101,7 @@ namespace Desktop_Management.ViewModel
                     if(e.Barcode!=SelectedEmployee.Barcode){
                     etest=true;
                     }
-                    else{etest=false;}
+                    else { etest = false; Active = e.Active; }
                 
                 }}
                 else { etest = true; }
@@ -932,8 +1124,28 @@ namespace Desktop_Management.ViewModel
                         }
                     }
                 }
+                else if (etest == false && Active == false)
+                {
+                    using (HttpClient client = new HttpClient())
+                    {
+                        client.SetBearerToken(ApplicationVM.token.AccessToken);
+                        HttpResponseMessage response = await client.PutAsync("http://localhost:41983/api/ExistingEmployee", new StringContent(input, Encoding.UTF8, "application/json"));
+                        if (response.IsSuccessStatusCode)
+                        {
+                            
+                         
+                            GetEmployees();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Could not save customer");
 
-                else { Console.WriteLine("There is already a employee with the same barcode"); }
+                        }
+                    }
+
+                }
+
+                else { MessageBox.Show("There is already a employee with the same barcode"); }
                 }
             
 
@@ -947,7 +1159,7 @@ namespace Desktop_Management.ViewModel
                     HttpResponseMessage response = await client.PutAsync("http://localhost:41983/api/Employee", new StringContent(input, Encoding.UTF8, "application/json"));
                     if (!response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine("error");
+                        MessageBox.Show("Could not save employee");
                     }
                     GetEmployees();
                 }
@@ -967,6 +1179,7 @@ namespace Desktop_Management.ViewModel
                 }
                 else
                 {
+                    MessageBox.Show("Employee deleted");
                     GetEmployees();
                 }
             }
@@ -975,10 +1188,7 @@ namespace Desktop_Management.ViewModel
 
         #endregion
 
-        public ICommand ViewRegisterUsersCommand
-        {
-            get { return new RelayCommand(ViewRegisterUsers); }
-        }
+      
 
         private async void ViewRegisterUsers()
         {

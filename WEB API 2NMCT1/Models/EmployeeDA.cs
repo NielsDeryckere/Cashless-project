@@ -46,6 +46,7 @@ namespace WEB_API_2NMCT1.Models
                 //    c.Picture = new byte[0];
                
                 c.Barcode = Int64.Parse(reader["BarCode"].ToString());
+                c.Active = bool.Parse(reader["Active"].ToString());
                 list.Add(c);
             }
             reader.Close();
@@ -82,6 +83,7 @@ namespace WEB_API_2NMCT1.Models
                     c.Address = reader["Address"].ToString();
                     c.Email = reader["Email"].ToString();
                     c.Phone = reader["Phone"].ToString();
+                    c.Active = bool.Parse(reader["Active"].ToString());
                     //if (!DBNull.Value.Equals(reader["Picture"]))
                     //    c.Picture = (byte[])reader["Picture"];
                     //else
@@ -110,20 +112,21 @@ namespace WEB_API_2NMCT1.Models
 
         public static int InsertEmployee(Employee c, IEnumerable<Claim> claims)
         {
-            string sql = "INSERT INTO Employee VALUES(@EmployeeName,@Address,@Email,@Phone,@Barcode)";
+            string sql = "INSERT INTO Employee VALUES(@EmployeeName,@Address,@Email,@Phone,@Barcode,@Active)";
             DbParameter par1 = Database.addParameter("AdminDB", "@EmployeeName", c.EmployeeName);
             DbParameter par2 = Database.addParameter("AdminDB", "@Address", c.Address);
             DbParameter par3 = Database.addParameter("AdminDB", "@Email", c.Email);
             DbParameter par4 = Database.addParameter("AdminDB", "@Phone", c.Phone);
             DbParameter par5 = Database.addParameter("AdminDB", "@Barcode", c.Barcode);
+            DbParameter par6 = Database.addParameter("AdminDB", "@Active", 1);
             try
             {  
-                return Database.InsertData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4, par5);
+                return Database.InsertData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4, par5,par6);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+              
                 return 0;
             }
            
@@ -152,14 +155,38 @@ namespace WEB_API_2NMCT1.Models
           
         }
 
+        public static int NotActiveToActive(Employee c, IEnumerable<Claim> claims)
+        {
+            string sql = "UPDATE Employee SET EmployeeName=@EmployeeName, Address=@Address, Email=@Email, Phone=@Phone, Active=@Active WHERE Barcode=@Barcode";
+            DbParameter par1 = Database.addParameter("AdminDB", "@EmployeeName", c.EmployeeName);
+            DbParameter par2 = Database.addParameter("AdminDB", "@Address", c.Address);
+            DbParameter par3 = Database.addParameter("AdminDB", "@Email", c.Email);
+            DbParameter par4 = Database.addParameter("AdminDB", "@Phone", c.Phone);
+            DbParameter par5 = Database.addParameter("AdminDB", "@Active", 1);
+            DbParameter par6 = Database.addParameter("AdminDB", "@Barcode", c.Barcode);
+
+            try
+            {
+                return Database.ModifyData(Database.GetConnection(CreateConnectionString(claims)), sql, par1, par2, par3, par4,par5, par6);
+
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+
+        }
+
         public static int DeleteEmployee(long id, IEnumerable<Claim> claims)
         {
-            string sql = "DELETE FROM Employee WHERE Barcode=@ID";
-            DbParameter par1 = Database.addParameter("AdminDB", "@Barcode", id);
+            string sql = "UPDATE Employee SET Active=@Active WHERE Barcode=@ID";
+            DbParameter par1 = Database.addParameter("AdminDB", "@ID", id);
+            DbParameter par2 = Database.addParameter("AdminDB", "@Active", 0);
             DbConnection con = Database.GetConnection(CreateConnectionString(claims));
             try
             { 
-                return Database.ModifyData(con, sql, par1);
+                return Database.ModifyData(con, sql, par1,par2);
                
 
             }

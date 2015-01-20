@@ -6,11 +6,11 @@
              xmlns:vm="clr-namespace:Terminal_Customer.ViewModel"
              xmlns:v="clr-namespace:Terminal_Customer.View"
              mc:Ignorable="d" 
-             d:DesignHeight="768" d:DesignWidth="1024" Background="DarkGray">
+             d:DesignHeight="768" d:DesignWidth="1024" >
     <UserControl.DataContext>
         <vm:PageTwoVM/>
     </UserControl.DataContext>
-
+    <GroupBox>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -54,5 +54,5 @@
 
         <Button Content="Continue" Command="{Binding RegisterCommand}" Grid.Column="2" Margin="0" Grid.Row="1" />
 
-    </Grid>
+    </Grid></GroupBox>
 </UserControl>

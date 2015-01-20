@@ -222,6 +222,9 @@
     <Compile Include="Controllers\EmployeeRegisterController.cs" />
     <Compile Include="Controllers\ErrorlogController.cs" />
     <Compile Include="Controllers\ErrorlogManagementController.cs" />
+    <Compile Include="Controllers\ExistingCustomerController.cs" />
+    <Compile Include="Controllers\ExistingEmployeeController.cs" />
+    <Compile Include="Controllers\ExistingProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginRegisterController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
